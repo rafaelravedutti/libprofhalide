@@ -134,16 +134,6 @@ WEAK int halide_profiler_pipeline_start(void *user_context,
                                         const char *pipeline_name,
                                         int num_funcs,
                                         const uint64_t *func_names);
-
-WEAK int perf_halide_pipeline_start(void *user_context, const char *pipeline_name, int num_funcs, const uint64_t *func_names);
-WEAK void perf_halide_stack_peak_update(void *user_context, void *pipeline_state, uint64_t *f_values);
-WEAK void perf_halide_memory_allocate(void *user_context, void *pipeline_state, int func_id, uint64_t incr);
-WEAK void perf_halide_memory_free(void *user_context, void *pipeline_state, int func_id, uint64_t decr);
-WEAK void perf_halide_report(void *user_context);
-WEAK void perf_halide_reset();
-WEAK void perf_halide_shutdown();
-WEAK void perf_halide_pipeline_end(void *user_context, void *state);
-
 WEAK int halide_host_cpu_count();
 
 WEAK int halide_device_and_host_malloc(void *user_context, struct halide_buffer_t *buf,
@@ -157,15 +147,6 @@ WEAK int halide_matlab_call_pipeline(void *user_context,
                                      int (*pipeline)(void **args), const halide_filter_metadata_t *metadata,
                                      int nlhs, mxArray **plhs, int nrhs, const mxArray **prhs);
 
-// Condition variables. Must be initialized with 0.
-struct halide_cond {
-    uintptr_t _private[1];
-};
-
-WEAK void halide_cond_signal(struct halide_cond *cond);
-WEAK void halide_cond_broadcast(struct halide_cond *cond);
-WEAK void halide_cond_wait(struct halide_cond *cond, struct halide_mutex *mutex);
-
 WEAK int halide_trace_helper(void *user_context,
                              const char *func,
                              void *value, int *coords,
@@ -173,6 +154,15 @@ WEAK int halide_trace_helper(void *user_context,
                              int code,
                              int parent_id, int value_index, int dimensions,
                              const char *trace_tag);
+
+WEAK int halide_papi_pipeline_start(void *user_context, const char *pipeline_name, int num_funcs, const uint64_t *func_names);
+WEAK void halide_papi_stack_peak_update(void *user_context, void *pipeline_state, uint64_t *f_values);
+WEAK void halide_papi_memory_allocate(void *user_context, void *pipeline_state, int func_id, uint64_t incr);
+WEAK void halide_papi_memory_free(void *user_context, void *pipeline_state, int func_id, uint64_t decr);
+WEAK void halide_papi_report(void *user_context);
+WEAK void halide_papi_reset();
+WEAK void halide_papi_shutdown();
+WEAK void halide_papi_pipeline_end(void *user_context, void *state);
 
 }  // extern "C"
 
@@ -193,14 +183,6 @@ namespace Halide { namespace Runtime { namespace Internal {
 
 extern WEAK void halide_use_jit_module();
 extern WEAK void halide_release_jit_module();
-
-// Return a mask with all CPU-specific features supported by the current CPU set.
-struct CpuFeatures {
-    uint64_t known;     // mask of the CPU features we know how to detect
-    uint64_t available; // mask of the CPU features that are available
-                              // (always a subset of 'known')
-};
-extern WEAK CpuFeatures halide_get_cpu_features();
 
 template <typename T>
 __attribute__((always_inline)) void swap(T &a, T &b) {

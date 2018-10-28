@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 323a4c3bb..3d55fd079 100644
+index 88ded58..94cb200 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -18,7 +18,7 @@ ifeq ($(OS), Windows_NT)
@@ -7,31 +7,31 @@ index 323a4c3bb..3d55fd079 100644
  else
      # let's assume "normal" UNIX such as linux
 -    COMMON_LD_FLAGS=-ldl -lpthread -lz
-+    COMMON_LD_FLAGS=-ldl -lpthread -lz -lperfhalide -lpapi
++    COMMON_LD_FLAGS=-ldl -lpthread -lz -lpapihalide -lpapi -L /home/ppginf/rrlmachado/nobackup/repositories/libpapihalide -L /home/ppginf/rrlmachado/nobackup/repositories/papi/src
      FPIC=-fPIC
  ifeq ($(UNAME), Darwin)
      SHARED_EXT=dylib
-@@ -401,6 +401,7 @@ SOURCE_FILES = \
+@@ -435,6 +435,7 @@ SOURCE_FILES = \
    ParamMap.cpp \
    Parameter.cpp \
    PartitionLoops.cpp \
-+  PerfHalideProfiling.cpp \
++  PAPIProfiling.cpp \
    Pipeline.cpp \
    Prefetch.cpp \
    PrintLoopNest.cpp \
-@@ -549,6 +550,7 @@ HEADER_FILES = \
+@@ -607,6 +608,7 @@ HEADER_FILES = \
    ParamMap.h \
    Parameter.h \
    PartitionLoops.h \
-+  PerfHalideProfiling.h \
++  PAPIProfiling.h \
    Pipeline.h \
    Prefetch.h \
    Profiling.h \
-@@ -652,6 +654,7 @@ RUNTIME_CPP_COMPONENTS = \
-   posix_tempfile \
-   posix_threads \
-   powerpc_cpu_features \
-+  perf_halide \
-   prefetch \
-   profiler \
-   profiler_inlined \
+@@ -706,6 +708,7 @@ RUNTIME_CPP_COMPONENTS = \
+   osx_host_cpu_count \
+   osx_opengl_context \
+   osx_yield \
++  papi_profiler \
+   posix_allocator \
+   posix_clock \
+   posix_error_handler \

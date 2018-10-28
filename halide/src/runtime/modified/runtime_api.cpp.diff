@@ -1,20 +1,20 @@
 diff --git a/src/runtime/runtime_api.cpp b/src/runtime/runtime_api.cpp
-index 31fa027fd..aa647c3a9 100644
+index 96aa30f..658767a 100644
 --- a/src/runtime/runtime_api.cpp
 +++ b/src/runtime/runtime_api.cpp
-@@ -158,6 +158,15 @@ extern "C" __attribute__((used)) void *halide_runtime_api_functions[] = {
-     (void *)&halide_profiler_report,
-     (void *)&halide_profiler_reset,
-     (void *)&halide_profiler_stack_peak_update,
-+    (void *)&perf_halide_get_state,
-+    (void *)&perf_halide_pipeline_start,
-+    (void *)&perf_halide_stack_peak_update,
-+    (void *)&perf_halide_memory_allocate,
-+    (void *)&perf_halide_memory_free,
-+    (void *)&perf_halide_report,
-+    (void *)&perf_halide_reset,
-+    (void *)&perf_halide_shutdown,
-+    (void *)&perf_halide_pipeline_end,
-     (void *)&halide_qurt_hvx_lock,
-     (void *)&halide_qurt_hvx_unlock,
-     (void *)&halide_qurt_hvx_unlock_as_destructor,
+@@ -154,6 +154,15 @@ extern "C" __attribute__((used)) void *halide_runtime_api_functions[] = {
+     (void *)&halide_openglcompute_device_interface,
+     (void *)&halide_openglcompute_initialize_kernels,
+     (void *)&halide_openglcompute_run,
++    (void *)&halide_papi_get_state,
++    (void *)&halide_papi_pipeline_start,
++    (void *)&halide_papi_stack_peak_update,
++    (void *)&halide_papi_memory_allocate,
++    (void *)&halide_papi_memory_free,
++    (void *)&halide_papi_report,
++    (void *)&halide_papi_reset,
++    (void *)&halide_papi_shutdown,
++    (void *)&halide_papi_pipeline_end,
+     (void *)&halide_pointer_to_string,
+     (void *)&halide_print,
+     (void *)&halide_profiler_get_pipeline_state,

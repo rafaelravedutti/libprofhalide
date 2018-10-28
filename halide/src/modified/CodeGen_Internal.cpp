@@ -8,10 +8,10 @@
 namespace Halide {
 namespace Internal {
 
-using std::string;
 using std::map;
-using std::vector;
 using std::pair;
+using std::string;
+using std::vector;
 
 using namespace llvm;
 
@@ -153,18 +153,20 @@ bool function_takes_user_context(const std::string &name) {
         "halide_device_and_host_malloc",
         "halide_device_sync",
         "halide_do_par_for",
+        "halide_do_loop_task",
         "halide_do_task",
+        "halide_do_async_consumer",
         "halide_error",
         "halide_free",
         "halide_malloc",
         "halide_print",
+        "halide_papi_pipeline_start",
+        "halide_papi_pipeline_stop",
         "halide_profiler_memory_allocate",
         "halide_profiler_memory_free",
         "halide_profiler_pipeline_start",
         "halide_profiler_pipeline_end",
         "halide_profiler_stack_peak_update",
-        "perf_halide_pipeline_start",
-        "perf_halide_pipeline_end",
         "halide_spawn_thread",
         "halide_device_release",
         "halide_start_clock",
@@ -178,6 +180,7 @@ bool function_takes_user_context(const std::string &name) {
         "halide_opengl_run",
         "halide_openglcompute_run",
         "halide_metal_run",
+        "halide_d3d12compute_run",
         "halide_msan_annotate_buffer_is_initialized_as_destructor",
         "halide_msan_annotate_buffer_is_initialized",
         "halide_msan_annotate_memory_is_initialized",
@@ -197,6 +200,7 @@ bool function_takes_user_context(const std::string &name) {
         "halide_opengl_initialize_kernels",
         "halide_openglcompute_initialize_kernels",
         "halide_metal_initialize_kernels",
+        "halide_d3d12compute_initialize_kernels",
         "halide_get_gpu_device",
         "halide_upgrade_buffer_t",
         "halide_downgrade_buffer_t",
@@ -450,7 +454,8 @@ std::unique_ptr<llvm::TargetMachine> make_target_machine(const llvm::Module &mod
         llvm::TargetRegistry::printRegisteredTargetsForVersion(llvm::outs());
 #endif
     }
-    internal_assert(llvm_target) << "Could not create LLVM target for " << module.getTargetTriple() << "\n";
+    auto triple = llvm::Triple(module.getTargetTriple());
+    internal_assert(llvm_target) << "Could not create LLVM target for " << triple.str() << "\n";
 
     llvm::TargetOptions options;
     std::string mcpu = "";
@@ -475,5 +480,5 @@ void set_function_attributes_for_target(llvm::Function *fn, Target t) {
     fn->addFnAttr("reciprocal-estimates", "none");
 }
 
-}
-}
+}  // namespace Internal
+}  // namespace Halide

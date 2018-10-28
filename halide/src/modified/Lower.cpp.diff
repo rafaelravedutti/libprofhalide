@@ -1,23 +1,23 @@
 diff --git a/src/Lower.cpp b/src/Lower.cpp
-index bed3fe4b4..ed0d5ea35 100644
+index 4e95266..3e6dc38 100644
 --- a/src/Lower.cpp
 +++ b/src/Lower.cpp
 @@ -36,6 +36,7 @@
+ #include "LoopCarry.h"
  #include "LowerWarpShuffles.h"
  #include "Memoization.h"
++#include "PAPIProfiling.h"
  #include "PartitionLoops.h"
-+#include "PerfHalideProfiling.h"
+ #include "PurifyIndexMath.h"
  #include "Prefetch.h"
- #include "Profiling.h"
- #include "Qualify.h"
-@@ -294,6 +295,12 @@ Module lower(const vector<Function> &output_funcs, const string &pipeline_name,
+@@ -301,6 +302,12 @@ Module lower(const vector<Function> &output_funcs, const string &pipeline_name,
          debug(2) << "Lowering after injecting profiling:\n" << s << "\n\n";
      }
  
-+    if (t.has_feature(Target::PerfHalideProfile)) {
-+        debug(1) << "Injecting perf_halide profiling...\n";
-+        s = inject_perf_halide_profiling(s, pipeline_name);
-+        debug(2) << "Lowering after injecting perf_halide profiling:\n" << s << "\n\n";
++    if (t.has_feature(Target::PAPI)) {
++        debug(1) << "Injecting PAPI profiling...\n";
++        s = inject_papi_profiling(s, pipeline_name);
++        debug(2) << "Lowering after injecting PAPI profiling:\n" << s << "\n\n";
 +    }
 +
      if (t.has_feature(Target::FuzzFloatStores)) {

@@ -1,16 +1,16 @@
 diff --git a/src/Pipeline.cpp b/src/Pipeline.cpp
-index 08f918639..019957a9d 100644
+index 6694649..9bb73f3 100644
 --- a/src/Pipeline.cpp
 +++ b/src/Pipeline.cpp
-@@ -946,6 +946,21 @@ void Pipeline::realize(RealizationArg outputs, const Target &t,
+@@ -954,6 +954,21 @@ void Pipeline::realize(RealizationArg outputs, const Target &t,
          }
      }
  
-+    if (target.has_feature(Target::PerfHalideProfile)) {
++    if (target.has_feature(Target::PAPI)) {
 +        JITModule::Symbol report_sym =
-+            contents->jit_module.find_symbol_by_name("perf_halide_report");
++            contents->jit_module.find_symbol_by_name("halide_papi_report");
 +        JITModule::Symbol reset_sym =
-+            contents->jit_module.find_symbol_by_name("perf_halide_reset");
++            contents->jit_module.find_symbol_by_name("halide_papi_reset");
 +        if (report_sym.address && reset_sym.address) {
 +            void *uc = &jit_context.jit_context;
 +            void (*report_fn_ptr)(void *) = (void (*)(void *))(report_sym.address);

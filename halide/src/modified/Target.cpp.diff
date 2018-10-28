@@ -1,12 +1,12 @@
 diff --git a/src/Target.cpp b/src/Target.cpp
-index 64ea2882c..02ee558d3 100644
+index 21e0cac..d49a57f 100644
 --- a/src/Target.cpp
 +++ b/src/Target.cpp
-@@ -266,6 +266,7 @@ const std::map<std::string, Target::Feature> feature_name_map = {
-     {"trace_realizations", Target::TraceRealizations},
-     {"strict_float", Target::StrictFloat},
-     {"legacy_buffer_wrappers", Target::LegacyBufferWrappers},
-+    {"perf_halide", Target::PerfHalideProfile},
- };
- 
- bool lookup_feature(const std::string &tok, Target::Feature &result) {
+@@ -272,6 +272,7 @@ const std::map<std::string, Target::Feature> feature_name_map = {
+     {"openglcompute", Target::OpenGLCompute},
+     {"user_context", Target::UserContext},
+     {"matlab", Target::Matlab},
++    {"papi", Target::PAPI},
+     {"profile", Target::Profile},
+     {"no_runtime", Target::NoRuntime},
+     {"metal", Target::Metal},
