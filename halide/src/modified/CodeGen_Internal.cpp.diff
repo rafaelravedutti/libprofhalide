@@ -1,5 +1,5 @@
 diff --git a/src/CodeGen_Internal.cpp b/src/CodeGen_Internal.cpp
-index 5d53953..1d4c84d 100644
+index 5d539537b..1d4c84d95 100644
 --- a/src/CodeGen_Internal.cpp
 +++ b/src/CodeGen_Internal.cpp
 @@ -160,6 +160,8 @@ bool function_takes_user_context(const std::string &name) {

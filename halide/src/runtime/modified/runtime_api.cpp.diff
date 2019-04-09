@@ -1,5 +1,5 @@
 diff --git a/src/runtime/runtime_api.cpp b/src/runtime/runtime_api.cpp
-index 96aa30f..658767a 100644
+index 96aa30f2d..658767a9c 100644
 --- a/src/runtime/runtime_api.cpp
 +++ b/src/runtime/runtime_api.cpp
 @@ -154,6 +154,15 @@ extern "C" __attribute__((used)) void *halide_runtime_api_functions[] = {

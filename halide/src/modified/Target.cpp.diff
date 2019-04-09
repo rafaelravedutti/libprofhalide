@@ -1,5 +1,5 @@
 diff --git a/src/Target.cpp b/src/Target.cpp
-index 21e0cac..d49a57f 100644
+index 21e0cac67..d49a57fd9 100644
 --- a/src/Target.cpp
 +++ b/src/Target.cpp
 @@ -272,6 +272,7 @@ const std::map<std::string, Target::Feature> feature_name_map = {

@@ -1,5 +1,5 @@
 diff --git a/src/Target.h b/src/Target.h
-index 313c106..e3ca92b 100644
+index 313c106b8..e3ca92bcf 100644
 --- a/src/Target.h
 +++ b/src/Target.h
 @@ -71,6 +71,7 @@ struct Target {

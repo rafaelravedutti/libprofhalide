@@ -1,5 +1,5 @@
 diff --git a/src/Pipeline.cpp b/src/Pipeline.cpp
-index 6694649..9bb73f3 100644
+index 669464997..9bb73f31e 100644
 --- a/src/Pipeline.cpp
 +++ b/src/Pipeline.cpp
 @@ -954,6 +954,21 @@ void Pipeline::realize(RealizationArg outputs, const Target &t,

@@ -1,5 +1,5 @@
 diff --git a/src/LLVM_Runtime_Linker.cpp b/src/LLVM_Runtime_Linker.cpp
-index 8c7fde5..36c3103 100644
+index 8c7fde53d..36c310347 100644
 --- a/src/LLVM_Runtime_Linker.cpp
 +++ b/src/LLVM_Runtime_Linker.cpp
 @@ -112,6 +112,7 @@ DECLARE_CPP_INITMOD(osx_get_symbol)

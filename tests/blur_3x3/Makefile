@@ -7,7 +7,7 @@ CCFLAGS=
 CXXFLAGS=-g
 
 # Halide path
-HALIDE_PATH=/home/ppginf/rrlmachado/nobackup/repositories/Halide
+HALIDE_PATH=/home/rafael/hdd/repositories/macalan/Halide
 
 # Use Halide static library?
 USE_HALIDE_STATIC_LIB=false
@@ -22,7 +22,7 @@ else
 endif
 
 # PAPI path
-PAPI_PATH=/home/ppginf/rrlmachado/nobackup/repositories/papi
+PAPI_PATH=/home/rafael/hdd/repositories/macalan/papi
 PAPI_SRC=${PAPI_PATH}/src
 
 # PAPI flags
@@ -32,7 +32,7 @@ PAPI_FLAGS=-L ${PAPI_SRC} -lpapi
 LIBPFM_PATH=${PAPI_SRC}/libpfm4/lib/
 
 # PAPI Halide path
-PAPI_HALIDE_PATH=/home/ppginf/rrlmachado/nobackup/repositories/libpapihalide
+PAPI_HALIDE_PATH=/home/rafael/hdd/repositories/macalan/libpapihalide
 
 # Likwid path
 LIKWID_PATH=$(dirname $(which likwid-perfctr))

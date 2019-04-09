@@ -1,5 +1,5 @@
 diff --git a/src/runtime/HalideRuntime.h b/src/runtime/HalideRuntime.h
-index 25851ac..c13432c 100644
+index 25851acb7..c13432c74 100644
 --- a/src/runtime/HalideRuntime.h
 +++ b/src/runtime/HalideRuntime.h
 @@ -1275,7 +1275,8 @@ typedef enum halide_target_feature_t {

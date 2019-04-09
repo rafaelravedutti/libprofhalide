@@ -10,6 +10,8 @@
 #include "perf_halide.h"
 #include "transform.h"
 
+static int event_array[MAX_PAPI_EVENTS];
+
 static struct papi_api_config *global_config = NULL;
 static struct papi_api_state *global_state = NULL;
 
@@ -150,10 +152,12 @@ int build_events(struct papi_api_event **events, int *event_set, struct papi_api
   return counter;
 }
 
-void print_event_values(long long int *values, struct papi_api_event *events) {
+void print_event_values(int func, long long int *values, struct papi_api_event *events) {
   struct papi_api_event *event;
   long long int tvalue, tvalue2;
   unsigned int i;
+
+  fprintf(stdout, "%d: ", func);
 
   for(event = events, i = 0; event != NULL; event = event->next, ++i) {
     tvalue = event->event_transform(values[i]);
@@ -181,8 +185,74 @@ void print_event_values(long long int *values, struct papi_api_event *events) {
   fprintf(stdout, "\n");
 }
 
-int papi_marker_start() {
-  int event_array[MAX_PAPI_EVENTS];
+int papi_halide_initialize() {
+  int ret;
+
+  global_state = (struct papi_api_state *) malloc(sizeof(struct papi_api_state));
+
+  if(global_state == NULL) {
+    fprintf(stderr, "papi_marker_start(): Failed to allocate global state!\n");
+    return -1;
+  }
+
+  global_state->papi_started = 0;
+  global_state->event_set = -1;
+  global_state->events = NULL;
+
+  global_config = get_papi_api_config();
+  global_state->num_events = build_events(&(global_state->events), event_array, global_config);
+
+  if((ret = PAPI_library_init(PAPI_VER_CURRENT)) != PAPI_VER_CURRENT) {
+    fprintf(stderr, "PAPI_library_init(): %d", ret);
+    return -1;
+  }
+
+  if((ret = PAPI_create_eventset(&(global_state->event_set))) != PAPI_OK) {
+    fprintf(stderr, "PAPI_create_eventset(): %d\n", ret);
+    return -1;
+  }
+
+  if((ret = PAPI_add_events(global_state->event_set, event_array, global_state->num_events)) != PAPI_OK) {
+    fprintf(stderr, "PAPI_add_events(): %d\n", ret);
+    return -1;
+  }
+
+  return 0;
+}
+
+int papi_halide_marker_start(int func) {
+  int ret;
+
+  if((ret = PAPI_start(global_state->event_set)) != PAPI_OK) {
+    fprintf(stderr, "PAPI_start(): %d\n", ret);
+    return -1;
+  }
+
+  global_state->papi_started = 1;
+  return 0;
+}
+
+int papi_halide_marker_stop(int func) {
+  long long int values[MAX_PAPI_EVENTS];
+  long long int dummyvalues[MAX_PAPI_EVENTS];
+  int ret;
+
+  if((ret = PAPI_stop(global_state->event_set, dummyvalues)) != PAPI_OK) {
+    fprintf(stderr, "PAPI_stop(): %d\n", ret);
+    return -1;
+  }
+
+  if((ret = PAPI_read(global_state->event_set, values)) != PAPI_OK) {
+    fprintf(stderr, "PAPI_read(): %d\n", ret);
+    return -1;
+  }
+
+  print_event_values(func, values, global_state->events);
+  global_state->papi_started = 0;
+  return 0;
+}
+
+int papi_halide_marker_start_child(int func) {
   int ret, status, sig;
 
   pid = fork();
@@ -194,44 +264,12 @@ int papi_marker_start() {
 
   /* This is the process that will execute the profiler */
   if(pid != 0) {
-    if(global_state == NULL) {
-      global_state = (struct papi_api_state *) malloc(sizeof(struct papi_api_state));
-
-      if(global_state == NULL) {
-        fprintf(stderr, "papi_marker_start(): Failed to allocate global state!\n");
-        return -1;
-      }
-
-      global_state->papi_started = 0;
-      global_state->event_set = -1;
-      global_state->events = NULL;
-    }
-
-    global_config = get_papi_api_config();
-    global_state->num_events = build_events(&(global_state->events), event_array, global_config);
-
-    if(global_state->papi_started == 0) {
-      if((ret = PAPI_library_init(PAPI_VER_CURRENT)) != PAPI_VER_CURRENT) {
-        fprintf(stderr, "PAPI_library_init(): %d", ret);
-      } else {
-        global_state->papi_started = 1;
-      }
-    }
-
-    if((ret = PAPI_create_eventset(&(global_state->event_set))) != PAPI_OK) {
-      fprintf(stderr, "PAPI_create_eventset(): %d\n", ret);
-    }
-
     if((ret = PAPI_assign_eventset_component(global_state->event_set, 0)) != PAPI_OK) {
       fprintf(stderr, "PAPI_assign_eventset_component(): %d\n", ret);
     }
 
     if((ret = PAPI_attach(global_state->event_set, (unsigned long) pid)) != PAPI_OK) {
       fprintf(stderr, "PAPI_attach(): %d\n", ret);
-    }
-
-    if((ret = PAPI_add_events(global_state->event_set, event_array, global_state->num_events)) != PAPI_OK) {
-      fprintf(stderr, "PAPI_add_events(): %d\n", ret);
     }
 
     if((ret = PAPI_start(global_state->event_set)) != PAPI_OK) {
@@ -291,7 +329,7 @@ int papi_marker_start() {
   return pid;
 }
 
-int papi_marker_stop() {
+int papi_halide_marker_stop_child(int func) {
   long long int values[MAX_PAPI_EVENTS];
   int ret;
 
@@ -299,16 +337,14 @@ int papi_marker_stop() {
     if((ret = PAPI_read(global_state->event_set, values)) != PAPI_OK) {
       fprintf(stderr, "PAPI_read(): %d\n", ret);
     } else {
-      print_event_values(values, global_state->events);
+      print_event_values(func, values, global_state->events);
     }
-
-    papi_api_shutdown();
   }
 
   return 0;
 }
 
-void papi_api_shutdown() {
+void papi_halide_shutdown() {
   struct papi_api_event *event, *previous;
 
   event = NULL;
