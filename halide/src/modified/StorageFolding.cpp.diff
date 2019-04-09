@@ -1,0 +1,13 @@
+diff --git a/src/StorageFolding.cpp b/src/StorageFolding.cpp
+index f98e31d93..9ffb0fb4d 100644
+--- a/src/StorageFolding.cpp
++++ b/src/StorageFolding.cpp
+@@ -296,7 +296,7 @@ class InjectFoldingCheck : public IRMutator {
+             }
+ 
+ 
+-            stmt = ProducerConsumer::make(op->name, op->is_producer, body);
++            stmt = ProducerConsumer::make(op->name, op->is_producer, body, op->must_profile);
+         } else {
+             IRMutator::visit(op);
+         }

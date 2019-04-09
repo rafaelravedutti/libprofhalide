@@ -1,0 +1,13 @@
+diff --git a/src/Tracing.cpp b/src/Tracing.cpp
+index e329b86bc..0c4dfd049 100644
+--- a/src/Tracing.cpp
++++ b/src/Tracing.cpp
+@@ -298,7 +298,7 @@ private:
+             Stmt new_body = Block::make(op->body, Evaluate::make(end_op_call));
+ 
+             stmt = LetStmt::make(f.name() + ".trace_id", begin_op_call,
+-                                 ProducerConsumer::make(op->name, op->is_producer, new_body));
++                                 ProducerConsumer::make(op->name, op->is_producer, new_body, op->must_profile));
+         }
+         return stmt;
+     }

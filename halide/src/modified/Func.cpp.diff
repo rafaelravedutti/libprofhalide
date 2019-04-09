@@ -1,0 +1,17 @@
+diff --git a/src/Func.cpp b/src/Func.cpp
+index d582f7818..bf70713ec 100644
+--- a/src/Func.cpp
++++ b/src/Func.cpp
+@@ -2470,6 +2470,12 @@ Func &Func::trace_realizations() {
+     return *this;
+ }
+ 
++Func &Func::profile() {
++    invalidate_cache();
++    func.profile();
++    return *this;
++}
++
+ Func &Func::add_trace_tag(const std::string &trace_tag) {
+     invalidate_cache();
+     func.add_trace_tag(trace_tag);

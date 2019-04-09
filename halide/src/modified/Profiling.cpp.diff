@@ -1,0 +1,13 @@
+diff --git a/src/Profiling.cpp b/src/Profiling.cpp
+index 5e32264f1..c5c7ba32d 100644
+--- a/src/Profiling.cpp
++++ b/src/Profiling.cpp
+@@ -209,7 +209,7 @@ private:
+ 
+         body = Block::make(Evaluate::make(set_task), body);
+ 
+-        return ProducerConsumer::make(op->name, op->is_producer, body);
++        return ProducerConsumer::make(op->name, op->is_producer, body, op->must_profile);
+     }
+ 
+     Stmt incr_active_threads() {

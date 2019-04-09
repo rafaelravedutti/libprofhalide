@@ -1,0 +1,13 @@
+diff --git a/src/SkipStages.cpp b/src/SkipStages.cpp
+index 9cd650b35..13f08ae43 100644
+--- a/src/SkipStages.cpp
++++ b/src/SkipStages.cpp
+@@ -310,7 +310,7 @@ private:
+             internal_assert(op);
+             if (op->name == buffer) {
+                 Stmt body = IfThenElse::make(compute_predicate, op->body);
+-                stmt = ProducerConsumer::make(op->name, op->is_producer, body);
++                stmt = ProducerConsumer::make(op->name, op->is_producer, body, op->must_profile);
+             }
+         }
+         return stmt;

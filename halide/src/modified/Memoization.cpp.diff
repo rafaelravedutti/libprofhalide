@@ -1,0 +1,22 @@
+diff --git a/src/Memoization.cpp b/src/Memoization.cpp
+index 42830cd8d..b225b4a9c 100644
+--- a/src/Memoization.cpp
++++ b/src/Memoization.cpp
+@@ -406,7 +406,7 @@ private:
+ 
+             if (op->is_producer) {
+                 Stmt mutated_body = IfThenElse::make(cache_miss, body);
+-                return ProducerConsumer::make(op->name, op->is_producer, mutated_body);
++                return ProducerConsumer::make(op->name, op->is_producer, mutated_body, op->must_profile);
+             } else {
+                 const Function f(iter->second);
+                 KeyInfo key_info(f, top_level_name, memoize_instance);
+@@ -418,7 +418,7 @@ private:
+                     IfThenElse::make(cache_miss, key_info.store_computation(cache_key_name, computed_bounds_name, f.outputs(), op->name));
+ 
+                 Stmt mutated_body = Block::make(cache_store_back, body);
+-                return ProducerConsumer::make(op->name, op->is_producer, mutated_body);
++                return ProducerConsumer::make(op->name, op->is_producer, mutated_body, op->must_profile);
+             }
+         } else {
+             return IRMutator2::visit(op);

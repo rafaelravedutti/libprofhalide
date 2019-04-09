@@ -1,0 +1,33 @@
+diff --git a/src/IR.cpp b/src/IR.cpp
+index 12d73e856..4153b7cff 100644
+--- a/src/IR.cpp
++++ b/src/IR.cpp
+@@ -308,22 +308,23 @@ Stmt AssertStmt::make(Expr condition, Expr message) {
+     return node;
+ }
+ 
+-Stmt ProducerConsumer::make(const std::string &name, bool is_producer, Stmt body) {
++Stmt ProducerConsumer::make(const std::string &name, bool is_producer, Stmt body, bool must_profile) {
+     internal_assert(body.defined()) << "ProducerConsumer of undefined\n";
+ 
+     ProducerConsumer *node = new ProducerConsumer;
+     node->name = name;
+     node->is_producer = is_producer;
+     node->body = std::move(body);
++    node->must_profile = must_profile;
+     return node;
+ }
+ 
+-Stmt ProducerConsumer::make_produce(const std::string &name, Stmt body) {
+-    return ProducerConsumer::make(name, true, std::move(body));
++Stmt ProducerConsumer::make_produce(const std::string &name, Stmt body, bool must_profile) {
++    return ProducerConsumer::make(name, true, std::move(body), must_profile);
+ }
+ 
+-Stmt ProducerConsumer::make_consume(const std::string &name, Stmt body) {
+-    return ProducerConsumer::make(name, false, std::move(body));
++Stmt ProducerConsumer::make_consume(const std::string &name, Stmt body, bool must_profile) {
++    return ProducerConsumer::make(name, false, std::move(body), must_profile);
+ }
+ 
+ Stmt For::make(const std::string &name, Expr min, Expr extent, ForType for_type, DeviceAPI device_api, Stmt body) {

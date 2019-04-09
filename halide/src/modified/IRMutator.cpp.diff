@@ -1,0 +1,22 @@
+diff --git a/src/IRMutator.cpp b/src/IRMutator.cpp
+index bac5e5c35..9781cdeea 100644
+--- a/src/IRMutator.cpp
++++ b/src/IRMutator.cpp
+@@ -190,7 +190,7 @@ void IRMutator::visit(const ProducerConsumer *op) {
+     if (body.same_as(op->body)) {
+         stmt = op;
+     } else {
+-        stmt = ProducerConsumer::make(op->name, op->is_producer, std::move(body));
++        stmt = ProducerConsumer::make(op->name, op->is_producer, std::move(body), op->must_profile);
+     }
+ }
+ 
+@@ -547,7 +547,7 @@ Stmt IRMutator2::visit(const ProducerConsumer *op) {
+     if (body.same_as(op->body)) {
+         return op;
+     }
+-    return ProducerConsumer::make(op->name, op->is_producer, std::move(body));
++    return ProducerConsumer::make(op->name, op->is_producer, std::move(body), op->must_profile);
+ }
+ 
+ Stmt IRMutator2::visit(const For *op) {

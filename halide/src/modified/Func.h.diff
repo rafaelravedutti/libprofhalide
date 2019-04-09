@@ -1,0 +1,14 @@
+diff --git a/src/Func.h b/src/Func.h
+index c3a62c559..fc760503e 100644
+--- a/src/Func.h
++++ b/src/Func.h
+@@ -2292,6 +2292,9 @@ public:
+      * halide_trace. */
+     Func &trace_realizations();
+ 
++    /** Profile this function. */
++    Func &profile();
++
+     /** Add a string of arbitrary text that will be passed thru to trace
+      * inspection code if the Func is realized in trace mode. (Funcs that are
+      * inlined won't have their tags emitted.) Ignored entirely if
