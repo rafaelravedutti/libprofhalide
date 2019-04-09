@@ -7,7 +7,7 @@
 #include <sys/ptrace.h>
 //---
 #include "papi_api.h"
-#include "perf_halide.h"
+#include "papi_halide.h"
 #include "transform.h"
 
 static int event_array[MAX_PAPI_EVENTS];
@@ -86,8 +86,8 @@ struct papi_api_config *get_papi_api_config() {
   size_t len, i, j, eq;
   ssize_t read;
 
-  if((fp = fopen(PERF_HALIDE_CONFIG_FILE, "r")) == NULL) {
-    fprintf(stderr, "Configuration file for perf_halide not found: \"%s\"\n", PERF_HALIDE_CONFIG_FILE);
+  if((fp = fopen(PAPI_HALIDE_CONFIG_FILE, "r")) == NULL) {
+    fprintf(stderr, "Configuration file for papi_halide not found: \"%s\"\n", PAPI_HALIDE_CONFIG_FILE);
     return NULL;
   }
 

@@ -6,7 +6,7 @@
 #include <linux/perf_event.h>
 #include <sys/ioctl.h>
 //---
-#include "perf_halide.h"
+#include "perf_api.h"
 
 static int perf_fds[MAX_PERF_DESCRIPTORS] = { -1 };
 

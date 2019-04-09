@@ -1,4 +1,4 @@
-#define PERF_HALIDE_CONFIG_FILE   "perf_halide_events.conf"
+#define PAPI_HALIDE_CONFIG_FILE   "papi_halide_events.conf"
 #define MAX_CONFIG_LINE           1024
 
 #define VALUE_TYPE_INTEGER        0
@@ -22,5 +22,3 @@ struct papi_api_state {
   int num_events;
   struct papi_api_event *events;
 };
-
-void papi_api_shutdown();

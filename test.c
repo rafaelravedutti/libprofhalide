@@ -11,11 +11,11 @@ int main(int argc, const char *argv[]) {
     C[i] = (float)(i * 3);
   }
 
-  perf_descriptor_start(PERF_MARKER_TEST);
+  perf_descriptor_start(0);
 
   for(i = 0; i < N; ++i) {
     A[i] = B[i] + C[i];
   }
 
-  perf_descriptor_stop(PERF_MARKER_TEST);
+  perf_descriptor_stop(0);
 }
