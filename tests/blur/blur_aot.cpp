@@ -1,6 +1,6 @@
 #include "HalideBuffer.h"
 #include "halide_image_io.h"
-#include "blur_3x3_aot.h"
+#include "blur_aot.h"
 /* ... */
 #include <stdio.h>
 

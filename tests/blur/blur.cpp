@@ -33,7 +33,7 @@ int main(int argc, const char **argv) {
 #ifdef COMPILE_AOT
 
   blur_y.compile_to_lowered_stmt("blur.html", {input}, HTML);
-  blur_y.compile_to_static_library("blur_3x3_aot", {input}, "blur_y");
+  blur_y.compile_to_static_library("blur_aot", {input}, "blur_y");
 
 #else
 

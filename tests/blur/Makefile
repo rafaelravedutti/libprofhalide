@@ -39,18 +39,18 @@ LIKWID_PATH=$(dirname $(which likwid-perfctr))
 LIKWID_LIB=${LIKWID_PATH}/../lib
 LIKWID_INCLUDE=${LIKWID_PATH}/../include
 
-all: blur_3x3_jit blur_3x3_aot
+all: blur_jit blur_aot
 
-blur_3x3_jit: blur_3x3.cpp
+blur_jit: blur.cpp
 	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} ${PAPI_FLAGS} -o $@
 
-blur_3x3_gen_aot: blur_3x3.cpp
+blur_gen_aot: blur.cpp
 	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} ${PAPI_FLAGS} -DCOMPILE_AOT -o $@
 
-blur_3x3_aot.cpp: blur_3x3_gen_aot
+blur_aot.cpp: blur_gen_aot
 	./$^
 
-blur_3x3_aot: blur_3x3_aot.cpp blur_3x3_aot.h blur_3x3_aot.a
+blur_aot: blur_aot.cpp blur_aot.h blur_aot.a
 	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} ${PAPI_FLAGS} -L ${LIBPFM_PATH} -lpfm -o $@
 
 likwid_test: likwid_test.c
@@ -60,4 +60,4 @@ perf_test: perf_example.c
 	${CC} $^ -o $@
 
 clean:
-	rm -f blur_3x3_jit blur_3x3_gen_aot blur_3x3_aot.h blur_3x3_aot.a blur_3x3_aot likwid_test perf_test
+	rm -f blur_jit blur_gen_aot blur_aot.h blur_aot.a blur_aot likwid_test perf_test
