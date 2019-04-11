@@ -1,0 +1,2 @@
+/usr/bin/ar qc liblocal_laplacian_auto_schedule_cc.a  CMakeFiles/local_laplacian_auto_schedule_cc.dir/genfiles/local_laplacian_auto_schedule/local_laplacian_auto_schedule.generated.cpp.o
+/usr/bin/ranlib liblocal_laplacian_auto_schedule_cc.a

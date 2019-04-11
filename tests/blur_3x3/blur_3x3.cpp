@@ -19,7 +19,8 @@ int main(int argc, const char **argv) {
   //blur_y.tile(x, y, xi, yi, 32, 16);
   //blur_x.compute_at(blur_y, y);
 
-  blur_y.tile(x, y, xi, yi, 256, 32).vectorize(xi, 8).parallel(y);
+  //blur_y.tile(x, y, xi, yi, 256, 32).vectorize(xi, 8).parallel(y);
+  blur_y.tile(x, y, xi, yi, 256, 32).vectorize(xi, 8);
   blur_x.compute_at(blur_y, x).vectorize(x, 8);
 
   //blur_x.compute_root();

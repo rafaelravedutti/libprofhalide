@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
     if (target.has_gpu_feature()) {
         sched = 4;
     } else {
-        sched = 2;
+        sched = 3;
     }
 
     switch (sched) {
@@ -140,6 +140,8 @@ int main(int argc, char **argv) {
                 downsampled[l].compute_root();
                 interpolated[l].compute_root();
             }
+
+            interpolated[l].profile();
         }
         normalize.compute_root();
         break;
