@@ -1,1 +1,0 @@
-/usr/bin/c++      CMakeFiles/local_laplacian_process.dir/process.cpp.o  -o local_laplacian_process -rdynamic -lpng -lz -ljpeg ./genfiles/local_laplacian/local_laplacian.a ./genfiles/local_laplacian_auto_schedule/local_laplacian_auto_schedule.a ./genfiles/halide_rt_host/halide_rt_host.a -ldl -lpthread 
