@@ -152,12 +152,12 @@ int build_events(struct papi_api_event **events, int *event_set, struct papi_api
   return counter;
 }
 
-void print_event_values(int func, long long int *values, struct papi_api_event *events) {
+void print_event_values(const char *func_name, long long int *values, struct papi_api_event *events) {
   struct papi_api_event *event;
   long long int tvalue, tvalue2;
   unsigned int i;
 
-  fprintf(stdout, "%d: ", func);
+  fprintf(stdout, "%s: ", func_name);
 
   for(event = events, i = 0; event != NULL; event = event->next, ++i) {
     tvalue = event->event_transform(values[i]);
@@ -220,7 +220,7 @@ int papi_halide_initialize() {
   return 0;
 }
 
-int papi_halide_marker_start(int func) {
+int papi_halide_marker_start(int func, const char *func_name) {
   int ret;
 
   if((ret = PAPI_start(global_state->event_set)) != PAPI_OK) {
@@ -232,7 +232,7 @@ int papi_halide_marker_start(int func) {
   return 0;
 }
 
-int papi_halide_marker_stop(int func) {
+int papi_halide_marker_stop(int func, const char *func_name) {
   long long int values[MAX_PAPI_EVENTS];
   long long int dummyvalues[MAX_PAPI_EVENTS];
   int ret;
@@ -247,12 +247,12 @@ int papi_halide_marker_stop(int func) {
     return -1;
   }
 
-  print_event_values(func, values, global_state->events);
+  print_event_values(func_name, values, global_state->events);
   global_state->papi_started = 0;
   return 0;
 }
 
-int papi_halide_marker_start_child(int func) {
+int papi_halide_marker_start_child(int func, const char *func_name) {
   int ret, status, sig;
 
   pid = fork();
@@ -329,7 +329,7 @@ int papi_halide_marker_start_child(int func) {
   return pid;
 }
 
-int papi_halide_marker_stop_child(int func) {
+int papi_halide_marker_stop_child(int func, const char *func_name) {
   long long int values[MAX_PAPI_EVENTS];
   int ret;
 
@@ -337,7 +337,7 @@ int papi_halide_marker_stop_child(int func) {
     if((ret = PAPI_read(global_state->event_set, values)) != PAPI_OK) {
       fprintf(stderr, "PAPI_read(): %d\n", ret);
     } else {
-      print_event_values(func, values, global_state->events);
+      print_event_values(func_name, values, global_state->events);
     }
   }
 

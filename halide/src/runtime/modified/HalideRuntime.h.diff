@@ -1,5 +1,5 @@
 diff --git a/src/runtime/HalideRuntime.h b/src/runtime/HalideRuntime.h
-index 25851acb7..c13432c74 100644
+index 25851acb7..7a67d988c 100644
 --- a/src/runtime/HalideRuntime.h
 +++ b/src/runtime/HalideRuntime.h
 @@ -1275,7 +1275,8 @@ typedef enum halide_target_feature_t {
@@ -12,13 +12,37 @@ index 25851acb7..c13432c74 100644
  } halide_target_feature_t;
  
  /** This function is called internally by Halide in some situations to determine
-@@ -1744,6 +1745,15 @@ enum {
+@@ -1744,6 +1745,39 @@ enum {
   * inspection. Lock it before using to pause the profiler. */
  extern struct halide_profiler_state *halide_profiler_get_state();
  
++struct halide_papi_func_stats {
++    /** The name of this Func. A global constant string. */
++    const char *name;
++};
++
++/** Structure for the PAPI profiler pipelines */
++struct halide_papi_pipeline_stats {
++    /** An array containing states for each Func in this pipeline. */
++    struct halide_papi_func_stats *funcs;
++
++    /** The name of this pipeline. A global constant string. */
++    const char *name;
++
++    /** The next pipeline_stats pointer. It's a void * because types
++     * in the Halide runtime may not currently be recursive. */
++    void *next;
++
++    /** The number of funcs in this pipeline. */
++    int num_funcs;
++};
++
 +/** Structure for the PAPI profiler */
 +struct halide_papi_state {
 +    int current_func;
++
++    /** A linked list of stats gathered for each pipeline. */
++    struct halide_papi_pipeline_stats *pipelines;
 +};
 +
 +/** Get a pointer to the global PAPI profiler state for programmatic

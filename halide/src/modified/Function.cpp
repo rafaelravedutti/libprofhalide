@@ -11,6 +11,7 @@
 #include "IROperator.h"
 #include "IRPrinter.h"
 #include "Introspection.h"
+#include "PAPIProfiling.h"
 #include "ParallelRVar.h"
 #include "Random.h"
 #include "Scope.h"
@@ -28,6 +29,8 @@ using std::vector;
 typedef map<FunctionPtr, FunctionPtr> DeepCopyMap;
 
 struct FunctionContents;
+
+extern std::vector<std::string> papi_profiling_functions;
 
 namespace {
 // Weaken all the references to a particular Function to break
@@ -892,6 +895,7 @@ void Function::trace_realizations() {
 }
 void Function::profile() {
     contents->profile = true;
+    papi_profiling_functions.push_back(contents->name);
 }
 void Function::add_trace_tag(const std::string &trace_tag) {
     contents->trace_tags.push_back(trace_tag);

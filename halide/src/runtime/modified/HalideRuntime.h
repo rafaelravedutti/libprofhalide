@@ -1745,9 +1745,33 @@ enum {
  * inspection. Lock it before using to pause the profiler. */
 extern struct halide_profiler_state *halide_profiler_get_state();
 
+struct halide_papi_func_stats {
+    /** The name of this Func. A global constant string. */
+    const char *name;
+};
+
+/** Structure for the PAPI profiler pipelines */
+struct halide_papi_pipeline_stats {
+    /** An array containing states for each Func in this pipeline. */
+    struct halide_papi_func_stats *funcs;
+
+    /** The name of this pipeline. A global constant string. */
+    const char *name;
+
+    /** The next pipeline_stats pointer. It's a void * because types
+     * in the Halide runtime may not currently be recursive. */
+    void *next;
+
+    /** The number of funcs in this pipeline. */
+    int num_funcs;
+};
+
 /** Structure for the PAPI profiler */
 struct halide_papi_state {
     int current_func;
+
+    /** A linked list of stats gathered for each pipeline. */
+    struct halide_papi_pipeline_stats *pipelines;
 };
 
 /** Get a pointer to the global PAPI profiler state for programmatic

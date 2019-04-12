@@ -1,8 +1,25 @@
 diff --git a/src/Function.cpp b/src/Function.cpp
-index d9e57c2c2..64f64446c 100644
+index d9e57c2c2..3005f29ac 100644
 --- a/src/Function.cpp
 +++ b/src/Function.cpp
-@@ -92,6 +92,8 @@ struct FunctionContents {
+@@ -11,6 +11,7 @@
+ #include "IROperator.h"
+ #include "IRPrinter.h"
+ #include "Introspection.h"
++#include "PAPIProfiling.h"
+ #include "ParallelRVar.h"
+ #include "Random.h"
+ #include "Scope.h"
+@@ -29,6 +30,8 @@ typedef map<FunctionPtr, FunctionPtr> DeepCopyMap;
+ 
+ struct FunctionContents;
+ 
++extern std::vector<std::string> papi_profiling_functions;
++
+ namespace {
+ // Weaken all the references to a particular Function to break
+ // reference cycles. Also count the number of references found.
+@@ -92,6 +95,8 @@ struct FunctionContents {
  
      bool frozen = false;
  
@@ -11,7 +28,7 @@ index d9e57c2c2..64f64446c 100644
      void accept(IRVisitor *visitor) const {
          func_schedule.accept(visitor);
  
-@@ -345,6 +347,7 @@ void Function::deep_copy(FunctionPtr copy, DeepCopyMap &copied_map) const {
+@@ -345,6 +350,7 @@ void Function::deep_copy(FunctionPtr copy, DeepCopyMap &copied_map) const {
      copy->frozen = contents->frozen;
      copy->output_buffers = contents->output_buffers;
      copy->func_schedule = contents->func_schedule.deep_copy(copied_map);
@@ -19,17 +36,18 @@ index d9e57c2c2..64f64446c 100644
  
      // Copy the pure definition
      if (contents->init_def.defined()) {
-@@ -887,6 +890,9 @@ void Function::trace_stores() {
+@@ -887,6 +893,10 @@ void Function::trace_stores() {
  void Function::trace_realizations() {
      contents->trace_realizations = true;
  }
 +void Function::profile() {
 +    contents->profile = true;
++    papi_profiling_functions.push_back(contents->name);
 +}
  void Function::add_trace_tag(const std::string &trace_tag) {
      contents->trace_tags.push_back(trace_tag);
  }
-@@ -900,6 +906,9 @@ bool Function::is_tracing_stores() const {
+@@ -900,6 +910,9 @@ bool Function::is_tracing_stores() const {
  bool Function::is_tracing_realizations() const {
      return contents->trace_realizations;
  }

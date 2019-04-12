@@ -3,7 +3,7 @@
 #include <string>
 #include <limits>
 
-#include "Profiling.h"
+#include "PAPIProfiling.h"
 #include "CodeGen_Internal.h"
 #include "IRMutator.h"
 #include "IROperator.h"
@@ -14,6 +14,8 @@
 
 namespace Halide {
 namespace Internal {
+
+std::vector<std::string> papi_profiling_functions;
 
 using std::map;
 using std::string;
@@ -202,7 +204,9 @@ private:
             idx = stack.back();
         }
 
-        if(op->must_profile) {
+        auto it = find(papi_profiling_functions.begin(), papi_profiling_functions.end(), op->name);
+
+        if(op->is_producer && it != papi_profiling_functions.end()) {
           Expr profiler_token = Variable::make(Int(32), "profiler_token");
           Expr profiler_state = Variable::make(Handle(), "profiler_state");
 
@@ -253,6 +257,7 @@ private:
             bool old_profiling_memory = profiling_memory;
             profiling_memory = false;
             body = mutate(body);
+
             profiling_memory = old_profiling_memory;
 
             // Get the profiler state pointer from scratch inside the

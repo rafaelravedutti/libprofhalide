@@ -21,10 +21,10 @@
 extern "C" {
 
 extern int papi_halide_initialize();
-extern int papi_halide_marker_start(int func);
-extern int papi_halide_marker_stop(int func);
-extern int papi_halide_marker_start_child(int func);
-extern int papi_halide_marker_stop_child(int func);
+extern int papi_halide_marker_start(int func, const char *func_name);
+extern int papi_halide_marker_stop(int func, const char *func_name);
+extern int papi_halide_marker_start_child(int func, const char *func_name);
+extern int papi_halide_marker_stop_child(int func, const char *func_name);
 extern void papi_halide_shutdown();
 
 }
