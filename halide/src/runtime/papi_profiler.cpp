@@ -83,6 +83,10 @@ WEAK void halide_papi_reset() {
 }
 
 WEAK void halide_papi_shutdown() {
+
+}
+
+WEAK void halide_papi_pipeline_end(void *user_context, void *state) {
   halide_papi_state *s = halide_papi_get_state();
   halide_papi_pipeline_stats *p, *tmp;
 
@@ -98,9 +102,6 @@ WEAK void halide_papi_shutdown() {
   }
 
   papi_halide_shutdown();
-}
-
-WEAK void halide_papi_pipeline_end(void *user_context, void *state) {
   current_pipeline_stats = NULL;
 }
 
