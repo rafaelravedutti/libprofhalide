@@ -66,12 +66,12 @@ struct papi_api_event *get_event(const char *event_name) {
   event_match(event_name, "PAPI_VEC_INS", PAPI_VEC_INS, transform_skip, VALUE_TYPE_INTEGER);
 
   /* Memory */
-  event_match(event_name, "PAPI_L1_DCA", PAPI_L1_DCA, transform_skip, VALUE_TYPE_TWO_INTEGERS);
+  event_match(event_name, "PAPI_L1_DCA", PAPI_L1_DCA, transform_skip, VALUE_TYPE_INTEGER);
   event_match(event_name, "PAPI_L1_DCM", PAPI_L1_DCM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L1_DCH", PAPI_L1_DCH, transform_skip, VALUE_TYPE_FLOAT);
-  event_match(event_name, "PAPI_L2_DCA", PAPI_L2_DCA, transform_skip, VALUE_TYPE_TWO_INTEGERS);
+  event_match(event_name, "PAPI_L1_DCH", PAPI_L1_DCH, transform_skip, VALUE_TYPE_INTEGER);
+  event_match(event_name, "PAPI_L2_DCA", PAPI_L2_DCA, transform_skip, VALUE_TYPE_INTEGER);
   event_match(event_name, "PAPI_L2_DCM", PAPI_L2_DCM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_DCH", PAPI_L2_DCH, transform_skip, VALUE_TYPE_FLOAT);
+  event_match(event_name, "PAPI_L2_DCH", PAPI_L2_DCH, transform_skip, VALUE_TYPE_INTEGER);
 
   #endif
   #undef event_match
