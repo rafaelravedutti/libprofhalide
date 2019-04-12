@@ -1,3 +1,5 @@
+#include "papi_halide.h"
+
 #define PAPI_HALIDE_CONFIG_FILE   "papi_halide_events.conf"
 #define MAX_CONFIG_LINE           1024
 
@@ -17,7 +19,8 @@ struct papi_api_event {
 };
 
 struct papi_api_state {
-  int papi_started;
+  int papi_meas[MAX_PAPI_DESCRIPTORS];
+  int event_array[MAX_PAPI_EVENTS];
   int event_set;
   int num_events;
   struct papi_api_event *events;
