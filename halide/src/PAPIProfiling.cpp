@@ -262,7 +262,7 @@ private:
             // Get the profiler state pointer from scratch inside the
             // kernel. There will be a separate copy of the state on
             // the DSP that the host side will periodically query.
-            Expr get_state = Call::make(Handle(), "papi_halide_get_state", {}, Call::Extern);
+            Expr get_state = Call::make(Handle(), "halide_papi_get_state", {}, Call::Extern);
             body = substitute("profiler_state", Variable::make(Handle(), "hvx_profiler_state"), body);
             body = LetStmt::make("hvx_profiler_state", get_state, body);
         } else if (op->device_api == DeviceAPI::None ||
@@ -316,10 +316,10 @@ Stmt inject_papi_profiling(Stmt s, string pipeline_name) {
     Expr profiler_state = Variable::make(Handle(), "profiler_state");
 
     Stmt incr_active_threads =
-        Evaluate::make(Call::make(Int(32), "papi_halide_incr_active_threads",
+        Evaluate::make(Call::make(Int(32), "halide_papi_incr_active_threads",
                                   {profiler_state}, Call::Extern));
     Stmt decr_active_threads =
-        Evaluate::make(Call::make(Int(32), "papi_halide_decr_active_threads",
+        Evaluate::make(Call::make(Int(32), "halide_papi_decr_active_threads",
                                   {profiler_state}, Call::Extern));
     s = Block::make({incr_active_threads, s, decr_active_threads});
 

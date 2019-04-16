@@ -709,6 +709,7 @@ RUNTIME_CPP_COMPONENTS = \
   osx_opengl_context \
   osx_yield \
   papi_profiler \
+  papi_profiler_inlined \
   posix_allocator \
   posix_clock \
   posix_error_handler \

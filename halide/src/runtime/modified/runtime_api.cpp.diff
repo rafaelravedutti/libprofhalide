@@ -1,20 +1,16 @@
 diff --git a/src/runtime/runtime_api.cpp b/src/runtime/runtime_api.cpp
-index 96aa30f2d..658767a9c 100644
+index 96aa30f2d..7dae4d5b4 100644
 --- a/src/runtime/runtime_api.cpp
 +++ b/src/runtime/runtime_api.cpp
-@@ -154,6 +154,15 @@ extern "C" __attribute__((used)) void *halide_runtime_api_functions[] = {
+@@ -154,6 +154,11 @@ extern "C" __attribute__((used)) void *halide_runtime_api_functions[] = {
      (void *)&halide_openglcompute_device_interface,
      (void *)&halide_openglcompute_initialize_kernels,
      (void *)&halide_openglcompute_run,
++    (void *)&halide_papi_get_pipeline_state,
 +    (void *)&halide_papi_get_state,
 +    (void *)&halide_papi_pipeline_start,
-+    (void *)&halide_papi_stack_peak_update,
-+    (void *)&halide_papi_memory_allocate,
-+    (void *)&halide_papi_memory_free,
 +    (void *)&halide_papi_report,
 +    (void *)&halide_papi_reset,
-+    (void *)&halide_papi_shutdown,
-+    (void *)&halide_papi_pipeline_end,
      (void *)&halide_pointer_to_string,
      (void *)&halide_print,
      (void *)&halide_profiler_get_pipeline_state,

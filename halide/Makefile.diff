@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 88ded5822..8e0aceb79 100644
+index 88ded5822..32bae036f 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -18,7 +18,7 @@ ifeq ($(OS), Windows_NT)
@@ -27,11 +27,12 @@ index 88ded5822..8e0aceb79 100644
    Pipeline.h \
    Prefetch.h \
    Profiling.h \
-@@ -706,6 +708,7 @@ RUNTIME_CPP_COMPONENTS = \
+@@ -706,6 +708,8 @@ RUNTIME_CPP_COMPONENTS = \
    osx_host_cpu_count \
    osx_opengl_context \
    osx_yield \
 +  papi_profiler \
++  papi_profiler_inlined \
    posix_allocator \
    posix_clock \
    posix_error_handler \

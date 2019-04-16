@@ -113,6 +113,7 @@ DECLARE_CPP_INITMOD(osx_host_cpu_count)
 DECLARE_CPP_INITMOD(osx_opengl_context)
 DECLARE_CPP_INITMOD(osx_yield)
 DECLARE_CPP_INITMOD(papi_profiler)
+DECLARE_CPP_INITMOD(papi_profiler_inlined)
 DECLARE_CPP_INITMOD(posix_allocator)
 DECLARE_CPP_INITMOD(posix_clock)
 DECLARE_CPP_INITMOD(posix_error_handler)
@@ -815,6 +816,7 @@ std::unique_ptr<llvm::Module> get_initial_module_for_target(Target t, llvm::LLVM
                     modules.push_back(get_initmod_windows_profiler(c, bits_64, debug));
                 } else {
                     modules.push_back(get_initmod_profiler(c, bits_64, debug));
+                    modules.push_back(get_initmod_papi_profiler(c, bits_64, debug));
                 }
             }
 
@@ -870,7 +872,7 @@ std::unique_ptr<llvm::Module> get_initial_module_for_target(Target t, llvm::LLVM
                 modules.push_back(get_initmod_profiler_inlined(c, bits_64, debug));
             }
             if (t.has_feature(Target::PAPI)) {
-                modules.push_back(get_initmod_papi_profiler(c, bits_64, debug));
+                modules.push_back(get_initmod_papi_profiler_inlined(c, bits_64, debug));
             }
         }
 

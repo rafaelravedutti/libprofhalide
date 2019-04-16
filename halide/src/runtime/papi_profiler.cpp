@@ -42,34 +42,34 @@ WEAK void sampling_profiler_thread(void *) {
   halide_mutex_lock(&s->lock);
 
   while (s->current_func != halide_papi_please_stop) {
-      uint64_t t1 = halide_current_time_ns(NULL);
-      uint64_t t = t1;
-      while (1) {
-          int func, active_threads;
-          if (s->get_remote_profiler_state) {
-              // Execution has disappeared into remote code running
-              // on an accelerator (e.g. Hexagon DSP)
-              s->get_remote_profiler_state(&func, &active_threads);
-          } else {
-              func = s->current_func;
-              active_threads = s->active_threads;
-          }
-          uint64_t t_now = halide_current_time_ns(NULL);
-          if (func == halide_papi_please_stop) {
-              break;
-          } else if (func >= 0) {
-              // Assume all time since I was last awake is due to
-              // the currently running func.
-              bill_func(s, func, t_now - t, active_threads);
-          }
-          t = t_now;
-
-          // Release the lock, sleep, reacquire.
-          int sleep_ms = s->sleep_time;
-          halide_mutex_unlock(&s->lock);
-          halide_sleep_ms(NULL, sleep_ms);
-          halide_mutex_lock(&s->lock);
+    uint64_t t1 = halide_current_time_ns(NULL);
+    uint64_t t = t1;
+    while (1) {
+      int func, active_threads;
+      if (s->get_remote_profiler_state) {
+        // Execution has disappeared into remote code running
+        // on an accelerator (e.g. Hexagon DSP)
+        s->get_remote_profiler_state(&func, &active_threads);
+      } else {
+        func = s->current_func;
+        active_threads = s->active_threads;
       }
+      uint64_t t_now = halide_current_time_ns(NULL);
+      if (func == halide_papi_please_stop) {
+        break;
+      } else if (func >= 0) {
+        // Assume all time since I was last awake is due to
+        // the currently running func.
+        bill_func(s, func, t_now - t, active_threads);
+      }
+      t = t_now;
+
+      // Release the lock, sleep, reacquire.
+      int sleep_ms = s->sleep_time;
+      halide_mutex_unlock(&s->lock);
+      halide_sleep_ms(NULL, sleep_ms);
+      halide_mutex_lock(&s->lock);
+    }
   }
 
   halide_mutex_unlock(&s->lock);
@@ -132,9 +132,11 @@ WEAK int halide_papi_pipeline_start(void *user_context, const char *pipeline_nam
   ScopedMutexLock lock(&s->lock);
 
   if (!s->sampling_thread) {
-      halide_start_clock(user_context);
-      s->sampling_thread = halide_spawn_thread(sampling_profiler_thread, NULL);
+    halide_start_clock(user_context);
+    s->sampling_thread = halide_spawn_thread(sampling_profiler_thread, NULL);
   }
+
+  p->runs++;
 
   current_pipeline_stats = p;
   papi_halide_initialize();
@@ -156,7 +158,84 @@ WEAK void halide_papi_memory_free(void *user_context, void *pipeline_state, int 
 */
 
 WEAK void halide_papi_report_unlocked(void *user_context, halide_papi_state *s) {
+  char line_buf[1024];
+  Printer<StringStreamPrinter, sizeof(line_buf)> sstr(user_context, line_buf);
 
+  for (halide_papi_pipeline_stats *p = s->pipelines; p;
+     p = (halide_papi_pipeline_stats *)(p->next)) {
+
+    float t = p->time / 1000000.0f;
+
+    if (!p->runs) continue;
+
+    sstr.clear();
+
+    bool serial = p->active_threads_numerator == p->active_threads_denominator;
+    float threads = p->active_threads_numerator / (p->active_threads_denominator + 1e-10);
+
+    sstr << p->name << "\n"
+         << " total time: " << t << " ms"
+         << "  samples: " << p->samples
+         << "  runs: " << p->runs
+         << "  time/run: " << t / p->runs << " ms\n";
+
+    if(!serial) {
+      sstr << " average threads used: " << threads << "\n";
+    }
+
+    halide_print(user_context, sstr.str());
+
+    if(p->time) {
+      for(int i = 0; i < p->num_funcs; i++) {
+        size_t cursor = 0;
+
+        sstr.clear();
+        halide_papi_func_stats *fs = p->funcs + i;
+
+        // The first func is always a catch-all overhead
+        // slot. Only report overhead time if it's non-zero
+        if (i == 0 && fs->time == 0) continue;
+
+        sstr << "  " << fs->name << ": ";
+        cursor += 25;
+        while (sstr.size() < cursor) sstr << " ";
+
+        float ft = fs->time / (p->runs * 1000000.0f);
+        sstr << ft;
+        // We don't need 6 sig. figs.
+        sstr.erase(3);
+        sstr << "ms";
+        cursor += 10;
+
+        while (sstr.size() < cursor) sstr << " ";
+
+        int percent = 0;
+
+        if(p->time != 0) {
+          percent = (100 * fs->time) / p->time;
+        }
+
+        sstr << "(" << percent << "%)";
+        cursor += 8;
+
+        while (sstr.size() < cursor) sstr << " ";
+
+        if(!serial) {
+          float threads = fs->active_threads_numerator / (fs->active_threads_denominator + 1e-10);
+
+          sstr << "threads: " << threads;
+          sstr.erase(3);
+          cursor += 15;
+
+          while (sstr.size() < cursor) sstr << " ";
+        }
+
+        sstr << "\n";
+
+        halide_print(user_context, sstr.str());
+      }
+    }
+  }
 }
 
 WEAK void halide_papi_report(void *user_context) {
@@ -186,7 +265,7 @@ WEAK void halide_papi_reset() {
   halide_papi_reset_unlocked(s);
 }
 
-WEAK void halide_papi_shutdown() {
+__attribute__((destructor))  WEAK void halide_papi_shutdown() {
   halide_papi_state *s = halide_papi_get_state();
 
   if (!s->sampling_thread) {
@@ -198,6 +277,8 @@ WEAK void halide_papi_shutdown() {
   s->sampling_thread = NULL;
   s->current_func = halide_papi_outside_of_halide;
 
+  papi_halide_shutdown();
+
   // Print results. No need to lock anything because we just shut
   // down the thread.
   halide_papi_report_unlocked(NULL, s);
@@ -206,7 +287,8 @@ WEAK void halide_papi_shutdown() {
 }
 
 WEAK void halide_papi_pipeline_end(void *user_context, void *state) {
-  papi_halide_shutdown();
+  ((halide_profiler_state *)state)->current_func = halide_profiler_outside_of_halide;
+  halide_papi_shutdown();
   current_pipeline_stats = NULL;
 }
 
@@ -226,22 +308,5 @@ WEAK __attribute__((always_inline)) int halide_papi_leave_current_func(halide_pa
   papi_halide_marker_stop(t, current_pipeline_stats->funcs[t].name);
   return 0;
 }
-
-WEAK __attribute__((always_inline)) int halide_papi_incr_active_threads(halide_papi_state *state) {
-  volatile int *ptr = &(state->active_threads);
-  asm volatile ("":::);
-  int ret = __sync_fetch_and_add(ptr, 1);
-  asm volatile ("":::);
-  return ret;
-}
-
-WEAK __attribute__((always_inline)) int halide_papi_decr_active_threads(halide_papi_state *state) {
-  volatile int *ptr = &(state->active_threads);
-  asm volatile ("":::);
-  int ret = __sync_fetch_and_sub(ptr, 1);
-  asm volatile ("":::);
-  return ret;
-}
-
 
 } // extern "C"

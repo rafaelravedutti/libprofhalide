@@ -161,7 +161,6 @@ WEAK void halide_papi_memory_allocate(void *user_context, void *pipeline_state, 
 WEAK void halide_papi_memory_free(void *user_context, void *pipeline_state, int func_id, uint64_t decr);
 WEAK void halide_papi_report(void *user_context);
 WEAK void halide_papi_reset();
-WEAK void halide_papi_shutdown();
 WEAK void halide_papi_pipeline_end(void *user_context, void *state);
 
 }  // extern "C"

@@ -1840,6 +1840,8 @@ enum {
  * This function grabs the global profiler state's lock on entry. */
 extern struct halide_profiler_pipeline_stats *halide_profiler_get_pipeline_state(const char *pipeline_name);
 
+extern struct halide_papi_pipeline_stats *halide_papi_get_pipeline_state(const char *pipeline_name);
+
 /** Reset profiler state cheaply. May leave threads running or some
  * memory allocated but all accumluated statistics are reset.
  * WARNING: Do NOT call this method while any halide pipeline is
@@ -1848,6 +1850,8 @@ extern struct halide_profiler_pipeline_stats *halide_profiler_get_pipeline_state
  * state without grabbing the global profiler state's lock. */
 extern void halide_profiler_reset();
 
+extern void halide_papi_reset();
+
 /** Reset all profiler state.
  * WARNING: Do NOT call this method while any halide pipeline is
  * running; halide_profiler_memory_allocate/free and
@@ -1855,9 +1859,13 @@ extern void halide_profiler_reset();
  * state without grabbing the global profiler state's lock. */
 void halide_profiler_shutdown();
 
+void halide_papi_shutdown();
+
 /** Print out timing statistics for everything run since the last
  * reset. Also happens at process exit. */
 extern void halide_profiler_report(void *user_context);
+
+extern void halide_papi_report(void *user_context);
 
 /// \name "Float16" functions
 /// These functions operate of bits (``uint16_t``) representing a half

@@ -1,8 +1,8 @@
 diff --git a/src/runtime/runtime_internal.h b/src/runtime/runtime_internal.h
-index 7d818d594..08ad2ffe1 100644
+index 7d818d594..96704f54e 100644
 --- a/src/runtime/runtime_internal.h
 +++ b/src/runtime/runtime_internal.h
-@@ -155,6 +155,15 @@ WEAK int halide_trace_helper(void *user_context,
+@@ -155,6 +155,14 @@ WEAK int halide_trace_helper(void *user_context,
                               int parent_id, int value_index, int dimensions,
                               const char *trace_tag);
  
@@ -12,7 +12,6 @@ index 7d818d594..08ad2ffe1 100644
 +WEAK void halide_papi_memory_free(void *user_context, void *pipeline_state, int func_id, uint64_t decr);
 +WEAK void halide_papi_report(void *user_context);
 +WEAK void halide_papi_reset();
-+WEAK void halide_papi_shutdown();
 +WEAK void halide_papi_pipeline_end(void *user_context, void *state);
 +
  }  // extern "C"
