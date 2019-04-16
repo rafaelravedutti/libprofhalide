@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
     if (target.has_gpu_feature()) {
         sched = 4;
     } else {
-        sched = 3;
+        sched = 1;
     }
 
     switch (sched) {
@@ -140,8 +140,6 @@ int main(int argc, char **argv) {
                 downsampled[l].compute_root();
                 interpolated[l].compute_root();
             }
-
-            interpolated[l].profile();
         }
         normalize.compute_root();
         break;
@@ -198,6 +196,11 @@ int main(int argc, char **argv) {
     }
     default:
         assert(0 && "No schedule with this number.");
+    }
+
+    for(int l = 0; l < levels; ++l) {
+        downsampled[l].profile();
+        interpolated[l].profile();
     }
 
     // JIT compile the pipeline eagerly, so we don't interfere with timing
