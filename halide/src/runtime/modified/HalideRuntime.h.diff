@@ -1,5 +1,5 @@
 diff --git a/src/runtime/HalideRuntime.h b/src/runtime/HalideRuntime.h
-index 25851acb7..7a67d988c 100644
+index 25851acb7..5b267b112 100644
 --- a/src/runtime/HalideRuntime.h
 +++ b/src/runtime/HalideRuntime.h
 @@ -1275,7 +1275,8 @@ typedef enum halide_target_feature_t {
@@ -12,22 +12,35 @@ index 25851acb7..7a67d988c 100644
  } halide_target_feature_t;
  
  /** This function is called internally by Halide in some situations to determine
-@@ -1744,6 +1745,39 @@ enum {
+@@ -1744,6 +1745,97 @@ enum {
   * inspection. Lock it before using to pause the profiler. */
  extern struct halide_profiler_state *halide_profiler_get_state();
  
 +struct halide_papi_func_stats {
++    /** Total time taken evaluating this Func (in nanoseconds). */
++    uint64_t time;
++
 +    /** The name of this Func. A global constant string. */
 +    const char *name;
++
++    /** The average number of thread pool worker threads active while computing this Func. */
++    uint64_t active_threads_numerator, active_threads_denominator;
 +};
 +
 +/** Structure for the PAPI profiler pipelines */
 +struct halide_papi_pipeline_stats {
-+    /** An array containing states for each Func in this pipeline. */
-+    struct halide_papi_func_stats *funcs;
++    /** Total time taken evaluating this pipeline (in nanoseconds). */
++    uint64_t time;
++
++    /** The average number of thread pool worker threads doing useful
++     * work while computing this pipeline. */
++    uint64_t active_threads_numerator, active_threads_denominator;
 +
 +    /** The name of this pipeline. A global constant string. */
 +    const char *name;
++
++    /** An array containing states for each Func in this pipeline. */
++    struct halide_papi_func_stats *funcs;
 +
 +    /** The next pipeline_stats pointer. It's a void * because types
 +     * in the Halide runtime may not currently be recursive. */
@@ -35,19 +48,64 @@ index 25851acb7..7a67d988c 100644
 +
 +    /** The number of funcs in this pipeline. */
 +    int num_funcs;
++
++    /** An internal base id used to identify the funcs in this pipeline. */
++    int first_func_id;
++
++    /** The number of times this pipeline has been run. */
++    int runs;
++
++    /** The total number of samples taken inside of this pipeline. */
++    int samples;
 +};
 +
 +/** Structure for the PAPI profiler */
 +struct halide_papi_state {
++    /** Guards access to the fields below. If not locked, the sampling
++     * profiler thread is free to modify things below (including
++     * reordering the linked list of pipeline stats). */
++    struct halide_mutex lock;
++
++    /** The amount of time the profiler thread sleeps between samples
++     * in milliseconds. Defaults to 1 */
++    int sleep_time;
++
++    /** An internal id used for bookkeeping. */
++    int first_free_id;
++
++    /** The id of the current running Func. Set by the pipeline, read
++     * periodically by the profiler thread. */
 +    int current_func;
++
++    /** The number of threads currently doing work. */
++    int active_threads;
 +
 +    /** A linked list of stats gathered for each pipeline. */
 +    struct halide_papi_pipeline_stats *pipelines;
++
++    /** Retrieve remote profiler state. Used so that the sampling
++     * profiler can follow along with execution that occurs elsewhere,
++     * e.g. on a DSP. If null, it reads from the int above instead. */
++    void (*get_remote_profiler_state)(int *func, int *active_workers);
++
++    /** Sampling thread reference to be joined at shutdown. */
++    struct halide_thread *sampling_thread;
 +};
 +
 +/** Get a pointer to the global PAPI profiler state for programmatic
 + * inspection. Lock it before using to pause the profiler. */
 +extern struct halide_papi_state *halide_papi_get_state();
++
++/** Profiler func ids with special meanings. */
++enum {
++    /// current_func takes on this value when not inside Halide code
++    halide_papi_outside_of_halide = -1,
++    /// Set current_func to this value to tell the profiling thread to
++    /// halt. It will start up again next time you run a pipeline with
++    /// profiling enabled.
++    halide_papi_please_stop = -2
++};
++
 +
  /** Get a pointer to the pipeline state associated with pipeline_name.
   * This function grabs the global profiler state's lock on entry. */
