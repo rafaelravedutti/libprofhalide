@@ -15,16 +15,17 @@
     exit(-1);                                                                                           \
   }
 
-#define MAX_PAPI_DESCRIPTORS    128
 #define MAX_PAPI_EVENTS         128
+#define MAX_PAPI_DESCRIPTORS    128
 
 //extern "C" {
 
 extern int papi_halide_initialize();
-extern int papi_halide_marker_start(int func, const char *func_name);
-extern int papi_halide_marker_stop(int func, const char *func_name);
-extern int papi_halide_marker_start_child(int func, const char *func_name);
-extern int papi_halide_marker_stop_child(int func, const char *func_name);
+extern int papi_halide_marker_start(int func);
+extern int papi_halide_marker_stop(int func, long long int *values);
+extern int papi_halide_marker_start_child(int func);
+extern int papi_halide_marker_stop_child(int func, long long int *values);
+extern int papi_halide_number_of_events();
 extern void papi_halide_shutdown();
 
 //}

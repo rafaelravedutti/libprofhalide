@@ -14,10 +14,6 @@
 static struct papi_api_config *global_config = NULL;
 static struct papi_api_state *global_state = NULL;
 
-static char *function_names[MAX_PAPI_DESCRIPTORS];
-static double function_times[MAX_PAPI_DESCRIPTORS];
-static long long int values[MAX_PAPI_DESCRIPTORS][MAX_PAPI_EVENTS];
-
 static pid_t pid = -1;
 static pid_t child = -1;
 
@@ -238,13 +234,12 @@ int papi_halide_initialize() {
   return 0;
 }
 
-int papi_halide_marker_start(int func, const char *func_name) {
-  int ret;
+int papi_halide_number_of_events() {
+  return global_state->num_events;
+}
 
-  if(global_state->papi_meas[func] == 0) {
-    function_names[func] = strdup(func_name);
-    function_times[func] = 0.0;
-  }
+int papi_halide_marker_start(int func) {
+  int ret;
 
   if((ret = PAPI_reset(global_state->event_set)) != PAPI_OK) {
     fprintf(stderr, "PAPI_reset(): %d\n", ret);
@@ -252,22 +247,19 @@ int papi_halide_marker_start(int func, const char *func_name) {
   }
 
   global_state->papi_meas[func]++;
-  global_state->start_time[func] = timestamp();
   return 0;
 }
 
-int papi_halide_marker_stop(int func, const char *func_name) {
+int papi_halide_marker_stop(int func, long long int *values) {
   int ret;
 
-  function_times[func] += timestamp() - global_state->start_time[func];
-
   if(global_state->papi_meas[func] <= 1) {
-    if((ret = PAPI_read(global_state->event_set, values[func])) != PAPI_OK) {
+    if((ret = PAPI_read(global_state->event_set, values)) != PAPI_OK) {
       fprintf(stderr, "PAPI_read(): %d\n", ret);
       return -1;
     }
   } else {
-    if((ret = PAPI_accum(global_state->event_set, values[func])) != PAPI_OK) {
+    if((ret = PAPI_accum(global_state->event_set, values)) != PAPI_OK) {
       fprintf(stderr, "PAPI_accum(): %d\n", ret);
       return -1;
     }
@@ -276,7 +268,7 @@ int papi_halide_marker_stop(int func, const char *func_name) {
   return 0;
 }
 
-int papi_halide_marker_start_child(int func, const char *func_name) {
+int papi_halide_marker_start_child(int func) {
   int ret, status, sig;
 
   pid = fork();
@@ -353,14 +345,13 @@ int papi_halide_marker_start_child(int func, const char *func_name) {
   return pid;
 }
 
-int papi_halide_marker_stop_child(int func, const char *func_name) {
+int papi_halide_marker_stop_child(int func, long long int *values) {
   int ret;
 
   if(pid != 0) {
-    if((ret = PAPI_read(global_state->event_set, values[func])) != PAPI_OK) {
+    if((ret = PAPI_read(global_state->event_set, values)) != PAPI_OK) {
       fprintf(stderr, "PAPI_read(): %d\n", ret);
-    } else {
-      print_event_values(func_name, values[func], global_state->events, 0.0);
+      return -1;
     }
   }
 
@@ -373,14 +364,8 @@ void papi_halide_shutdown() {
   int ret;
 
   if((ret = PAPI_stop(global_state->event_set, dummyvalues)) != PAPI_OK) {
+    fprintf(stderr, "PAPI_stop(): %d\n", ret);
     return;
-  } else {
-    for(int i = 0; i < MAX_PAPI_DESCRIPTORS; ++i) {
-      if(global_state->papi_meas[i] > 0) {
-        print_event_values(function_names[i], values[i], global_state->events, function_times[i]);
-        free(function_names[i]);
-      }
-    }
   }
 
   event = NULL;

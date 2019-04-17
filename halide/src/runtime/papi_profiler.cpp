@@ -230,6 +230,17 @@ WEAK void halide_papi_report_unlocked(void *user_context, halide_papi_state *s) 
           while (sstr.size() < cursor) sstr << " ";
         }
 
+        sstr << "counters: ";
+
+        while (sstr.size() < cursor) sstr << " ";
+
+        for(int e = 0; e < papi_halide_number_of_events(); ++e) {
+          sstr << fs->event_counters[e] << ", ";
+        }
+
+        sstr.erase(2);
+
+        cursor += 60;
         sstr << "\n";
 
         halide_print(user_context, sstr.str());
@@ -300,12 +311,12 @@ WEAK __attribute__((always_inline)) int halide_papi_set_current_func(halide_papi
   *ptr = tok + t;
   asm volatile ("":::);
 
-  papi_halide_marker_start(t, current_pipeline_stats->funcs[t].name);
+  papi_halide_marker_start(t);
   return 0;
 }
 
 WEAK __attribute__((always_inline)) int halide_papi_leave_current_func(halide_papi_state *state, int tok, int t) {
-  papi_halide_marker_stop(t, current_pipeline_stats->funcs[t].name);
+  papi_halide_marker_stop(t, current_pipeline_stats->funcs[t].event_counters);
   return 0;
 }
 

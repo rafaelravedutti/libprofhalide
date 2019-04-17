@@ -1754,6 +1754,9 @@ struct halide_papi_func_stats {
 
     /** The average number of thread pool worker threads active while computing this Func. */
     uint64_t active_threads_numerator, active_threads_denominator;
+
+    /** Event counters */
+    long long int event_counters[128];
 };
 
 /** Structure for the PAPI profiler pipelines */
