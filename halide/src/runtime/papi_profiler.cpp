@@ -114,6 +114,10 @@ WEAK int halide_papi_pipeline_start(void *user_context, const char *pipeline_nam
           p->funcs[i].name = (const char *)(func_names[i]);
           p->funcs[i].active_threads_numerator = 0;
           p->funcs[i].active_threads_denominator = 0;
+
+          for(int t = 0; t < MAX_PAPI_THREADS; ++t) {
+            p->funcs[i].counter_used[t] = 0;
+          }
         }
       } else {
         free(p);
@@ -225,25 +229,32 @@ WEAK void halide_papi_report_unlocked(void *user_context, halide_papi_state *s) 
 
           sstr << "threads: " << threads;
           sstr.erase(3);
-          cursor += 15;
+          cursor += 18;
 
           while (sstr.size() < cursor) sstr << " ";
         }
 
-        sstr << "counters: ";
-
-        while (sstr.size() < cursor) sstr << " ";
-
-        for(int e = 0; e < papi_halide_number_of_events(); ++e) {
-          sstr << fs->event_counters[e] << ", ";
-        }
-
-        sstr.erase(2);
-
-        cursor += 60;
         sstr << "\n";
-
         halide_print(user_context, sstr.str());
+
+        for(int th = 0; th < MAX_PAPI_THREADS; ++th) {
+          if(fs->counter_used[th] == 1) {
+            sstr.clear();
+
+            while (sstr.size() < 25) sstr << " ";
+
+            sstr << "counters: ";
+
+            for(int e = 0; e < papi_halide_number_of_events(); ++e) {
+              sstr << fs->event_counters[th][e] << ", ";
+            }
+
+            sstr.erase(2);
+            sstr << "\n";
+
+            halide_print(user_context, sstr.str());
+          }
+        }
       }
     }
   }
@@ -316,7 +327,9 @@ WEAK __attribute__((always_inline)) int halide_papi_set_current_func(halide_papi
 }
 
 WEAK __attribute__((always_inline)) int halide_papi_leave_current_func(halide_papi_state *state, int tok, int t) {
-  papi_halide_marker_stop(t, current_pipeline_stats->funcs[t].event_counters);
+  int thread_idx = papi_halide_get_thread_index();
+  papi_halide_marker_stop(t, current_pipeline_stats->funcs[t].event_counters[thread_idx]);
+  current_pipeline_stats->funcs[t].counter_used[thread_idx] = 1;
   return 0;
 }
 

@@ -1,5 +1,5 @@
 diff --git a/src/runtime/HalideRuntime.h b/src/runtime/HalideRuntime.h
-index 25851acb7..594cdc8da 100644
+index 25851acb7..186970216 100644
 --- a/src/runtime/HalideRuntime.h
 +++ b/src/runtime/HalideRuntime.h
 @@ -1275,7 +1275,8 @@ typedef enum halide_target_feature_t {
@@ -12,7 +12,7 @@ index 25851acb7..594cdc8da 100644
  } halide_target_feature_t;
  
  /** This function is called internally by Halide in some situations to determine
-@@ -1744,10 +1745,106 @@ enum {
+@@ -1744,10 +1745,109 @@ enum {
   * inspection. Lock it before using to pause the profiler. */
  extern struct halide_profiler_state *halide_profiler_get_state();
  
@@ -27,7 +27,10 @@ index 25851acb7..594cdc8da 100644
 +    uint64_t active_threads_numerator, active_threads_denominator;
 +
 +    /** Event counters */
-+    long long int event_counters[128];
++    long long int event_counters[32][128];
++
++    /** Event counter has been used? */
++    int counter_used[32];
 +};
 +
 +/** Structure for the PAPI profiler pipelines */
@@ -119,7 +122,7 @@ index 25851acb7..594cdc8da 100644
  /** Reset profiler state cheaply. May leave threads running or some
   * memory allocated but all accumluated statistics are reset.
   * WARNING: Do NOT call this method while any halide pipeline is
-@@ -1756,6 +1853,8 @@ extern struct halide_profiler_pipeline_stats *halide_profiler_get_pipeline_state
+@@ -1756,6 +1856,8 @@ extern struct halide_profiler_pipeline_stats *halide_profiler_get_pipeline_state
   * state without grabbing the global profiler state's lock. */
  extern void halide_profiler_reset();
  
@@ -128,7 +131,7 @@ index 25851acb7..594cdc8da 100644
  /** Reset all profiler state.
   * WARNING: Do NOT call this method while any halide pipeline is
   * running; halide_profiler_memory_allocate/free and
-@@ -1763,10 +1862,14 @@ extern void halide_profiler_reset();
+@@ -1763,10 +1865,14 @@ extern void halide_profiler_reset();
   * state without grabbing the global profiler state's lock. */
  void halide_profiler_shutdown();
  

@@ -1,4 +1,5 @@
 #include <papi.h>
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,6 +17,65 @@ static struct papi_api_state *global_state = NULL;
 
 static pid_t pid = -1;
 static pid_t child = -1;
+
+pthread_mutex_t lock;
+
+struct threadInfo {
+  int event_set;
+  int thread_id;
+  int set;
+};
+
+static struct threadInfo threadsInfo[MAX_PAPI_THREADS];
+
+int papi_halide_get_thread_index() {
+  int thid = pthread_self();
+
+  for(int i = 0; i < MAX_PAPI_THREADS; ++i) {
+    if(threadsInfo[i].set && threadsInfo[i].thread_id == thid) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+int find_or_insert_thread() {
+  int thid = pthread_self();
+  int first_available_idx = -1;
+
+  pthread_mutex_lock(&lock);
+
+  for(int i = 0; i < MAX_PAPI_THREADS; ++i) {
+    if(threadsInfo[i].set && threadsInfo[i].thread_id == thid) {
+      pthread_mutex_unlock(&lock);
+      return i;
+    }
+
+    if(!threadsInfo[i].set && first_available_idx == -1) {
+      first_available_idx = i;
+    }
+  }
+
+  if(first_available_idx == -1) {
+    fprintf(stderr, "find_or_insert_thread(): No thread slot available!\n");
+    return -1;
+  }
+
+  threadsInfo[first_available_idx].event_set = PAPI_NULL;
+  threadsInfo[first_available_idx].thread_id = thid;
+  threadsInfo[first_available_idx].set = 1;
+
+  pthread_mutex_unlock(&lock);
+
+  return first_available_idx;
+}
+
+int remove_thread(int thread_idx) {
+  threadsInfo[thread_idx].set = 0;
+  threadsInfo[thread_idx].event_set = PAPI_NULL;
+  return -1;
+}
 
 double timestamp() {
   struct timeval tp;
@@ -290,6 +350,11 @@ void print_event_values(const char *func_name, long long int *values, struct pap
 int papi_halide_initialize() {
   int ret;
 
+  if(pthread_mutex_init(&lock, NULL) != 0) {
+    fprintf(stderr, "pthread_mutex_init(): Failed to initialize mutex!\n");
+    return -1;
+  }
+
   global_state = (struct papi_api_state *) malloc(sizeof(struct papi_api_state));
 
   if(global_state == NULL) {
@@ -312,18 +377,8 @@ int papi_halide_initialize() {
     return -1;
   }
 
-  if((ret = PAPI_create_eventset(&(global_state->event_set))) != PAPI_OK) {
-    fprintf(stderr, "PAPI_create_eventset(): %d\n", ret);
-    return -1;
-  }
-
-  if((ret = PAPI_add_events(global_state->event_set, global_state->event_array, global_state->num_events)) != PAPI_OK) {
-    fprintf(stderr, "PAPI_add_events(): %d\n", ret);
-    return -1;
-  }
-
-  if((ret = PAPI_start(global_state->event_set)) != PAPI_OK) {
-    fprintf(stderr, "PAPI_start(): %d\n", ret);
+  if((ret = PAPI_thread_init((unsigned long (*)(void))(pthread_self))) != PAPI_OK) {
+    fprintf(stderr, "PAPI_thread_init(): %d\n", ret);
     return -1;
   }
 
@@ -334,10 +389,73 @@ int papi_halide_number_of_events() {
   return global_state->num_events;
 }
 
-int papi_halide_marker_start(int func) {
+int papi_halide_start_thread() {
+  int thread_idx = find_or_insert_thread();
   int ret;
 
-  if((ret = PAPI_reset(global_state->event_set)) != PAPI_OK) {
+  if((ret = PAPI_register_thread()) != PAPI_OK) {
+    fprintf(stderr, "PAPI_register_thread(): %d\n", ret);
+    return -1;
+  }
+
+  //if((ret = PAPI_create_eventset(&(global_state->event_set))) != PAPI_OK) {
+  if((ret = PAPI_create_eventset(&threadsInfo[thread_idx].event_set)) != PAPI_OK) {
+    fprintf(stderr, "PAPI_create_eventset(): %d\n", ret);
+    return -1;
+  }
+
+  if((ret = PAPI_add_events(threadsInfo[thread_idx].event_set, global_state->event_array, global_state->num_events)) != PAPI_OK) {
+    fprintf(stderr, "PAPI_add_events(): %d\n", ret);
+    return -1;
+  }
+
+  if((ret = PAPI_start(threadsInfo[thread_idx].event_set)) != PAPI_OK) {
+    fprintf(stderr, "PAPI_start(): %d\n", ret);
+    return -1;
+  }
+
+  return 0;
+}
+
+int papi_halide_stop_thread() {
+  long long int dummyvalues[MAX_PAPI_EVENTS];
+  int thread_idx = papi_halide_get_thread_index();
+  int ret;
+
+  if(thread_idx == -1) {
+    fprintf(stderr, "papi_halide_stop_thread(): Thread not found!\n");
+    return -1;
+  }
+
+  if((ret = PAPI_stop(threadsInfo[thread_idx].event_set, dummyvalues)) != PAPI_OK) {
+    fprintf(stderr, "PAPI_stop(): %d\n", ret);
+    return -1;
+  }
+
+  if((ret = PAPI_remove_events(threadsInfo[thread_idx].event_set, global_state->event_array, global_state->num_events)) != PAPI_OK) {
+    fprintf(stderr, "PAPI_remove_events(): %d\n", ret);
+    return -1;
+  }
+
+  if((ret = PAPI_destroy_eventset(&threadsInfo[thread_idx].event_set)) != PAPI_OK) {
+    fprintf(stderr, "PAPI_destroy_eventset(): %d\n", ret);
+    return -1;
+  }
+
+  if((ret = PAPI_unregister_thread()) != PAPI_OK) {
+    fprintf(stderr, "PAPI_unregister_thread(): %d\n", ret);
+    return -1;
+  }
+
+  remove_thread(thread_idx);
+  return 0;
+}
+
+int papi_halide_marker_start(int func) {
+  int ret;
+  int thread_idx = papi_halide_get_thread_index();
+
+  if((ret = PAPI_reset(threadsInfo[thread_idx].event_set)) != PAPI_OK) {
     fprintf(stderr, "PAPI_reset(): %d\n", ret);
     return -1;
   }
@@ -348,14 +466,15 @@ int papi_halide_marker_start(int func) {
 
 int papi_halide_marker_stop(int func, long long int *values) {
   int ret;
+  int thread_idx = papi_halide_get_thread_index();
 
   if(global_state->papi_meas[func] <= 1) {
-    if((ret = PAPI_read(global_state->event_set, values)) != PAPI_OK) {
+    if((ret = PAPI_read(threadsInfo[thread_idx].event_set, values)) != PAPI_OK) {
       fprintf(stderr, "PAPI_read(): %d\n", ret);
       return -1;
     }
   } else {
-    if((ret = PAPI_accum(global_state->event_set, values)) != PAPI_OK) {
+    if((ret = PAPI_accum(threadsInfo[thread_idx].event_set, values)) != PAPI_OK) {
       fprintf(stderr, "PAPI_accum(): %d\n", ret);
       return -1;
     }
@@ -455,14 +574,7 @@ int papi_halide_marker_stop_child(int func, long long int *values) {
 }
 
 void papi_halide_shutdown() {
-  long long int dummyvalues[MAX_PAPI_EVENTS];
   struct papi_api_event *event, *previous;
-  int ret;
-
-  if((ret = PAPI_stop(global_state->event_set, dummyvalues)) != PAPI_OK) {
-    fprintf(stderr, "PAPI_stop(): %d\n", ret);
-    return;
-  }
 
   event = NULL;
   previous = global_state->events;
@@ -483,5 +595,8 @@ void papi_halide_shutdown() {
 
   free(global_config);
   free(global_state);
+
+  pthread_mutex_destroy(&lock);
+
   PAPI_shutdown();
 }

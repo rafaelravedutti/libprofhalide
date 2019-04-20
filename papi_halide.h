@@ -17,9 +17,11 @@
 
 #define MAX_PAPI_EVENTS         128
 #define MAX_PAPI_DESCRIPTORS    128
+#define MAX_PAPI_THREADS        32
 
 //extern "C" {
 
+/* Initialization and markers */
 extern int papi_halide_initialize();
 extern int papi_halide_marker_start(int func);
 extern int papi_halide_marker_stop(int func, long long int *values);
@@ -27,6 +29,11 @@ extern int papi_halide_marker_start_child(int func);
 extern int papi_halide_marker_stop_child(int func, long long int *values);
 extern int papi_halide_number_of_events();
 extern void papi_halide_shutdown();
+
+/* Thread functions */
+extern int papi_halide_start_thread();
+extern int papi_halide_stop_thread();
+extern int papi_halide_get_thread_index();
 
 //}
 
