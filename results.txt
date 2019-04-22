@@ -103,3 +103,44 @@ Experimental Results:
       blur_y:                1482.645ms(99%)   threads: 0.999    
                              counters: 100461321, 634223288
       blur_x:                0.000ms   (0%)    threads: 0.000 
+
+  Optimized schedule - Tile 256x32 with vectorization (width = 8) and parallelism:
+    blur_y
+     total time: 473.437653 ms  samples: 441  runs: 1  time/run: 473.437653 ms
+     average threads used: 14.129251
+      overhead:              1.089ms   (0%)    threads: 8.500    
+      blur_y:                250.245ms (52%)   threads: 13.744   
+                             counters: 3640792, 20217640
+                             counters: 3658586, 20211410
+                             counters: 3655600, 20225886
+                             counters: 3732652, 20639757
+                             counters: 3666831, 20210765
+                             counters: 3647238, 20203155
+                             counters: 3652708, 20227647
+                             counters: 3645946, 20215937
+                             counters: 3652700, 20215018
+                             counters: 3646985, 20224782
+                             counters: 3624103, 20201252
+                             counters: 3753118, 20615393
+                             counters: 3594858, 19807069
+                             counters: 3636017, 20222471
+                             counters: 3596855, 19812231
+                             counters: 3665623, 20227348
+      blur_x:                222.102ms (46%)   threads: 14.610   
+                             counters: 3716732, 21964099
+                             counters: 3717448, 21944345
+                             counters: 3719488, 21985423
+                             counters: 3796782, 22430939
+                             counters: 3721372, 21969603
+                             counters: 3719458, 21972821
+                             counters: 3720754, 21952073
+                             counters: 3719955, 21992622
+                             counters: 3723714, 21948712
+                             counters: 3722523, 21953572
+                             counters: 3721560, 21964296
+                             counters: 3802824, 22403308
+                             counters: 3647003, 21498913
+                             counters: 3724409, 21990815
+                             counters: 3645986, 21475703
+                             counters: 3725352, 21956299
+
