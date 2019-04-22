@@ -8,9 +8,18 @@ using namespace Halide;
 using namespace Halide::Tools;
 
 int main(int argc, const char **argv) {
-  Halide::Runtime::Buffer<uint8_t> input = Tools::load_image("input.png");
-  Halide::Runtime::Buffer<uint8_t> output(input.width() - 2, input.height() - 2, input.channels());
+  //Halide::Runtime::Buffer<float> input = Tools::load_and_convert_image("input.png");
+  Halide::Runtime::Buffer<float> input(16384, 8192, 3);
+  Halide::Runtime::Buffer<float> output(input.width() - 2, input.height() - 2, input.channels());
   int error;
+
+  for(int x = 0; x < input.width(); ++x) {
+    for(int y = 0; y < input.height(); ++y) {
+      for(int c = 0; c < input.channels(); ++c) {
+        input(x, y, c) = rand();
+      }
+    }
+  }
 
   output.set_min(1, 1);
 

@@ -2,33 +2,36 @@
 #include "Halide.h"
 #include "halide_image_io.h"
 /* ... */
-#include <stdio.h>
+#include <iostream>
 
 using namespace Halide;
 using namespace Halide::Tools;
 
+using std::vector;
+
 int main(int argc, const char **argv) {
-  Buffer<uint8_t> input = Tools::load_image("input.png");
-  Buffer<uint8_t> output(input.width() - 2, input.height() - 2, input.channels());
-  Halide::Func blur_x, blur_y;
+  Buffer<float> input(16384, 8192, 3);
+  //Buffer<float> input = Tools::load_and_convert_image("input.png");
+  Buffer<float> output(input.width() - 2, input.height() - 2, input.channels());
+  Func blur_x, blur_y;
   Var x, y, c, xi, yi;
 
-  blur_x(x, y, c) = (input(x - 1, y, c) + input(x, y, c) + input(x + 1, y, c)) / 3;
-  blur_y(x, y, c) = (blur_x(x, y - 1, c) + blur_x(x, y, c) + blur_x(x, y + 1, c)) / 3;
+  blur_x(x, y, c) = (input(x - 1, y, c) + input(x, y, c) + input(x + 1, y, c)) / 3.0f;
+  blur_y(x, y, c) = (blur_x(x, y - 1, c) + blur_x(x, y, c) + blur_x(x, y + 1, c)) / 3.0f;
 
-  //blur_y.tile(x, y, xi, yi, 32, 16);
+  //blur_y.tile(x, y, xi, yi, 32, 32);
   //blur_x.compute_at(blur_y, y);
 
   //blur_y.tile(x, y, xi, yi, 256, 32).vectorize(xi, 8).parallel(y);
   //blur_y.tile(x, y, xi, yi, 256, 32).vectorize(xi, 8);
   //blur_x.compute_at(blur_y, x).vectorize(x, 8);
 
-  blur_x.compute_root();
-
-  output.set_min(1, 1);
+  //blur_x.compute_root();
 
   blur_x.profile();
   blur_y.profile();
+
+  output.set_min(1, 1);
 
 #ifdef COMPILE_AOT
 
