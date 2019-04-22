@@ -1,130 +1,105 @@
-Machine configuration:
+Machine Configuration:
 
-  AMD Ryzen 5 1600 Six-Core Processor
+  Intel(R) Xeon(R) CPU E5620 @ 2.40GHz
 
-  L1 Data Write back Pseudo LRU policy Cache:
+  L1 Data Write through Unknown policy Cache:
     Total size: 32KB
     Line size: 64B
     Number of Lines: 512
     Associativity: 8
 
   L1 Instruction Write through Unknown policy Cache:
-    Total size: 64KB
+    Total size: 32KB
     Line size: 64B
-    Number of Lines: 1024
+    Number of Lines: 512
     Associativity: 4
 
-  L2 Unified Write through Pseudo LRU policy Cache:
-    Total size: 512KB
+  L2 Unified Write through Unknown policy Cache:
+    Total size: 256KB
     Line size: 64B
-    Number of Lines: 8192
+    Number of Lines: 4096
     Associativity: 8
 
-  L3 Unified Write through Pseudo LRU policy Cache:
-    Total size: 16384KB
+  L3 Unified Write through Unknown policy Cache:
+    Total size: 12288KB
     Line size: 64B
-    Number of Lines: 262144
+    Number of Lines: 196608
     Associativity: 16
 
 Experimental Results:
 
-  Blur with 3x3 filter, input size = 4096x4096:
+  Blur with 3x3 filter, input size = 16384x8192 (3 channels):
 
-    Tile 32x16 with vectorization (vector width = 8)
+  Events:
+    PAPI_L1_DCM: Data L1 cache misses
+    PAPI_FP_OPS: Number of floating-point instructions (FLOPS)
 
-      events = PAPI_TOT_CYC, PAPI_TOT_INS, PAPI_L1_DCA
-        blur_y: 1183, 987, 444
-        blur_x: 61157258, 123079151, 42796962
+  Breadth-first schedule:
+    blur_y
+     total time: 2032.947876 ms  samples: 1811  runs: 1  time/run: 2032.947876 ms
+      overhead:              0.001ms   (0%)    
+      blur_x:                914.526ms (44%)   
+                             counters: 25920667, 314856609
+      blur_y:                1118.420ms(55%)   
+                             counters: 80010973, 307080530
+
+  Full-fusion schedule:
+    blur_y
+     total time: 1257.572998 ms  samples: 1151  runs: 1  time/run: 1257.572998 ms
+      overhead:              0.001ms   (0%)    
+      blur_y:                1257.572ms(99%)   
+                             counters: 76698304, 921646515
+
+  Tile 16x16 schedule:
+    blur_y
+     total time: 1506.946045 ms  samples: 1375  runs: 1  time/run: 1506.946045 ms
+      overhead:              0.001ms   (0%)    
+      blur_y:                1506.945ms(99%)   
+                             counters: 155056694, 669321647
+      blur_x:                0.000ms   (0%)    
 
 
-    Tile 256x32 with vectorization (vector width = 8)
-
-      events = PAPI_TOT_CYC, PAPI_TOT_INS, PAPI_L1_DCA
-        blur_y: 6101, 13293, 4533
-        blur_x: 63796182, 87425524, 31163608
-
-    Breadth-first:
-
-      events = PAPI_TOT_CYC, PAPI_TOT_INS, PAPI_L1_DCA
-        blur_x: 27710406, 42211142, 19292363
-        blur_y: 30682134, 42201210, 20587804
-
-    Full-fusion:
-
-      events = PAPI_TOT_CYC, PAPI_TOT_INS, PAPI_L1_DCA
-        blur_y: 61278842, 96366444, 46740149
+  Tile 32x16 schedule:
+    blur_y
+     total time: 1372.203979 ms  samples: 1223  runs: 1  time/run: 1372.203979 ms
+      overhead:              0.001ms   (0%)    
+      blur_y:                1372.202ms(99%)   
+                             counters: 135568849, 667624546
+      blur_x:                0.000ms   (0%)  
 
 
-  Multi-scale interpolation, input size = 2127x1464:
+  Tile 256x32 schedule:
+    blur_y
+     total time: 1295.070190 ms  samples: 1151  runs: 1  time/run: 1295.070190 ms
+      overhead:              0.001ms   (0%)    
+      blur_y:                1295.069ms(99%)   
+                             counters: 108478102, 648079276
+      blur_x:                0.000ms   (0%)    
 
-    Flat schedule:
 
-        downsampled[0]: 19924663, 12963698, 15440157
-        downsampled[1]: 23725148, 22078927, 14526759
-        downsampled[2]: 6398040, 5683779, 4215756
-        downsampled[3]: 1620749, 1427689, 1052725
-        downsampled[4]: 1701075, 6697569, 1433292
-        downsampled[5]: 208624, 280766, 199591
-        downsampled[6]: 51466, 77025, 52773
-        downsampled[7]: 12961, 20172, 13207
-        downsampled[8]: 3713, 6834, 4123
-        downsampled[9]: 1770, 2372, 1352
-        interpolated[9]: 3473, 746, 413
-        interpolated[8]: 2412, 7822, 2489
-        interpolated[7]: 6409, 24087, 7297
-        interpolated[6]: 20692, 83514, 24769
-        interpolated[5]: 79427, 311716, 92572
-        interpolated[4]: 299549, 1206447, 356420
-        interpolated[3]: 1152130, 4734516, 1396866
-        interpolated[2]: 4600350, 18816492, 5550435
-        interpolated[1]: 19526622, 78079647, 22099718
-        interpolated[0]: 77297243, 324089414, 88189967
+  Tile 128x128 schedule:
+    blur_y
+     total time: 1673.086670 ms  samples: 1498  runs: 1  time/run: 1673.086670 ms
+      overhead:              0.000ms   (0%)    
+      blur_y:                1673.085ms(99%)   
+                             counters: 114576939, 644046044
+      blur_x:                0.000ms   (0%)    
 
-    Flat schedule with vectorization sometimes:
 
-      events = PAPI_TOT_CYC, PAPI_TOT_INS, PAPI_L1_DCA
-        downsampled[0]: 19449274, 27496174, 14470516
-        downsampled[1]: 18476326, 24647731, 14719056
-        downsampled[2]: 5010135, 6179752, 4226120
-        downsampled[3]: 1170332, 1552849, 1057291
-        downsampled[4]: 1688767, 5891175, 2473012
-        downsampled[5]: 117260, 284593, 191994
-        downsampled[6]: 52275, 77508, 53068
-        downsampled[7]: 13129, 20322, 13215
-        downsampled[8]: 3615, 6801, 4095
-        downsampled[9]: 1825, 2388, 1416
-        interpolated[9]: 3252, 750, 398
-        interpolated[8]: 2519, 7823, 2503
-        interpolated[7]: 6307, 24188, 7290
-        interpolated[6]: 20635, 83322, 24561
-        interpolated[5]: 38850, 133578, 46404
-        interpolated[4]: 142718, 509772, 150962
-        interpolated[3]: 519899, 1857577, 561221
-        interpolated[2]: 2256666, 7734648, 2626376
-        interpolated[1]: 10095106, 26658302, 9359788
-        interpolated[0]: 35917063, 59661848, 34433495
+  Tile 256x256 schedule:
+    blur_y
+     total time: 1606.745239 ms  samples: 1440  runs: 1  time/run: 1606.745239 ms
+      overhead:              0.001ms   (0%)    
+      blur_y:                1606.744ms(99%)   
+                             counters: 106666226, 637681947
+      blur_x:                0.000ms   (0%)    
 
-    Flat schedule with vectorization:
 
-      events = PAPI_TOT_CYC, PAPI_TOT_INS, PAPI_L1_DCA
-        downsampled[0]: 19440412, 27496171, 14481546
-        downsampled[1]: 17459128, 24647730, 14707071
-        downsampled[2]: 4875560, 6179759, 4225036
-        downsampled[3]: 1163384, 1553586, 1057083
-        downsampled[4]: 1697615, 5891173, 2473099
-        downsampled[5]: 120791, 284913, 192333
-        downsampled[6]: 31050, 73165, 48698
-        downsampled[7]: 8353, 19378, 12518
-        downsampled[8]: 2644, 6084, 3764
-        downsampled[9]: 1159, 1953, 1287
-        interpolated[9]: 1070, 988, 568
-        interpolated[8]: 2216, 4801, 2364
-        interpolated[7]: 4212, 12424, 5665
-        interpolated[6]: 11351, 35123, 13413
-        interpolated[5]: 37463, 127188, 40057
-        interpolated[4]: 140435, 473318, 163804
-        interpolated[3]: 524661, 1858318, 561477
-        interpolated[2]: 2265838, 7543810, 2834067
-        interpolated[1]: 9846938, 26643639, 9345916
-        interpolated[0]: 36044875, 59661848, 34450763
-
+  Tile 512x256 schedule:
+    blur_y
+     total time: 1482.646484 ms  samples: 1325  runs: 1  time/run: 1482.646484 ms
+     average threads used: 0.999245
+      overhead:              0.001ms   (0%)    threads: 1.000    
+      blur_y:                1482.645ms(99%)   threads: 0.999    
+                             counters: 100461321, 634223288
+      blur_x:                0.000ms   (0%)    threads: 0.000 
