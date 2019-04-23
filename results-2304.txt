@@ -1,0 +1,45 @@
+rrlmachado@orval:~/nobackup/repositories/libpapihalide/tests/blur$ echo "Tile 32x32" && ./blur_aot 
+Tile 32x32
+blur_y
+ total time: 339.000793 ms  samples: 305  runs: 1  time/run: 339.000793 ms
+  overhead:              0.001ms   (0%)    
+  blur_y:                252.082ms (74%)   
+                         counters: 14310169, 80387355
+  blur_x:                86.916ms  (25%)   
+                         counters: 13638059, 83754424
+rrlmachado@orval:~/nobackup/repositories/libpapihalide/tests/blur$ echo "Tile 64x64" && ./blur_aot 
+Tile 64x64
+blur_y
+ total time: 345.625397 ms  samples: 316  runs: 1  time/run: 345.625397 ms
+ average threads used: 0.996835
+  overhead:              0.001ms   (0%)    threads: 1.000    
+  blur_y:                260.009ms (75%)   threads: 0.995    
+                         counters: 17462593, 79728036
+  blur_x:                85.614ms  (24%)   threads: 1.000    
+                         counters: 13165212, 81421966
+rrlmachado@orval:~/nobackup/repositories/libpapihalide/tests/blur$ echo "Tile 128x128" && ./blur_aot 
+Tile 128x128
+blur_y
+ total time: 371.441315 ms  samples: 332  runs: 1  time/run: 371.441315 ms
+  overhead:              0.001ms   (0%)    
+  blur_y:                277.216ms (74%)   
+                         counters: 15592261, 81171725
+  blur_x:                94.223ms  (25%)   
+                         counters: 12899659, 80388685
+rrlmachado@orval:~/nobackup/repositories/libpapihalide/tests/blur$ echo "Full-fusion" && ./blur_aot 
+Full-fusion
+blur_y
+ total time: 323.735657 ms  samples: 294  runs: 1  time/run: 323.735657 ms
+  overhead:              0.001ms   (0%)    
+  blur_y:                323.734ms (99%)   
+                         counters: 19410230, 234079279
+rrlmachado@orval:~/nobackup/repositories/libpapihalide/tests/blur$ echo "Breadth-first" && ./blur_aot 
+Breadth-first
+blur_y
+ total time: 506.487701 ms  samples: 462  runs: 1  time/run: 506.487701 ms
+  overhead:              0.001ms   (0%)    
+  blur_x:                237.261ms (46%)   
+                         counters: 6533569, 80138603
+  blur_y:                269.225ms (53%)   
+                         counters: 19641756, 77981700
+
