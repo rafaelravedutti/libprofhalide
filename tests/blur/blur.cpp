@@ -28,8 +28,7 @@ int main(int argc, const char **argv) {
 
   //blur_x.compute_root();
 
-  blur_x.profile();
-  blur_y.profile();
+  blur_y.profile(PROFILE_PRODUCER);
 
   output.set_min(1, 1);
 
