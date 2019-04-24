@@ -265,6 +265,25 @@ WEAK void halide_papi_report_unlocked(void *user_context, halide_papi_state *s) 
             }
           }
         }
+
+        for(int th = 0; th < MAX_PAPI_THREADS; ++th) {
+          if(fs->overhead_counter_used[th] == 1) {
+            sstr.clear();
+
+            while (sstr.size() < 25) sstr << " ";
+
+            sstr << "overhead counters: ";
+
+            for(int e = 0; e < papi_halide_number_of_events(); ++e) {
+              sstr << fs->overhead_counters[th][e] << ", ";
+            }
+
+            sstr.erase(2);
+            sstr << "\n";
+
+            halide_print(user_context, sstr.str());
+          }
+        }
       }
     }
   }
@@ -335,15 +354,31 @@ WEAK __attribute__((always_inline)) int halide_papi_set_current_func(halide_papi
 }
 
 WEAK __attribute__((always_inline)) int halide_papi_enter_current_func(halide_papi_state *state, int tok, int t, bool is_producer) {
-  papi_halide_marker_start(t);
+  papi_halide_marker_start();
   return 0;
 }
 
 WEAK __attribute__((always_inline)) int halide_papi_leave_current_func(halide_papi_state *state, int tok, int t, bool is_producer) {
+  halide_papi_func_stats *fs = current_pipeline_stats->funcs + t;
   int thread_idx = papi_halide_get_thread_index();
   int level = is_producer ? 0 : 1;
-  papi_halide_marker_stop(t, current_pipeline_stats->funcs[t].event_counters[level][thread_idx]);
-  current_pipeline_stats->funcs[t].counter_used[level][thread_idx] = 1;
+
+  papi_halide_marker_stop(fs->event_counters[level][thread_idx], fs->counter_used[level][thread_idx]);
+  fs->counter_used[level][thread_idx] = 1;
+  return 0;
+}
+
+WEAK __attribute__((always_inline)) int halide_papi_enter_overhead_region(halide_papi_state *state, int tok, int t) {
+  papi_halide_marker_start();
+  return 0;
+}
+
+WEAK __attribute__((always_inline)) int halide_papi_leave_overhead_region(halide_papi_state *state, int tok, int t) {
+  halide_papi_func_stats *fs = current_pipeline_stats->funcs + t;
+  int thread_idx = papi_halide_get_thread_index();
+
+  papi_halide_marker_stop(fs->overhead_counters[thread_idx], fs->overhead_counter_used[thread_idx]);
+  fs->overhead_counter_used[thread_idx] = 1;
   return 0;
 }
 

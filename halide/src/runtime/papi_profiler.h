@@ -23,10 +23,8 @@ extern "C" {
 
 /* Initialization and markers */
 extern int papi_halide_initialize();
-extern int papi_halide_marker_start(int func);
-extern int papi_halide_marker_stop(int func, long long int *values);
-extern int papi_halide_marker_start_child(int func);
-extern int papi_halide_marker_stop_child(int func, long long int *values);
+extern int papi_halide_marker_start();
+extern int papi_halide_marker_stop(long long int *values, int accum);
 extern int papi_halide_number_of_events();
 extern void papi_halide_shutdown();
 

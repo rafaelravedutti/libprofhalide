@@ -16,9 +16,6 @@
 static struct papi_api_config *global_config = NULL;
 static struct papi_api_state *global_state = NULL;
 
-static pid_t pid = -1;
-static pid_t child = -1;
-
 pthread_mutex_t lock;
 
 struct threadInfo {
@@ -377,10 +374,6 @@ int papi_halide_initialize() {
   global_config = get_papi_api_config();
   global_state->num_events = build_events(&(global_state->events), global_state->event_array, global_config);
 
-  for(int i = 0; i < MAX_PAPI_DESCRIPTORS; ++i) {
-    global_state->papi_meas[i] = 0;
-  }
-
   if((ret = PAPI_library_init(PAPI_VER_CURRENT)) != PAPI_VER_CURRENT) {
     fprintf(stderr, "PAPI_library_init(): %d", ret);
     return -1;
@@ -469,7 +462,7 @@ int papi_halide_leave_parallel_region() {
   return 0;
 }
 
-int papi_halide_marker_start(int func) {
+int papi_halide_marker_start() {
   int ret;
   int thread_idx = papi_halide_get_thread_index();
 
@@ -478,15 +471,14 @@ int papi_halide_marker_start(int func) {
     return -1;
   }
 
-  global_state->papi_meas[func]++;
   return 0;
 }
 
-int papi_halide_marker_stop(int func, long long int *values) {
+int papi_halide_marker_stop(long long int *values, int accum) {
   int ret;
   int thread_idx = papi_halide_get_thread_index();
 
-  if(global_state->papi_meas[func] <= 1) {
+  if(!accum) {
     if((ret = PAPI_read(threadsInfo[thread_idx].event_set, values)) != PAPI_OK) {
       fprintf(stderr, "PAPI_read(): %d\n", ret);
       return -1;
@@ -494,96 +486,6 @@ int papi_halide_marker_stop(int func, long long int *values) {
   } else {
     if((ret = PAPI_accum(threadsInfo[thread_idx].event_set, values)) != PAPI_OK) {
       fprintf(stderr, "PAPI_accum(): %d\n", ret);
-      return -1;
-    }
-  }
-
-  return 0;
-}
-
-int papi_halide_marker_start_child(int func) {
-  int ret, status, sig;
-
-  pid = fork();
-
-  if(pid < 0) {
-    fprintf(stderr, "fork(): Failed to create a child process!\n");
-    return -1;
-  }
-
-  /* This is the process that will execute the profiler */
-  if(pid != 0) {
-    if((ret = PAPI_assign_eventset_component(global_state->event_set, 0)) != PAPI_OK) {
-      fprintf(stderr, "PAPI_assign_eventset_component(): %d\n", ret);
-    }
-
-    if((ret = PAPI_attach(global_state->event_set, (unsigned long) pid)) != PAPI_OK) {
-      fprintf(stderr, "PAPI_attach(): %d\n", ret);
-    }
-
-    if((ret = PAPI_start(global_state->event_set)) != PAPI_OK) {
-      fprintf(stderr, "PAPI_start(): %d\n", ret);
-    }
-
-    child = wait(&status);
-
-    #ifdef PAPI_API_DEBUG
-
-    if(WIFSTOPPED(status)) {
-      sig = WSTOPSIG(status);
-      fprintf(stderr, "Child has stopped due to signal %d (%s)\n", sig, strsignal(sig));
-    }
-
-    if(WIFSIGNALED(status)) {
-      sig = WTERMSIG(status);
-      fprintf(stderr, "Child %ld received signal %d (%s)\n", (long) child, sig, strsignal(sig));
-    }
-
-    #else
-
-    (void)sig;
-
-    #endif
-
-    if((ret = ptrace(PTRACE_CONT, pid, NULL, NULL)) < 0) {
-      fprintf(stderr, "ptrace(): Failed to continue child process (%d)\n", ret);
-    }
-
-    do {
-      child = wait(&status);
-
-      #ifdef PAPI_API_DEBUG
-
-      if(WIFSTOPPED(status)) {
-        sig = WSTOPSIG(status);
-        fprintf(stderr, "Child has stopped due to signal %d (%s)\n", sig, strsignal(sig));
-      }
-
-      if(WIFSIGNALED(status)) {
-        sig = WTERMSIG(status);
-        fprintf(stderr, "Child %ld received signal %d (%s)\n", (long) child, sig, strsignal(sig));
-      }
-
-      #endif
-
-    } while(!WIFEXITED(status));
-
-  /* This is the process that will execute the Halide program */
-  } else {
-    if(ptrace(PTRACE_TRACEME) == 0) {
-      raise(SIGSTOP);
-    }
-  }
-
-  return pid;
-}
-
-int papi_halide_marker_stop_child(int func, long long int *values) {
-  int ret;
-
-  if(pid != 0) {
-    if((ret = PAPI_read(global_state->event_set, values)) != PAPI_OK) {
-      fprintf(stderr, "PAPI_read(): %d\n", ret);
       return -1;
     }
   }

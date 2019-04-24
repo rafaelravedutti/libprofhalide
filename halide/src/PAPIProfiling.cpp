@@ -35,6 +35,7 @@ public:
         stack.push_back(0);
     }
 
+    map<int, uint64_t> func_childrens; // map from func_id -> number of producer-consumer childrens
     map<int, uint64_t> func_stack_current; // map from func id -> current stack allocation
     map<int, uint64_t> func_stack_peak; // map from func id -> peak stack allocation
 
@@ -192,11 +193,11 @@ private:
 
     Stmt visit(const ProducerConsumer *op) override {
         int idx;
-        Stmt body;
+        Stmt body, stmt;
         bool must_profile = false;
 
         auto it = find_if(papi_profiling_functions.begin(), papi_profiling_functions.end(),
-                         [op](std::pair<std::string, int> const &elem) {
+                          [op](std::pair<std::string, int> const &elem) {
           bool level_cond =
             elem.second == PROFILE_BOTH ||
             (elem.second == PROFILE_PRODUCER && op->is_producer) ||
@@ -207,8 +208,14 @@ private:
 
         must_profile = it != papi_profiling_functions.end();
 
+        if(!stack.empty()) {
+            func_childrens[stack.back()]++;
+        }
+
         if (op->is_producer) {
             idx = get_func_id(op->name);
+            func_childrens[idx] = 0;
+
             profile_stack.push_back(must_profile);
             stack.push_back(idx);
             body = mutate(op->body);
@@ -227,14 +234,25 @@ private:
         Expr profiler_state = Variable::make(Handle(), "profiler_state");
 
         if(must_profile) {
-          Expr enter_task = Call::make(Int(32), "halide_papi_enter_current_func",
-                                       {profiler_state, profiler_token, get_func_id(op->name), make_bool(op->is_producer)}, Call::Extern);
+            Expr enter_task, leave_task;
 
-          Expr leave_task = Call::make(Int(32), "halide_papi_leave_current_func",
-                                       {profiler_state, profiler_token, get_func_id(op->name), make_bool(op->is_producer)}, Call::Extern);
+            if(op->is_producer && func_childrens[idx] > 0) {
+                enter_task = Call::make(Int(32), "halide_papi_enter_overhead_region",
+                                        {profiler_state, profiler_token, get_func_id(op->name)}, Call::Extern);
 
-          body = Block::make(Evaluate::make(enter_task), body);
-          body = Block::make(body, Evaluate::make(leave_task));
+                leave_task = Call::make(Int(32), "halide_papi_leave_overhead_region",
+                                        {profiler_state, profiler_token, get_func_id(op->name)}, Call::Extern);
+            } else {
+                enter_task = Call::make(Int(32), "halide_papi_enter_current_func",
+                                        {profiler_state, profiler_token, get_func_id(op->name),
+                                         make_bool(op->is_producer)}, Call::Extern);
+
+                leave_task = Call::make(Int(32), "halide_papi_leave_current_func",
+                                        {profiler_state, profiler_token, get_func_id(op->name),
+                                         make_bool(op->is_producer)}, Call::Extern);
+            }
+
+            body = Block::make({Evaluate::make(enter_task), body, Evaluate::make(leave_task)});
         }
 
         // This call gets inlined and becomes a single store instruction.
@@ -243,7 +261,21 @@ private:
 
         body = Block::make(Evaluate::make(set_task), body);
 
-        return ProducerConsumer::make(op->name, op->is_producer, body, op->must_profile);
+        stmt = ProducerConsumer::make(op->name, op->is_producer, body, op->must_profile);
+
+        if(!profile_stack.empty()) {
+            int parent = profile_stack.back();
+
+            Expr enter_overhead = Call::make(Int(32), "halide_papi_enter_overhead_region",
+                                         {profiler_state, profiler_token, parent}, Call::Extern);
+
+            Expr leave_overhead = Call::make(Int(32), "halide_papi_leave_overhead_region",
+                                         {profiler_state, profiler_token, parent}, Call::Extern);
+
+            stmt = Block::make({Evaluate::make(leave_overhead), stmt, Evaluate::make(enter_overhead)});
+        }
+
+        return stmt;
     }
 
     Stmt visit(const For *op) override {

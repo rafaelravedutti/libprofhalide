@@ -19,7 +19,6 @@ struct papi_api_event {
 };
 
 struct papi_api_state {
-  int papi_meas[MAX_PAPI_DESCRIPTORS];
   int event_array[MAX_PAPI_EVENTS];
   int event_set;
   int num_events;
