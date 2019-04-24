@@ -1,12 +1,12 @@
 diff --git a/src/Function.h b/src/Function.h
-index a2337c217..3a909a013 100644
+index a2337c217..177f028f2 100644
 --- a/src/Function.h
 +++ b/src/Function.h
 @@ -278,10 +278,12 @@ public:
      void trace_loads();
      void trace_stores();
      void trace_realizations();
-+    void profile();
++    void profile(int level);
      void add_trace_tag(const std::string &trace_tag);
      bool is_tracing_loads() const;
      bool is_tracing_stores() const;

@@ -30,7 +30,7 @@ typedef map<FunctionPtr, FunctionPtr> DeepCopyMap;
 
 struct FunctionContents;
 
-extern std::vector<std::string> papi_profiling_functions;
+extern std::vector<std::pair<std::string, int>> papi_profiling_functions;
 
 namespace {
 // Weaken all the references to a particular Function to break
@@ -893,9 +893,9 @@ void Function::trace_stores() {
 void Function::trace_realizations() {
     contents->trace_realizations = true;
 }
-void Function::profile() {
+void Function::profile(int level) {
     contents->profile = true;
-    papi_profiling_functions.push_back(contents->name);
+    papi_profiling_functions.push_back(std::make_pair(contents->name, level));
 }
 void Function::add_trace_tag(const std::string &trace_tag) {
     contents->trace_tags.push_back(trace_tag);

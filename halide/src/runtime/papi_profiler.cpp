@@ -115,8 +115,10 @@ WEAK int halide_papi_pipeline_start(void *user_context, const char *pipeline_nam
           p->funcs[i].active_threads_numerator = 0;
           p->funcs[i].active_threads_denominator = 0;
 
-          for(int t = 0; t < MAX_PAPI_THREADS; ++t) {
-            p->funcs[i].counter_used[t] = 0;
+          for(int l = 0; l < 2; ++l) {
+            for(int t = 0; t < MAX_PAPI_THREADS; ++t) {
+              p->funcs[i].counter_used[l][t] = 0;
+            }
           }
         }
       } else {
@@ -237,22 +239,30 @@ WEAK void halide_papi_report_unlocked(void *user_context, halide_papi_state *s) 
         sstr << "\n";
         halide_print(user_context, sstr.str());
 
-        for(int th = 0; th < MAX_PAPI_THREADS; ++th) {
-          if(fs->counter_used[th] == 1) {
-            sstr.clear();
+        for(int lvl = 0; lvl < 2; ++lvl) {
+          for(int th = 0; th < MAX_PAPI_THREADS; ++th) {
+            if(fs->counter_used[lvl][th] == 1) {
+              sstr.clear();
 
-            while (sstr.size() < 25) sstr << " ";
+              while (sstr.size() < 25) sstr << " ";
 
-            sstr << "counters: ";
+              if(lvl == 0) {
+                sstr << "production ";
+              } else {
+                sstr << "consumption ";
+              }
 
-            for(int e = 0; e < papi_halide_number_of_events(); ++e) {
-              sstr << fs->event_counters[th][e] << ", ";
+              sstr << "counters: ";
+
+              for(int e = 0; e < papi_halide_number_of_events(); ++e) {
+                sstr << fs->event_counters[lvl][th][e] << ", ";
+              }
+
+              sstr.erase(2);
+              sstr << "\n";
+
+              halide_print(user_context, sstr.str());
             }
-
-            sstr.erase(2);
-            sstr << "\n";
-
-            halide_print(user_context, sstr.str());
           }
         }
       }
@@ -321,15 +331,19 @@ WEAK __attribute__((always_inline)) int halide_papi_set_current_func(halide_papi
   asm volatile ("":::);
   *ptr = tok + t;
   asm volatile ("":::);
+  return 0;
+}
 
+WEAK __attribute__((always_inline)) int halide_papi_enter_current_func(halide_papi_state *state, int tok, int t, bool is_producer) {
   papi_halide_marker_start(t);
   return 0;
 }
 
-WEAK __attribute__((always_inline)) int halide_papi_leave_current_func(halide_papi_state *state, int tok, int t) {
+WEAK __attribute__((always_inline)) int halide_papi_leave_current_func(halide_papi_state *state, int tok, int t, bool is_producer) {
   int thread_idx = papi_halide_get_thread_index();
-  papi_halide_marker_stop(t, current_pipeline_stats->funcs[t].event_counters[thread_idx]);
-  current_pipeline_stats->funcs[t].counter_used[thread_idx] = 1;
+  int level = is_producer ? 0 : 1;
+  papi_halide_marker_stop(t, current_pipeline_stats->funcs[t].event_counters[level][thread_idx]);
+  current_pipeline_stats->funcs[t].counter_used[level][thread_idx] = 1;
   return 0;
 }
 

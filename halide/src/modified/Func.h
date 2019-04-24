@@ -2293,7 +2293,7 @@ public:
     Func &trace_realizations();
 
     /** Profile this function. */
-    Func &profile();
+    Func &profile(int level);
 
     /** Add a string of arbitrary text that will be passed thru to trace
      * inspection code if the Func is realized in trace mode. (Funcs that are

@@ -23,4 +23,14 @@ WEAK __attribute__((always_inline)) int halide_papi_decr_active_threads(halide_p
     return ret;
 }
 
+WEAK __attribute__((always_inline)) int halide_papi_enter_parallel_region(halide_papi_state *state) {
+    papi_halide_enter_parallel_region();
+    return 0;
+}
+
+WEAK __attribute__((always_inline)) int halide_papi_leave_parallel_region(halide_papi_state *state) {
+    papi_halide_leave_parallel_region();
+    return 0;
+}
+
 }

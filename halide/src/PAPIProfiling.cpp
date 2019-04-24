@@ -15,7 +15,7 @@
 namespace Halide {
 namespace Internal {
 
-std::vector<std::string> papi_profiling_functions;
+std::vector<std::pair<std::string, int>> papi_profiling_functions;
 
 using std::map;
 using std::string;
@@ -26,6 +26,7 @@ public:
     map<string, int> indices;   // maps from func name -> index in buffer.
 
     vector<int> stack; // What produce nodes are we currently inside of.
+    vector<bool> profile_stack; // Produce node we are inside of must be profiled?
 
     string pipeline_name;
 
@@ -192,11 +193,27 @@ private:
     Stmt visit(const ProducerConsumer *op) override {
         int idx;
         Stmt body;
+        bool must_profile = false;
+
+        auto it = find_if(papi_profiling_functions.begin(), papi_profiling_functions.end(),
+                         [op](std::pair<std::string, int> const &elem) {
+          bool level_cond =
+            elem.second == PROFILE_BOTH ||
+            (elem.second == PROFILE_PRODUCER && op->is_producer) ||
+            (elem.second == PROFILE_CONSUMER && !op->is_producer);
+
+          return elem.first == op->name && level_cond;
+        });
+
+        must_profile = it != papi_profiling_functions.end();
+
         if (op->is_producer) {
             idx = get_func_id(op->name);
+            profile_stack.push_back(must_profile);
             stack.push_back(idx);
             body = mutate(op->body);
             stack.pop_back();
+            profile_stack.pop_back();
         } else {
             body = mutate(op->body);
             // At the beginning of the consume step, set the current task
@@ -204,22 +221,27 @@ private:
             idx = stack.back();
         }
 
-        auto it = find(papi_profiling_functions.begin(), papi_profiling_functions.end(), op->name);
+        must_profile = must_profile || profile_stack.back();
 
-        if(op->is_producer && it != papi_profiling_functions.end()) {
-          Expr profiler_token = Variable::make(Int(32), "profiler_token");
-          Expr profiler_state = Variable::make(Handle(), "profiler_state");
+        Expr profiler_token = Variable::make(Int(32), "profiler_token");
+        Expr profiler_state = Variable::make(Handle(), "profiler_state");
 
-          // This call gets inlined and becomes a single store instruction.
-          Expr set_task = Call::make(Int(32), "halide_papi_set_current_func",
-                                     {profiler_state, profiler_token, idx}, Call::Extern);
+        if(must_profile) {
+          Expr enter_task = Call::make(Int(32), "halide_papi_enter_current_func",
+                                       {profiler_state, profiler_token, get_func_id(op->name), make_bool(op->is_producer)}, Call::Extern);
 
           Expr leave_task = Call::make(Int(32), "halide_papi_leave_current_func",
-                                     {profiler_state, profiler_token, idx}, Call::Extern);
+                                       {profiler_state, profiler_token, get_func_id(op->name), make_bool(op->is_producer)}, Call::Extern);
 
-          body = Block::make(Evaluate::make(set_task), body);
+          body = Block::make(Evaluate::make(enter_task), body);
           body = Block::make(body, Evaluate::make(leave_task));
         }
+
+        // This call gets inlined and becomes a single store instruction.
+        Expr set_task = Call::make(Int(32), "halide_papi_set_current_func",
+                                   {profiler_state, profiler_token, idx}, Call::Extern);
+
+        body = Block::make(Evaluate::make(set_task), body);
 
         return ProducerConsumer::make(op->name, op->is_producer, body, op->must_profile);
     }
@@ -235,6 +257,13 @@ private:
                                       op->is_parallel());
 
         Expr state = Variable::make(Handle(), "profiler_state");
+
+        Stmt enter_parallel_region =
+            Evaluate::make(Call::make(Int(32), "halide_papi_enter_parallel_region",
+                                      {state}, Call::Extern));
+        Stmt leave_parallel_region =
+            Evaluate::make(Call::make(Int(32), "halide_papi_leave_parallel_region",
+                                      {state}, Call::Extern));
 
         Stmt incr_active_threads =
             Evaluate::make(Call::make(Int(32), "halide_papi_incr_active_threads",
@@ -275,7 +304,7 @@ private:
         Stmt stmt = For::make(op->name, op->min, op->extent, op->for_type, op->device_api, body);
 
         if (update_active_threads) {
-            stmt = Block::make({decr_active_threads, stmt, incr_active_threads});
+            stmt = Block::make({decr_active_threads, enter_parallel_region, stmt, leave_parallel_region, incr_active_threads});
         }
         return stmt;
     }

@@ -1756,10 +1756,10 @@ struct halide_papi_func_stats {
     uint64_t active_threads_numerator, active_threads_denominator;
 
     /** Event counters */
-    long long int event_counters[32][128];
+    long long int event_counters[2][32][128];
 
     /** Event counter has been used? */
-    int counter_used[32];
+    int counter_used[2][32];
 };
 
 /** Structure for the PAPI profiler pipelines */

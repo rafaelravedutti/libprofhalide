@@ -278,7 +278,7 @@ public:
     void trace_loads();
     void trace_stores();
     void trace_realizations();
-    void profile();
+    void profile(int level);
     void add_trace_tag(const std::string &trace_tag);
     bool is_tracing_loads() const;
     bool is_tracing_stores() const;

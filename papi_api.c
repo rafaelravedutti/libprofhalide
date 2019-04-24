@@ -1,5 +1,6 @@
 #include <papi.h>
 #include <pthread.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,6 +25,7 @@ struct threadInfo {
   int event_set;
   int thread_id;
   int set;
+  int level;
 };
 
 static struct threadInfo threadsInfo[MAX_PAPI_THREADS];
@@ -64,6 +66,7 @@ int find_or_insert_thread() {
 
   threadsInfo[first_available_idx].event_set = PAPI_NULL;
   threadsInfo[first_available_idx].thread_id = thid;
+  threadsInfo[first_available_idx].level = global_state->parallel_level;
   threadsInfo[first_available_idx].set = 1;
 
   pthread_mutex_unlock(&lock);
@@ -71,9 +74,14 @@ int find_or_insert_thread() {
   return first_available_idx;
 }
 
-int remove_thread(int thread_idx) {
-  threadsInfo[thread_idx].set = 0;
-  threadsInfo[thread_idx].event_set = PAPI_NULL;
+int remove_threads() {
+  for(int i = 0; i < MAX_PAPI_THREADS; ++i) {
+    if(threadsInfo[i].set && threadsInfo[i].level > global_state->parallel_level) {
+      threadsInfo[i].set = 0;
+      threadsInfo[i].event_set = PAPI_NULL;
+    }
+  }
+
   return -1;
 }
 
@@ -362,6 +370,7 @@ int papi_halide_initialize() {
     return -1;
   }
 
+  global_state->parallel_level = 0;
   global_state->event_set = -1;
   global_state->events = NULL;
 
@@ -398,7 +407,6 @@ int papi_halide_start_thread() {
     return -1;
   }
 
-  //if((ret = PAPI_create_eventset(&(global_state->event_set))) != PAPI_OK) {
   if((ret = PAPI_create_eventset(&threadsInfo[thread_idx].event_set)) != PAPI_OK) {
     fprintf(stderr, "PAPI_create_eventset(): %d\n", ret);
     return -1;
@@ -447,7 +455,17 @@ int papi_halide_stop_thread() {
     return -1;
   }
 
-  remove_thread(thread_idx);
+  return 0;
+}
+
+int papi_halide_enter_parallel_region() {
+  global_state->parallel_level++;
+  return 0;
+}
+
+int papi_halide_leave_parallel_region() {
+  global_state->parallel_level--;
+  remove_threads();
   return 0;
 }
 

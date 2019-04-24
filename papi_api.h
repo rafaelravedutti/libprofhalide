@@ -23,5 +23,6 @@ struct papi_api_state {
   int event_array[MAX_PAPI_EVENTS];
   int event_set;
   int num_events;
+  int parallel_level;
   struct papi_api_event *events;
 };

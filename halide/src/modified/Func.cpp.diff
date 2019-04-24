@@ -1,14 +1,14 @@
 diff --git a/src/Func.cpp b/src/Func.cpp
-index d582f7818..bf70713ec 100644
+index d582f7818..0da963449 100644
 --- a/src/Func.cpp
 +++ b/src/Func.cpp
 @@ -2470,6 +2470,12 @@ Func &Func::trace_realizations() {
      return *this;
  }
  
-+Func &Func::profile() {
++Func &Func::profile(int level) {
 +    invalidate_cache();
-+    func.profile();
++    func.profile(level);
 +    return *this;
 +}
 +

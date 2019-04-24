@@ -2470,9 +2470,9 @@ Func &Func::trace_realizations() {
     return *this;
 }
 
-Func &Func::profile() {
+Func &Func::profile(int level) {
     invalidate_cache();
-    func.profile();
+    func.profile(level);
     return *this;
 }
 
