@@ -43,3 +43,59 @@ blur_y
   blur_y:                269.225ms (53%)   
                          counters: 19641756, 77981700
 
+rrlmachado@orval:~/nobackup/repositories/libpapihalide/tests/blur$ ./blur_aot
+pipeline blur_y
+ total time: 171.475601 ms  samples: 159  runs: 1  time/run: 171.475601 ms
+ average threads used: 13.088050
+  overhead:              0.001ms   (0%)    threads: 1.000    
+  blur_y:                112.592ms (65%)   threads: 12.456   
+                         overhead counters: 39264, 21
+                         overhead counters: 33560, 9
+                         overhead counters: 33962, 4
+                         overhead counters: 33302, 6
+                         overhead counters: 31707, 0
+                         overhead counters: 32041, 9
+                         overhead counters: 31063, 2
+                         overhead counters: 33180, 0
+                         overhead counters: 31890, 6
+                         overhead counters: 35463, 2
+                         overhead counters: 32933, 1
+                         overhead counters: 33956, 0
+                         overhead counters: 32733, 0
+                         overhead counters: 33626, 13
+                         overhead counters: 33057, 23
+                         overhead counters: 30800, 0
+  blur_x:                58.881ms  (34%)   threads: 14.490   
+                         production counters: 953685, 5751553
+                         production counters: 954388, 5755639
+                         production counters: 956586, 5747895
+                         production counters: 956006, 5772179
+                         production counters: 952875, 5778317
+                         production counters: 908450, 5478142
+                         production counters: 953147, 5799088
+                         production counters: 909217, 5464294
+                         production counters: 955258, 5761762
+                         production counters: 957504, 5752583
+                         production counters: 910596, 5450786
+                         production counters: 956345, 5754014
+                         production counters: 956501, 5762047
+                         production counters: 956736, 5753674
+                         production counters: 910096, 5473204
+                         production counters: 954179, 5796493
+                         consumption counters: 946617, 5262797
+                         consumption counters: 954179, 5261520
+                         consumption counters: 953442, 5256847
+                         consumption counters: 954849, 5266751
+                         consumption counters: 951764, 5259477
+                         consumption counters: 907085, 5000797
+                         consumption counters: 953519, 5260806
+                         consumption counters: 905585, 5004888
+                         consumption counters: 951932, 5261588
+                         consumption counters: 952875, 5261169
+                         consumption counters: 900138, 4999081
+                         consumption counters: 954107, 5265160
+                         consumption counters: 951954, 5261102
+                         consumption counters: 950424, 5260148
+                         consumption counters: 905644, 5001260
+                         consumption counters: 955104, 5269046
+
