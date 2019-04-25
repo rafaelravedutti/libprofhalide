@@ -1766,6 +1766,9 @@ struct halide_papi_func_stats {
 
     /** Overhead event counter has been used? */
     int overhead_counter_used[32];
+
+    /** Function parent */
+    int parent;
 };
 
 /** Structure for the PAPI profiler pipelines */
