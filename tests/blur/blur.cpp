@@ -19,16 +19,16 @@ int main(int argc, const char **argv) {
   blur_x(x, y, c) = (input(x - 1, y, c) + input(x, y, c) + input(x + 1, y, c)) / 3.0f;
   blur_y(x, y, c) = (blur_x(x, y - 1, c) + blur_x(x, y, c) + blur_x(x, y + 1, c)) / 3.0f;
 
-  blur_y.tile(x, y, xi, yi, 32, 32);
-  blur_x.compute_at(blur_y, y);
+  //blur_y.tile(x, y, xi, yi, 32, 32);
+  //blur_x.compute_at(blur_y, y);
 
-  //blur_y.tile(x, y, xi, yi, 256, 32).vectorize(xi, 8).parallel(y);
+  blur_y.tile(x, y, xi, yi, 256, 32).vectorize(xi, 8).parallel(y);
   //blur_y.tile(x, y, xi, yi, 256, 32).vectorize(xi, 8);
-  //blur_x.compute_at(blur_y, x).vectorize(x, 8);
+  blur_x.compute_at(blur_y, x).vectorize(x, 8);
 
   //blur_x.compute_root();
 
-  blur_y.profile(PROFILE_PRODUCER);
+  blur_y.profile(PROFILE_PRODUCTION, true, true);
 
   output.set_min(1, 1);
 
