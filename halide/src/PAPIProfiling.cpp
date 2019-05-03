@@ -15,18 +15,22 @@
 namespace Halide {
 namespace Internal {
 
-std::vector<std::pair<std::string, int>> papi_profiling_functions;
-
 using std::map;
+using std::pair;
 using std::string;
+using std::tuple;
 using std::vector;
+
+vector<tuple<string, int, bool, string>> papi_profiler_defs;
 
 class InjectPAPIProfiling : public IRMutator2 {
 public:
     map<string, int> indices;   // maps from func name -> index in buffer.
+    map<int, int> show_threads_prod;   // maps from func int -> show threads in profiler in production level.
+    map<int, int> show_threads_cons;   // maps from func int -> show threads in profiler in consumption level.
 
     vector<int> stack; // What produce nodes are we currently inside of.
-    vector<bool> profile_stack; // Produce node we are inside of must be profiled?
+    vector<pair<bool, bool>> profile_stack; // Produce node we are inside of must be profiled?
 
     string pipeline_name;
 
@@ -195,20 +199,33 @@ private:
         int idx;
         Stmt body, stmt;
         bool must_profile = false;
+        bool must_show_threads = false;
 
-        auto it = find_if(papi_profiling_functions.begin(), papi_profiling_functions.end(),
-                          [op](std::pair<std::string, int> const &elem) {
-          bool level_cond =
-            elem.second == PROFILE_BOTH ||
-            (elem.second == PROFILE_PRODUCER && op->is_producer) ||
-            (elem.second == PROFILE_CONSUMER && !op->is_producer);
+        int parent = (stack.size() > 1) ? stack.back() : -1;
+        std::string parent_name;
 
-          return elem.first == op->name && level_cond;
+        for(auto& func: indices) {
+          if(func.second == parent) {
+            parent_name = func.first;
+          }
+        }
+
+        auto it = find_if(papi_profiler_defs.begin(), papi_profiler_defs.end(),
+                          [op, parent_name](std::tuple<string, int, bool, string> const &elem) {
+            bool level_cond =
+                (std::get<1>(elem) & PROFILE_PRODUCTION && op->is_producer) ||
+                (std::get<1>(elem) & PROFILE_CONSUMPTION && !op->is_producer);
+
+            bool parent_cond =
+                (std::get<3>(elem) == "") || (std::get<3>(elem) == parent_name);
+
+            return std::get<0>(elem) == op->name && level_cond && parent_cond;
         });
 
-        must_profile = it != papi_profiling_functions.end();
+        must_profile = it != papi_profiler_defs.end() && std::get<2>(*it);
+        must_show_threads = must_profile && std::get<1>(*it) & PROFILE_SHOW_THREADS;
 
-        if(!stack.empty()) {
+        if(stack.size() > 1) {
             func_childrens[stack.back()]++;
         }
 
@@ -216,7 +233,7 @@ private:
             idx = get_func_id(op->name);
             func_childrens[idx] = 0;
 
-            profile_stack.push_back(must_profile);
+            profile_stack.push_back(std::make_pair(must_profile, must_show_threads));
             stack.push_back(idx);
             body = mutate(op->body);
             stack.pop_back();
@@ -228,7 +245,10 @@ private:
             idx = stack.back();
         }
 
-        must_profile = must_profile || profile_stack.back();
+        if(!must_profile && it == papi_profiler_defs.end() && profile_stack.back().first) {
+          must_profile = true;
+          must_show_threads = profile_stack.back().second;
+        }
 
         Expr profiler_token = Variable::make(Int(32), "profiler_token");
         Expr profiler_state = Variable::make(Handle(), "profiler_state");
@@ -238,10 +258,10 @@ private:
 
             if(op->is_producer && func_childrens[idx] > 0) {
                 enter_task = Call::make(Int(32), "halide_papi_enter_overhead_region",
-                                        {profiler_state, profiler_token, get_func_id(op->name)}, Call::Extern);
+                                        {profiler_state, profiler_token, idx}, Call::Extern);
 
                 leave_task = Call::make(Int(32), "halide_papi_leave_overhead_region",
-                                        {profiler_state, profiler_token, get_func_id(op->name)}, Call::Extern);
+                                        {profiler_state, profiler_token, idx}, Call::Extern);
             } else {
                 enter_task = Call::make(Int(32), "halide_papi_enter_current_func",
                                         {profiler_state, profiler_token, get_func_id(op->name),
@@ -263,16 +283,22 @@ private:
 
         stmt = ProducerConsumer::make(op->name, op->is_producer, body, op->must_profile);
 
-        if(!profile_stack.empty()) {
-            int parent = profile_stack.back();
+        if(must_profile && !profile_stack.empty()) {
+            int parent = stack.back();
 
             Expr enter_overhead = Call::make(Int(32), "halide_papi_enter_overhead_region",
-                                         {profiler_state, profiler_token, parent}, Call::Extern);
+                                             {profiler_state, profiler_token, parent}, Call::Extern);
 
             Expr leave_overhead = Call::make(Int(32), "halide_papi_leave_overhead_region",
-                                         {profiler_state, profiler_token, parent}, Call::Extern);
+                                             {profiler_state, profiler_token, parent}, Call::Extern);
 
             stmt = Block::make({Evaluate::make(leave_overhead), stmt, Evaluate::make(enter_overhead)});
+        }
+
+        if(op->is_producer) {
+          show_threads_prod[get_func_id(op->name)] = must_show_threads;
+        } else {
+          show_threads_cons[get_func_id(op->name)] = must_show_threads;
         }
 
         return stmt;
@@ -350,8 +376,13 @@ Stmt inject_papi_profiling(Stmt s, string pipeline_name) {
 
     Expr func_names_buf = Variable::make(Handle(), "profiling_func_names");
 
+    Expr func_threads_prod_buf = Variable::make(Handle(), "profiling_func_threads_prod");
+
+    Expr func_threads_cons_buf = Variable::make(Handle(), "profiling_func_threads_cons");
+
     Expr start_profiler = Call::make(Int(32), "halide_papi_pipeline_start",
-                                     {pipeline_name, num_funcs, func_names_buf}, Call::Extern);
+                                     {pipeline_name, num_funcs, func_names_buf,
+                                      func_threads_prod_buf, func_threads_cons_buf}, Call::Extern);
 
     Expr get_state = Call::make(Handle(), "halide_papi_get_state", {}, Call::Extern);
 
@@ -410,8 +441,22 @@ Stmt inject_papi_profiling(Stmt s, string pipeline_name) {
         s = Block::make(Store::make("profiling_func_names", p.first, p.second, Parameter(), const_true()), s);
     }
 
+    for (std::pair<int, int> p : profiling.show_threads_prod) {
+        s = Block::make(Store::make("profiling_func_threads_prod", p.second, p.first, Parameter(), const_true()), s);
+    }
+
+    for (std::pair<int, int> p : profiling.show_threads_cons) {
+        s = Block::make(Store::make("profiling_func_threads_cons", p.second, p.first, Parameter(), const_true()), s);
+    }
+
+    s = Block::make(s, Free::make("profiling_func_threads_prod"));
+    s = Block::make(s, Free::make("profiling_func_threads_cons"));
     s = Block::make(s, Free::make("profiling_func_names"));
     s = Allocate::make("profiling_func_names", Handle(),
+                       MemoryType::Auto, {num_funcs}, const_true(), s);
+    s = Allocate::make("profiling_func_threads_prod", Handle(),
+                       MemoryType::Auto, {num_funcs}, const_true(), s);
+    s = Allocate::make("profiling_func_threads_cons", Handle(),
                        MemoryType::Auto, {num_funcs}, const_true(), s);
     s = Block::make(Evaluate::make(stop_profiler), s);
 

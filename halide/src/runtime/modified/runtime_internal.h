@@ -155,7 +155,12 @@ WEAK int halide_trace_helper(void *user_context,
                              int parent_id, int value_index, int dimensions,
                              const char *trace_tag);
 
-WEAK int halide_papi_pipeline_start(void *user_context, const char *pipeline_name, int num_funcs, const uint64_t *func_names);
+WEAK int halide_papi_pipeline_start(void *user_context,
+                                    const char *pipeline_name,
+                                    int num_funcs,
+                                    const uint64_t *func_names,
+                                    const uint64_t *func_show_threads_prod,
+                                    const uint64_t *func_show_threads_cons);
 WEAK void halide_papi_stack_peak_update(void *user_context, void *pipeline_state, uint64_t *f_values);
 WEAK void halide_papi_memory_allocate(void *user_context, void *pipeline_state, int func_id, uint64_t incr);
 WEAK void halide_papi_memory_free(void *user_context, void *pipeline_state, int func_id, uint64_t decr);

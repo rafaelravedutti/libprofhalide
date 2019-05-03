@@ -1,13 +1,16 @@
 diff --git a/src/Func.h b/src/Func.h
-index c3a62c559..36b92f9c6 100644
+index c3a62c559..df6bcc324 100644
 --- a/src/Func.h
 +++ b/src/Func.h
-@@ -2292,6 +2292,9 @@ public:
+@@ -2292,6 +2292,12 @@ public:
       * halide_trace. */
      Func &trace_realizations();
  
 +    /** Profile this function. */
-+    Func &profile(int level);
++    Func &profile(int level = 1, bool show_threads = false, bool enable = true);
++
++    /** Profile this function at some level. */
++    Func &profile_at(Internal::Function &parent, int level = 1, bool show_threads = false, bool enable = true);
 +
      /** Add a string of arbitrary text that will be passed thru to trace
       * inspection code if the Func is realized in trace mode. (Funcs that are

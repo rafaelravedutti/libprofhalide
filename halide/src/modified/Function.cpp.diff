@@ -1,5 +1,5 @@
 diff --git a/src/Function.cpp b/src/Function.cpp
-index d9e57c2c2..80f6c0fd0 100644
+index d9e57c2c2..29e0310a4 100644
 --- a/src/Function.cpp
 +++ b/src/Function.cpp
 @@ -11,6 +11,7 @@
@@ -14,7 +14,7 @@ index d9e57c2c2..80f6c0fd0 100644
  
  struct FunctionContents;
  
-+extern std::vector<std::pair<std::string, int>> papi_profiling_functions;
++extern std::vector<std::tuple<std::string, int, bool, std::string>> papi_profiler_defs;
 +
  namespace {
  // Weaken all the references to a particular Function to break
@@ -36,18 +36,32 @@ index d9e57c2c2..80f6c0fd0 100644
  
      // Copy the pure definition
      if (contents->init_def.defined()) {
-@@ -887,6 +893,10 @@ void Function::trace_stores() {
+@@ -887,6 +893,24 @@ void Function::trace_stores() {
  void Function::trace_realizations() {
      contents->trace_realizations = true;
  }
-+void Function::profile(int level) {
++void Function::profile(int level, bool show_threads, bool enable) {
 +    contents->profile = true;
-+    papi_profiling_functions.push_back(std::make_pair(contents->name, level));
++
++    if(show_threads) {
++        level |= PROFILE_SHOW_THREADS;
++    }
++
++    papi_profiler_defs.push_back(std::make_tuple(contents->name, level, enable, ""));
++}
++void Function::profile_at(Function &parent, int level, bool show_threads, bool enable) {
++    contents->profile = true;
++
++    if(show_threads) {
++        level |= PROFILE_SHOW_THREADS;
++    }
++
++    papi_profiler_defs.push_back(std::make_tuple(contents->name, level, enable, parent.name()));
 +}
  void Function::add_trace_tag(const std::string &trace_tag) {
      contents->trace_tags.push_back(trace_tag);
  }
-@@ -900,6 +910,9 @@ bool Function::is_tracing_stores() const {
+@@ -900,6 +924,9 @@ bool Function::is_tracing_stores() const {
  bool Function::is_tracing_realizations() const {
      return contents->trace_realizations;
  }

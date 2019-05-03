@@ -1769,6 +1769,12 @@ struct halide_papi_func_stats {
 
     /** Function parent */
     int parent;
+
+    /** Show threads in production level */
+    bool show_threads_prod;
+
+    /** Show threads in consumption level */
+    bool show_threads_cons;
 };
 
 /** Structure for the PAPI profiler pipelines */

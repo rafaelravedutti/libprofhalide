@@ -30,7 +30,7 @@ typedef map<FunctionPtr, FunctionPtr> DeepCopyMap;
 
 struct FunctionContents;
 
-extern std::vector<std::pair<std::string, int>> papi_profiling_functions;
+extern std::vector<std::tuple<std::string, int, bool, std::string>> papi_profiler_defs;
 
 namespace {
 // Weaken all the references to a particular Function to break
@@ -893,9 +893,23 @@ void Function::trace_stores() {
 void Function::trace_realizations() {
     contents->trace_realizations = true;
 }
-void Function::profile(int level) {
+void Function::profile(int level, bool show_threads, bool enable) {
     contents->profile = true;
-    papi_profiling_functions.push_back(std::make_pair(contents->name, level));
+
+    if(show_threads) {
+        level |= PROFILE_SHOW_THREADS;
+    }
+
+    papi_profiler_defs.push_back(std::make_tuple(contents->name, level, enable, ""));
+}
+void Function::profile_at(Function &parent, int level, bool show_threads, bool enable) {
+    contents->profile = true;
+
+    if(show_threads) {
+        level |= PROFILE_SHOW_THREADS;
+    }
+
+    papi_profiler_defs.push_back(std::make_tuple(contents->name, level, enable, parent.name()));
 }
 void Function::add_trace_tag(const std::string &trace_tag) {
     contents->trace_tags.push_back(trace_tag);

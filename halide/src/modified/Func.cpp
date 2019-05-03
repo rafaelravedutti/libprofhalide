@@ -2470,9 +2470,15 @@ Func &Func::trace_realizations() {
     return *this;
 }
 
-Func &Func::profile(int level) {
+Func &Func::profile(int level, bool show_threads, bool enable) {
     invalidate_cache();
-    func.profile(level);
+    func.profile(level, show_threads, enable);
+    return *this;
+}
+
+Func &Func::profile_at(Internal::Function &parent, int level, bool show_threads, bool enable) {
+    invalidate_cache();
+    func.profile_at(parent, level, show_threads, enable);
     return *this;
 }
 

@@ -26,9 +26,10 @@
 
 #include "IR.h"
 
-#define PROFILE_PRODUCER    0
-#define PROFILE_CONSUMER    1
-#define PROFILE_BOTH        2
+#define PROFILE_PRODUCTION      1
+#define PROFILE_CONSUMPTION     2
+#define PROFILE_BOTH            3
+#define PROFILE_SHOW_THREADS    4
 
 namespace Halide {
 namespace Internal {

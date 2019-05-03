@@ -2293,7 +2293,10 @@ public:
     Func &trace_realizations();
 
     /** Profile this function. */
-    Func &profile(int level);
+    Func &profile(int level = 1, bool show_threads = false, bool enable = true);
+
+    /** Profile this function at some level. */
+    Func &profile_at(Internal::Function &parent, int level = 1, bool show_threads = false, bool enable = true);
 
     /** Add a string of arbitrary text that will be passed thru to trace
      * inspection code if the Func is realized in trace mode. (Funcs that are

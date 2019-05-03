@@ -10,6 +10,7 @@
 #include "Expr.h"
 #include "FunctionPtr.h"
 #include "IntrusivePtr.h"
+#include "PAPIProfiling.h"
 #include "Parameter.h"
 #include "Reduction.h"
 #include "Schedule.h"
@@ -278,7 +279,8 @@ public:
     void trace_loads();
     void trace_stores();
     void trace_realizations();
-    void profile(int level);
+    void profile(int level = 1, bool show_threads = false, bool enable = true);
+    void profile_at(Function &parent, int level = 1, bool show_threads = false, bool enable = true);
     void add_trace_tag(const std::string &trace_tag);
     bool is_tracing_loads() const;
     bool is_tracing_stores() const;
