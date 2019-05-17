@@ -10,7 +10,7 @@ using namespace Halide::Tools;
 using std::vector;
 
 int main(int argc, const char **argv) {
-  Buffer<float> input(16384, 8192, 3);
+  Buffer<float> input(10112, 10112, 1);
   //Buffer<float> input = Tools::load_and_convert_image("input.png");
   Buffer<float> output(input.width() - 2, input.height() - 2, input.channels());
   Func blur_x, blur_y;
