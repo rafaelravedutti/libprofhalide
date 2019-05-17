@@ -20,11 +20,13 @@ int main(int argc, const char **argv) {
   blur_y(x, y, c) = (blur_x(x, y - 1, c) + blur_x(x, y, c) + blur_x(x, y + 1, c)) / 3.0f;
 
   //blur_y.tile(x, y, xi, yi, 32, 32);
-  //blur_x.compute_at(blur_y, y);
+  //blur_x.compute_at(blur_y, x);
 
-  blur_y.tile(x, y, xi, yi, 256, 32).vectorize(xi, 8).parallel(y);
+  //blur_y.tile(x, y, xi, yi, 256, 32).vectorize(xi, 8).parallel(y);
   //blur_y.tile(x, y, xi, yi, 256, 32).vectorize(xi, 8);
-  blur_x.compute_at(blur_y, x).vectorize(x, 8);
+  //blur_x.compute_at(blur_y, x).vectorize(x, 8);
+
+  //blur_x.store_at(blur_y, c).compute_at(blur_y, y);
 
   //blur_x.compute_root();
 
