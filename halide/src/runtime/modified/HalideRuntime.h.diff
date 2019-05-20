@@ -1,5 +1,5 @@
 diff --git a/src/runtime/HalideRuntime.h b/src/runtime/HalideRuntime.h
-index 25851acb7..2051ed6d7 100644
+index 25851acb7..7431c077e 100644
 --- a/src/runtime/HalideRuntime.h
 +++ b/src/runtime/HalideRuntime.h
 @@ -1275,7 +1275,8 @@ typedef enum halide_target_feature_t {
@@ -12,13 +12,19 @@ index 25851acb7..2051ed6d7 100644
  } halide_target_feature_t;
  
  /** This function is called internally by Halide in some situations to determine
-@@ -1744,10 +1745,124 @@ enum {
+@@ -1744,10 +1745,133 @@ enum {
   * inspection. Lock it before using to pause the profiler. */
  extern struct halide_profiler_state *halide_profiler_get_state();
  
 +struct halide_papi_func_stats {
 +    /** Total time taken evaluating this Func (in nanoseconds). */
 +    uint64_t time;
++
++    /** Total time taken evaluating this Func (in nanoseconds). */
++    uint64_t clock_start[2], clock_accum[2];
++
++    /** Total time taken evaluating this Func (in nanoseconds). */
++    uint64_t overhead_clock_start, overhead_clock_accum;
 +
 +    /** The name of this Func. A global constant string. */
 +    const char *name;
@@ -38,8 +44,11 @@ index 25851acb7..2051ed6d7 100644
 +    /** Overhead event counter has been used? */
 +    int overhead_counter_used[32];
 +
-+    /** Function parent */
-+    int parent;
++    /** Parent in production level */
++    int parent_prod;
++
++    /** Parent in consumption level */
++    int parent_cons;
 +
 +    /** Show threads in production level */
 +    bool show_threads_prod;
@@ -137,7 +146,7 @@ index 25851acb7..2051ed6d7 100644
  /** Reset profiler state cheaply. May leave threads running or some
   * memory allocated but all accumluated statistics are reset.
   * WARNING: Do NOT call this method while any halide pipeline is
-@@ -1756,6 +1871,8 @@ extern struct halide_profiler_pipeline_stats *halide_profiler_get_pipeline_state
+@@ -1756,6 +1880,8 @@ extern struct halide_profiler_pipeline_stats *halide_profiler_get_pipeline_state
   * state without grabbing the global profiler state's lock. */
  extern void halide_profiler_reset();
  
@@ -146,7 +155,7 @@ index 25851acb7..2051ed6d7 100644
  /** Reset all profiler state.
   * WARNING: Do NOT call this method while any halide pipeline is
   * running; halide_profiler_memory_allocate/free and
-@@ -1763,10 +1880,14 @@ extern void halide_profiler_reset();
+@@ -1763,10 +1889,14 @@ extern void halide_profiler_reset();
   * state without grabbing the global profiler state's lock. */
  void halide_profiler_shutdown();
  

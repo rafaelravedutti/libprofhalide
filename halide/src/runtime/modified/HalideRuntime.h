@@ -1749,6 +1749,12 @@ struct halide_papi_func_stats {
     /** Total time taken evaluating this Func (in nanoseconds). */
     uint64_t time;
 
+    /** Total time taken evaluating this Func (in nanoseconds). */
+    uint64_t clock_start[2], clock_accum[2];
+
+    /** Total time taken evaluating this Func (in nanoseconds). */
+    uint64_t overhead_clock_start, overhead_clock_accum;
+
     /** The name of this Func. A global constant string. */
     const char *name;
 
@@ -1767,8 +1773,11 @@ struct halide_papi_func_stats {
     /** Overhead event counter has been used? */
     int overhead_counter_used[32];
 
-    /** Function parent */
-    int parent;
+    /** Parent in production level */
+    int parent_prod;
+
+    /** Parent in consumption level */
+    int parent_cons;
 
     /** Show threads in production level */
     bool show_threads_prod;

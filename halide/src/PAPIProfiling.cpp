@@ -26,6 +26,8 @@ vector<tuple<string, int, bool, string>> papi_profiler_defs;
 class InjectPAPIProfiling : public IRMutator2 {
 public:
     map<string, int> indices;   // maps from func name -> index in buffer.
+    map<int, int> parent_prod;   // maps from func int -> parent func id in production level.
+    map<int, int> parent_cons;   // maps from func int -> parent func id in consumption level.
     map<int, int> show_threads_prod;   // maps from func int -> show threads in profiler in production level.
     map<int, int> show_threads_cons;   // maps from func int -> show threads in profiler in consumption level.
 
@@ -201,7 +203,7 @@ private:
         bool must_profile = false;
         bool must_show_threads = false;
 
-        int parent = (stack.size() > 1) ? stack.back() : -1;
+        int parent = (stack.size() > 1) ? stack.back() : 0;
         std::string parent_name;
 
         for(auto& func: indices) {
@@ -295,10 +297,14 @@ private:
             stmt = Block::make({Evaluate::make(leave_overhead), stmt, Evaluate::make(enter_overhead)});
         }
 
+        auto fid = get_func_id(op->name);
+
         if(op->is_producer) {
-          show_threads_prod[get_func_id(op->name)] = must_show_threads;
+          parent_prod[fid] = parent;
+          show_threads_prod[fid] = must_show_threads;
         } else {
-          show_threads_cons[get_func_id(op->name)] = must_show_threads;
+          parent_cons[fid] = parent;
+          show_threads_cons[fid] = must_show_threads;
         }
 
         return stmt;
@@ -376,12 +382,17 @@ Stmt inject_papi_profiling(Stmt s, string pipeline_name) {
 
     Expr func_names_buf = Variable::make(Handle(), "profiling_func_names");
 
+    Expr func_parents_prod_buf = Variable::make(Handle(), "profiling_func_parents_prod");
+
+    Expr func_parents_cons_buf = Variable::make(Handle(), "profiling_func_parents_cons");
+
     Expr func_threads_prod_buf = Variable::make(Handle(), "profiling_func_threads_prod");
 
     Expr func_threads_cons_buf = Variable::make(Handle(), "profiling_func_threads_cons");
 
     Expr start_profiler = Call::make(Int(32), "halide_papi_pipeline_start",
                                      {pipeline_name, num_funcs, func_names_buf,
+                                      func_parents_prod_buf, func_parents_cons_buf,
                                       func_threads_prod_buf, func_threads_cons_buf}, Call::Extern);
 
     Expr get_state = Call::make(Handle(), "halide_papi_get_state", {}, Call::Extern);
@@ -441,6 +452,14 @@ Stmt inject_papi_profiling(Stmt s, string pipeline_name) {
         s = Block::make(Store::make("profiling_func_names", p.first, p.second, Parameter(), const_true()), s);
     }
 
+    for (std::pair<int, int> p : profiling.parent_prod) {
+        s = Block::make(Store::make("profiling_func_parents_prod", p.second, p.first, Parameter(), const_true()), s);
+    }
+
+    for (std::pair<int, int> p : profiling.parent_cons) {
+        s = Block::make(Store::make("profiling_func_parents_cons", p.second, p.first, Parameter(), const_true()), s);
+    }
+
     for (std::pair<int, int> p : profiling.show_threads_prod) {
         s = Block::make(Store::make("profiling_func_threads_prod", p.second, p.first, Parameter(), const_true()), s);
     }
@@ -449,6 +468,8 @@ Stmt inject_papi_profiling(Stmt s, string pipeline_name) {
         s = Block::make(Store::make("profiling_func_threads_cons", p.second, p.first, Parameter(), const_true()), s);
     }
 
+    s = Block::make(s, Free::make("profiling_func_parents_prod"));
+    s = Block::make(s, Free::make("profiling_func_parents_cons"));
     s = Block::make(s, Free::make("profiling_func_threads_prod"));
     s = Block::make(s, Free::make("profiling_func_threads_cons"));
     s = Block::make(s, Free::make("profiling_func_names"));
@@ -457,6 +478,10 @@ Stmt inject_papi_profiling(Stmt s, string pipeline_name) {
     s = Allocate::make("profiling_func_threads_prod", Handle(),
                        MemoryType::Auto, {num_funcs}, const_true(), s);
     s = Allocate::make("profiling_func_threads_cons", Handle(),
+                       MemoryType::Auto, {num_funcs}, const_true(), s);
+    s = Allocate::make("profiling_func_parents_prod", Handle(),
+                       MemoryType::Auto, {num_funcs}, const_true(), s);
+    s = Allocate::make("profiling_func_parents_cons", Handle(),
                        MemoryType::Auto, {num_funcs}, const_true(), s);
     s = Block::make(Evaluate::make(stop_profiler), s);
 

@@ -159,6 +159,8 @@ WEAK int halide_papi_pipeline_start(void *user_context,
                                     const char *pipeline_name,
                                     int num_funcs,
                                     const uint64_t *func_names,
+                                    const int64_t *func_parents_prod,
+                                    const int64_t *func_parents_cons,
                                     const uint64_t *func_show_threads_prod,
                                     const uint64_t *func_show_threads_cons);
 WEAK void halide_papi_stack_peak_update(void *user_context, void *pipeline_state, uint64_t *f_values);
