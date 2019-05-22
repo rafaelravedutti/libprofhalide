@@ -103,43 +103,49 @@ WEAK int halide_papi_pipeline_start(
 
   if(!p) {
     p = (halide_papi_pipeline_stats *) malloc(sizeof(halide_papi_pipeline_stats));
+  }
 
-    if(p) {
-      p->name = pipeline_name;
-      p->next = s->pipelines;
-      p->first_func_id = s->first_free_id;
-      p->num_funcs = num_funcs;
-      p->runs = 0;
-      p->time = 0;
-      p->samples = 0;
-      p->active_threads_numerator = 0;
-      p->active_threads_denominator = 0;
-      p->funcs = (halide_papi_func_stats *) malloc(num_funcs * sizeof(halide_papi_func_stats));
+  if(p) {
+    p->name = pipeline_name;
+    p->next = s->pipelines;
+    p->first_func_id = s->first_free_id;
+    p->num_funcs = num_funcs;
+    p->runs = 0;
+    p->time = 0;
+    p->samples = 0;
+    p->active_threads_numerator = 0;
+    p->active_threads_denominator = 0;
+    p->funcs = (halide_papi_func_stats *) malloc(num_funcs * sizeof(halide_papi_func_stats));
 
-      if(p->funcs != NULL) {
-        for(int i = 0; i < num_funcs; ++i) {
-          p->funcs[i].time = 0;
-          p->funcs[i].name = (const char *)(func_names[i]);
-          p->funcs[i].active_threads_numerator = 0;
-          p->funcs[i].active_threads_denominator = 0;
-          p->funcs[i].parent_prod = (int)(func_parents_prod[i]);
-          p->funcs[i].parent_cons = (int)(func_parents_cons[i]);
-          p->funcs[i].show_threads_prod = (bool)(func_show_threads_prod[i]);
-          p->funcs[i].show_threads_cons = (bool)(func_show_threads_cons[i]);
+    if(p->funcs != NULL) {
+      for(int i = 0; i < num_funcs; ++i) {
+        p->funcs[i].time = 0;
+        p->funcs[i].name = (const char *)(func_names[i]);
+        p->funcs[i].active_threads_numerator = 0;
+        p->funcs[i].active_threads_denominator = 0;
+        p->funcs[i].parent_prod = (int)(func_parents_prod[i]);
+        p->funcs[i].parent_cons = (int)(func_parents_cons[i]);
+        p->funcs[i].show_threads_prod = (bool)(func_show_threads_prod[i]);
+        p->funcs[i].show_threads_cons = (bool)(func_show_threads_cons[i]);
 
-          for(int l = 0; l < 2; ++l) {
-            p->funcs[i].clock_start[l] = 0;
-            p->funcs[i].clock_accum[l] = 0;
+        for(int l = 0; l < 2; ++l) {
+          p->funcs[i].clock_start[l] = 0;
+          p->funcs[i].clock_accum[l] = 0;
 
-            for(int t = 0; t < MAX_PAPI_THREADS; ++t) {
-              p->funcs[i].counter_used[l][t] = 0;
+          for(int t = 0; t < MAX_PAPI_THREADS; ++t) {
+            p->funcs[i].counter_used[l][t] = 0;
+            p->funcs[i].overhead_counter_used[t] = 0;
+
+            for(int e = 0; e < MAX_PAPI_DESCRIPTORS; ++e) {
+              p->funcs[i].overhead_counters[t][e] = 0;
+              p->funcs[i].event_counters[l][t][e] = 0;
             }
           }
         }
-      } else {
-        free(p);
-        p = NULL;
       }
+    } else {
+      free(p);
+      p = NULL;
     }
 
     if(!p) {
@@ -164,20 +170,6 @@ WEAK int halide_papi_pipeline_start(
   return p->first_func_id;
 }
 
-/*
-WEAK void halide_papi_stack_peak_update(void *user_context, void *pipeline_state, uint64_t *f_values) {
-
-}
-
-WEAK void halide_papi_memory_allocate(void *user_context, void *pipeline_state, int func_id, uint64_t incr) {
-
-}
-
-WEAK void halide_papi_memory_free(void *user_context, void *pipeline_state, int func_id, uint64_t decr) {
-
-}
-*/
-
 WEAK void halide_papi_report_func_prod_cons(void *user_context, halide_papi_func_stats *fs, bool is_prod, uint64_t level) {
   char line_buf[1024];
   Printer<StringStreamPrinter, sizeof(line_buf)> sstr(user_context, line_buf);
@@ -200,23 +192,22 @@ WEAK void halide_papi_report_func_prod_cons(void *user_context, halide_papi_func
 
       if(show_threads) {
         sstr.clear();
-
-        while (sstr.size() < 25 + level) sstr << " ";
+        sstr << fs->name;
 
         if(is_prod) {
-          sstr << "production ";
+          sstr << "_prod";
         } else {
-          sstr << "consumption ";
+          sstr << "_cons";
         }
 
-        sstr << "counters: ";
+        sstr << "_t" << th << ",";
 
         for(int e = 0; e < papi_halide_number_of_events(); ++e) {
-          sstr << fs->event_counters[stage][th][e] << ", ";
+          sstr << fs->event_counters[stage][th][e] << ",";
         }
 
-        sstr.erase(2);
-        sstr << " (" << (fs->clock_accum[stage] / 1000000.0f) << "ms)\n";
+        sstr.erase(1);
+        sstr << "\n";
 
         halide_print(user_context, sstr.str());
       }
@@ -225,27 +216,26 @@ WEAK void halide_papi_report_func_prod_cons(void *user_context, halide_papi_func
 
   if(!show_threads || active_threads > 1) {
     sstr.clear();
-
-    while (sstr.size() < 25 + level) sstr << " ";
-
-    if(active_threads > 1) {
-      sstr << "total ";
-    }
+    sstr << fs->name;
 
     if(is_prod) {
-      sstr << "production ";
+      sstr << "_prod_";
     } else {
-      sstr << "consumption ";
+      sstr << "_cons_";
     }
 
-    sstr << "counters: ";
+    if(active_threads > 1) {
+      sstr << "total,";
+    } else {
+      sstr << "t0,";
+    }
 
     for(int e = 0; e < papi_halide_number_of_events(); ++e) {
-      sstr << total_events[e] << ", ";
+      sstr << total_events[e] << ",";
     }
 
-    sstr.erase(2);
-    sstr << " (" << (fs->clock_accum[stage] / 1000000.0f) << "ms)\n";
+    sstr.erase(1);
+    sstr << "\n";
 
     halide_print(user_context, sstr.str());
   }
@@ -271,17 +261,14 @@ WEAK void halide_papi_report_func_overhead(void *user_context, halide_papi_func_
 
       if(fs->show_threads_prod) {
         sstr.clear();
-
-        while (sstr.size() < 25) sstr << " ";
-
-        sstr << "overhead counters: ";
+        sstr << fs->name << "_overhead" << "_t" << th << ",";
 
         for(int e = 0; e < papi_halide_number_of_events(); ++e) {
-          sstr << fs->overhead_counters[th][e] << ", ";
+          sstr << fs->overhead_counters[th][e] << ",";
         }
 
-        sstr.erase(2);
-        sstr << " (" << (fs->overhead_clock_accum / 1000000.0f) << "ms)\n";
+        sstr.erase(1);
+        sstr << "\n";
 
         halide_print(user_context, sstr.str());
       }
@@ -290,82 +277,26 @@ WEAK void halide_papi_report_func_overhead(void *user_context, halide_papi_func_
 
   if(!fs->show_threads_prod || active_threads > 1) {
     sstr.clear();
-
-    while (sstr.size() < 25 + level) sstr << " ";
+    sstr << fs->name << "_overhead_";
 
     if(active_threads > 1) {
-      sstr << "total ";
+      sstr << "total,";
+    } else {
+      sstr << "t0,";
     }
-
-    sstr << "overhead counters: ";
 
     for(int e = 0; e < papi_halide_number_of_events(); ++e) {
-      sstr << total_events[e] << ", ";
+      sstr << total_events[e] << ",";
     }
 
-    sstr.erase(2);
-    sstr << " (" << (fs->overhead_clock_accum / 1000000.0f) << "ms)\n";
+    sstr.erase(1);
+    sstr << "\n";
 
     halide_print(user_context, sstr.str());
   }
 }
 
-WEAK void halide_papi_report_func_header(
-  void *user_context,
-  halide_papi_pipeline_stats *pipeline_stats,
-  halide_papi_func_stats *fs,
-  uint64_t level) {
-
-  char line_buf[1024];
-  Printer<StringStreamPrinter, sizeof(line_buf)> sstr(user_context, line_buf);
-  bool serial = pipeline_stats->active_threads_numerator == pipeline_stats->active_threads_denominator;
-  size_t cursor = 0;
-
-  sstr.clear();
-
-  cursor += level;
-  while (sstr.size() < cursor) sstr << " ";
-
-  sstr << "  " << fs->name << ": ";
-  cursor += 25;
-  while (sstr.size() < cursor) sstr << " ";
-
-  float ft = fs->time / (pipeline_stats->runs * 1000000.0f);
-  sstr << ft;
-  // We don't need 6 sig. figs.
-  sstr.erase(3);
-  sstr << "ms";
-  cursor += 10;
-
-  while (sstr.size() < cursor) sstr << " ";
-
-  int percent = 0;
-
-  if(pipeline_stats->time != 0) {
-    percent = (100 * fs->time) / pipeline_stats->time;
-  }
-
-  sstr << "(" << percent << "%)";
-  cursor += 8;
-
-  while (sstr.size() < cursor) sstr << " ";
-
-  if(!serial) {
-    float threads = fs->active_threads_numerator / (fs->active_threads_denominator + 1e-10);
-
-    sstr << "threads: " << threads;
-    sstr.erase(3);
-    cursor += 18;
-
-    while (sstr.size() < cursor) sstr << " ";
-  }
-
-  sstr << "\n";
-  halide_print(user_context, sstr.str());
-
-}
-
-WEAK void halide_papi_report_scope(void *user_context, halide_papi_pipeline_stats *pipeline_stats, int parent, uint64_t level) {
+WEAK void halide_papi_report_counters(void *user_context, halide_papi_pipeline_stats *pipeline_stats, int parent, uint64_t level) {
   for(int i = 0; i < pipeline_stats->num_funcs; i++) {
     halide_papi_func_stats *fs = pipeline_stats->funcs + i;
 
@@ -374,8 +305,6 @@ WEAK void halide_papi_report_scope(void *user_context, halide_papi_pipeline_stat
     // The first func is always a catch-all overhead
     // slot. Only report overhead time if it's non-zero
     if(i == 0 && fs->time == 0) continue;
-
-    halide_papi_report_func_header(user_context, pipeline_stats, fs, level);
 
     //if(fs->parent_prod == parent) {
       halide_papi_report_func_overhead(user_context, fs, level);
@@ -401,24 +330,22 @@ WEAK void halide_papi_report_unlocked(void *user_context, halide_papi_state *s) 
 
     sstr.clear();
 
-    bool serial = p->active_threads_numerator == p->active_threads_denominator;
     float threads = p->active_threads_numerator / (p->active_threads_denominator + 1e-10);
 
-    sstr << "pipeline " << p->name << "\n"
-         << " total time: " << t << " ms"
-         << "  samples: " << p->samples
-         << "  runs: " << p->runs
-         << "  time/run: " << t / p->runs << " ms\n";
+    sstr << "all," << t << "," << threads << "\n";
 
-    if(!serial) {
-      sstr << " average threads used: " << threads << "\n";
+    for(int i = 0; i < p->num_funcs; i++) {
+      halide_papi_func_stats *fs = p->funcs + i;
+      float ft = fs->time / (p->runs * 1000000.0f);
+      float fthreads = fs->active_threads_numerator / (fs->active_threads_denominator + 1e-10);
+
+      sstr << fs->name << "," << ft << "," << fthreads << "\n";
     }
+
+    sstr << "\n";
 
     halide_print(user_context, sstr.str());
-
-    if(p->time) {
-      halide_papi_report_scope(user_context, p, 0, 0);
-    }
+    halide_papi_report_counters(user_context, p, 0, 0);
   }
 }
 
@@ -487,10 +414,12 @@ WEAK __attribute__((always_inline)) int halide_papi_set_current_func(halide_papi
 }
 
 WEAK __attribute__((always_inline)) int halide_papi_enter_current_func(halide_papi_state *state, int tok, int t, bool is_producer) {
+  /*
   halide_papi_func_stats *fs = current_pipeline_stats->funcs + t;
   int level = is_producer ? 0 : 1;
 
   fs->clock_start[level] = halide_current_time_ns(NULL);
+  */
   papi_halide_marker_start();
   return 0;
 }
@@ -501,15 +430,17 @@ WEAK __attribute__((always_inline)) int halide_papi_leave_current_func(halide_pa
   int level = is_producer ? 0 : 1;
 
   papi_halide_marker_stop(fs->event_counters[level][thread_idx], fs->counter_used[level][thread_idx]);
-  fs->clock_accum[level] += halide_current_time_ns(NULL) - fs->clock_start[level];
+  //fs->clock_accum[level] += halide_current_time_ns(NULL) - fs->clock_start[level];
   fs->counter_used[level][thread_idx] = 1;
   return 0;
 }
 
 WEAK __attribute__((always_inline)) int halide_papi_enter_overhead_region(halide_papi_state *state, int tok, int t) {
+  /*
   halide_papi_func_stats *fs = current_pipeline_stats->funcs + t;
 
   fs->overhead_clock_start = halide_current_time_ns(NULL);
+  */
   papi_halide_marker_start();
   return 0;
 }
@@ -519,7 +450,7 @@ WEAK __attribute__((always_inline)) int halide_papi_leave_overhead_region(halide
   int thread_idx = papi_halide_get_thread_index();
 
   papi_halide_marker_stop(fs->overhead_counters[thread_idx], fs->overhead_counter_used[thread_idx]);
-  fs->overhead_clock_accum += halide_current_time_ns(NULL) - fs->overhead_clock_start;
+  //fs->overhead_clock_accum += halide_current_time_ns(NULL) - fs->overhead_clock_start;
   fs->overhead_counter_used[thread_idx] = 1;
   return 0;
 }
