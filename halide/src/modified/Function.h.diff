@@ -1,26 +1,13 @@
 diff --git a/src/Function.h b/src/Function.h
-index a2337c217..2b62b3803 100644
+index d215510b4..457b6d8bd 100644
 --- a/src/Function.h
 +++ b/src/Function.h
-@@ -10,6 +10,7 @@
- #include "Expr.h"
- #include "FunctionPtr.h"
- #include "IntrusivePtr.h"
-+#include "PAPIProfiling.h"
- #include "Parameter.h"
- #include "Reduction.h"
- #include "Schedule.h"
-@@ -278,10 +279,13 @@ public:
+@@ -278,6 +278,8 @@ public:
      void trace_loads();
      void trace_stores();
      void trace_realizations();
 +    void profile(int level = 1, bool show_threads = false, bool enable = true);
 +    void profile_at(Function &parent, int level = 1, bool show_threads = false, bool enable = true);
-     void add_trace_tag(const std::string &trace_tag);
      bool is_tracing_loads() const;
      bool is_tracing_stores() const;
      bool is_tracing_realizations() const;
-+    bool is_profiling() const;
-     const std::vector<std::string> &get_trace_tags() const;
-     // @}
- 

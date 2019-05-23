@@ -1,20 +1,20 @@
 diff --git a/src/runtime/HalideRuntime.h b/src/runtime/HalideRuntime.h
-index 25851acb7..7431c077e 100644
+index 9ecd978f2..ff3cca8da 100644
 --- a/src/runtime/HalideRuntime.h
 +++ b/src/runtime/HalideRuntime.h
-@@ -1275,7 +1275,8 @@ typedef enum halide_target_feature_t {
-     halide_target_feature_asan = 53, ///< Enable hooks for ASAN support.
-     halide_target_feature_d3d12compute = 54, ///< Enable Direct3D 12 Compute runtime.
-     halide_target_feature_check_unsafe_promises = 55, ///< Insert assertions for promises.
--    halide_target_feature_end = 56 ///< A sentinel. Every target is considered to have this feature, and setting this feature does nothing.
-+    halide_target_feature_papi = 56, /// Launch a profiler using PAPI that uses hardware register counters
-+    halide_target_feature_end = 57 ///< A sentinel. Every target is considered to have this feature, and setting this feature does nothing.
+@@ -1072,7 +1072,8 @@ typedef enum halide_target_feature_t {
+     halide_target_feature_hvx_v65 = 47, ///< Enable Hexagon v65 architecture.
+     halide_target_feature_hvx_v66 = 48, ///< Enable Hexagon v66 architecture.
+     halide_target_feature_cl_half = 49,  ///< Enable half support on OpenCL targets
+-    halide_target_feature_end = 50, ///< A sentinel. Every target is considered to have this feature, and setting this feature does nothing.
++    halide_target_feature_papi = 50, ///< Launch a profiler to instrument Halide applications
++    halide_target_feature_end = 51, ///< A sentinel. Every target is considered to have this feature, and setting this feature does nothing.
  } halide_target_feature_t;
  
  /** This function is called internally by Halide in some situations to determine
-@@ -1744,10 +1745,133 @@ enum {
-  * inspection. Lock it before using to pause the profiler. */
- extern struct halide_profiler_state *halide_profiler_get_state();
+@@ -1560,6 +1561,130 @@ extern float halide_float16_bits_to_float(uint16_t);
+  *  the double that represents the same value */
+ extern double halide_float16_bits_to_double(uint16_t);
  
 +struct halide_papi_func_stats {
 +    /** Total time taken evaluating this Func (in nanoseconds). */
@@ -45,19 +45,18 @@ index 25851acb7..7431c077e 100644
 +    int overhead_counter_used[32];
 +
 +    /** Parent in production level */
-+    int parent_prod;
-+
-+    /** Parent in consumption level */
-+    int parent_cons;
++    int parent_prod, parent_cons;
 +
 +    /** Show threads in production level */
-+    bool show_threads_prod;
++    bool show_threads_prod, show_threads_cons;
 +
-+    /** Show threads in consumption level */
-+    bool show_threads_cons;
++    /** Iteration counters */
++    uint64_t iterations[2];
++
++    /** Overhead iteration counter */
++    uint64_t overhead_iterations;
 +};
 +
-+/** Structure for the PAPI profiler pipelines */
 +struct halide_papi_pipeline_stats {
 +    /** Total time taken evaluating this pipeline (in nanoseconds). */
 +    uint64_t time;
@@ -136,37 +135,11 @@ index 25851acb7..7431c077e 100644
 +    halide_papi_please_stop = -2
 +};
 +
-+
- /** Get a pointer to the pipeline state associated with pipeline_name.
-  * This function grabs the global profiler state's lock on entry. */
- extern struct halide_profiler_pipeline_stats *halide_profiler_get_pipeline_state(const char *pipeline_name);
- 
 +extern struct halide_papi_pipeline_stats *halide_papi_get_pipeline_state(const char *pipeline_name);
-+
- /** Reset profiler state cheaply. May leave threads running or some
-  * memory allocated but all accumluated statistics are reset.
-  * WARNING: Do NOT call this method while any halide pipeline is
-@@ -1756,6 +1880,8 @@ extern struct halide_profiler_pipeline_stats *halide_profiler_get_pipeline_state
-  * state without grabbing the global profiler state's lock. */
- extern void halide_profiler_reset();
- 
 +extern void halide_papi_reset();
-+
- /** Reset all profiler state.
-  * WARNING: Do NOT call this method while any halide pipeline is
-  * running; halide_profiler_memory_allocate/free and
-@@ -1763,10 +1889,14 @@ extern void halide_profiler_reset();
-  * state without grabbing the global profiler state's lock. */
- void halide_profiler_shutdown();
- 
 +void halide_papi_shutdown();
-+
- /** Print out timing statistics for everything run since the last
-  * reset. Also happens at process exit. */
- extern void halide_profiler_report(void *user_context);
- 
 +extern void halide_papi_report(void *user_context);
 +
- /// \name "Float16" functions
- /// These functions operate of bits (``uint16_t``) representing a half
- /// precision floating point number (IEEE-754 2008 binary16).
+ // TODO: Conversion functions to half
+ 
+ //@}

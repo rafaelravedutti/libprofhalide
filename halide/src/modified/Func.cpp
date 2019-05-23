@@ -1,53 +1,54 @@
 #include <algorithm>
 #include <iostream>
 #include <string.h>
+#include <fstream>
 
 #ifdef _MSC_VER
 #include <intrin.h>
 #endif
 
-#include "ApplySplit.h"
-#include "Argument.h"
-#include "Associativity.h"
-#include "CodeGen_LLVM.h"
-#include "Debug.h"
-#include "ExprUsesVar.h"
-#include "Func.h"
-#include "Function.h"
 #include "IR.h"
-#include "IREquality.h"
-#include "IRMutator.h"
+#include "Func.h"
+#include "Util.h"
 #include "IROperator.h"
 #include "IRPrinter.h"
-#include "ImageParam.h"
-#include "LLVM_Headers.h"
-#include "LLVM_Output.h"
+#include "IRMutator.h"
+#include "Function.h"
+#include "Argument.h"
 #include "Lower.h"
-#include "Outputs.h"
 #include "Param.h"
 #include "PrintLoopNest.h"
+#include "Debug.h"
+#include "IREquality.h"
+#include "CodeGen_LLVM.h"
+#include "LLVM_Headers.h"
+#include "Outputs.h"
+#include "LLVM_Output.h"
+#include "Substitute.h"
+#include "ExprUsesVar.h"
 #include "Simplify.h"
 #include "Solve.h"
-#include "Substitute.h"
-#include "Util.h"
+#include "Associativity.h"
+#include "ApplySplit.h"
+#include "ImageParam.h"
 
 namespace Halide {
 
-using std::map;
 using std::max;
 using std::min;
-using std::ofstream;
-using std::pair;
+using std::map;
 using std::string;
 using std::vector;
+using std::pair;
+using std::ofstream;
 
 using namespace Internal;
 
 Func::Func(const string &name) : func(unique_name(name)) {}
 
-Func::Func() : func(make_entity_name(this, "Halide:.*:Func", 'f')) {}
+Func::Func() : func(make_entity_name(this, "Halide::Func", 'f')) {}
 
-Func::Func(Expr e) : func(make_entity_name(this, "Halide:.*:Func", 'f')) {
+Func::Func(Expr e) : func(make_entity_name(this, "Halide::Func", 'f')) {
     (*this)(_) = e;
 }
 
@@ -934,45 +935,12 @@ void Stage::split(const string &old, const string &outer, const string &inner, E
                    << dump_argument_list();
     }
 
-    bool round_up_ok = !exact;
-    if (round_up_ok && !definition.is_init()) {
-        // If it's the outermost split in this dimension, RoundUp
-        // is OK. Otherwise we need GuardWithIf to avoid
-        // recomputing values in the case where the inner split
-        // factor does not divide the outer split factor.
-        std::set<string> inner_vars;
-        for (const Split &s : definition.schedule().splits()) {
-            if (s.is_split()) {
-                inner_vars.insert(s.inner);
-                if (inner_vars.count(s.old_var)) {
-                    inner_vars.insert(s.outer);
-                }
-            } else if (s.is_rename() || s.is_purify()) {
-                if (inner_vars.count(s.old_var)) {
-                    inner_vars.insert(s.outer);
-                }
-            } else if (s.is_fuse()) {
-                if (inner_vars.count(s.inner) || inner_vars.count(s.outer)) {
-                    inner_vars.insert(s.old_var);
-                }
-            }
-        }
-        round_up_ok = !inner_vars.count(old_name);
-        user_assert(round_up_ok || tail != TailStrategy::RoundUp)
-            << "Can't use TailStrategy::RoundUp for splitting " << old_name
-            << " in update definition of " << name() << ". "
-            << "It may redundantly recompute some values, which "
-            << "could change the meaning of the algorithm. "
-            << "Use TailStrategy::GuardWithIf instead.";
-    }
-
-
     if (tail == TailStrategy::Auto) {
         // Select a tail strategy
         if (exact) {
             tail = TailStrategy::GuardWithIf;
         } else if (!definition.is_init()) {
-            tail = round_up_ok ? TailStrategy::RoundUp : TailStrategy::GuardWithIf;
+            tail = TailStrategy::RoundUp;
         } else {
             // We should employ ShiftInwards when we can to prevent
             // overcompute and adding constraints to the bounds of
@@ -1485,16 +1453,14 @@ Stage &Stage::tile(VarOrRVar x, VarOrRVar y,
     return *this;
 }
 
-Stage &Stage::reorder(const std::vector<VarOrRVar>& vars) {
-    const string &func_name = function.name();
-    vector<Expr> &args = definition.args();
-    vector<Expr> &values = definition.values();
-    vector<Dim> &dims_old = definition.schedule().dims();
+namespace {
+// An helper function for reordering vars in a schedule.
+void reorder_vars(vector<Dim> &dims_old, const VarOrRVar *vars, size_t size, const Stage &stage) {
     vector<Dim> dims = dims_old;
 
     // Tag all the vars with their locations in the dims list.
-    vector<size_t> idx(vars.size());
-    for (size_t i = 0; i < vars.size(); i++) {
+    vector<size_t> idx(size);
+    for (size_t i = 0; i < size; i++) {
         bool found = false;
         for (size_t j = 0; j < dims.size(); j++) {
             if (var_name_match(dims[j].var, vars[i].name())) {
@@ -1503,33 +1469,24 @@ Stage &Stage::reorder(const std::vector<VarOrRVar>& vars) {
             }
         }
         user_assert(found)
-            << "In schedule for " << name()
+            << "In schedule for " << stage.name()
             << ", could not find var " << vars[i].name()
             << " to reorder in the argument list.\n"
-            << dump_argument_list();
+            << stage.dump_argument_list();
     }
 
-    // It is illegal to reorder RVars if the stage is not associative
-    // or not commutative. Look for RVar reorderings and try to do the
-    // necessary proof if any are found.
-    bool associativity_proven = false;
-    for (size_t i = 0; !associativity_proven && i < idx.size(); i++) {
-        if (!dims[idx[i]].is_pure()) {
-            for (size_t j = i+1; !associativity_proven && j < idx.size(); j++) {
-                if (!dims[idx[j]].is_pure() && (idx[i] > idx[j])) {
-                    // Generate an error if the operator is not both associative and commutative.
-                    const auto &prover_result = prove_associativity(func_name, args, values);
-                    associativity_proven = prover_result.associative() &&
-                                           prover_result.commutative();
-                    if (!associativity_proven) {
-                        user_error
-                            << "In schedule for " << name()
-                            << ", can't reorder RVars " << vars[i].name()
-                            << " and " << vars[j].name()
-                            << " because it may change the meaning of the "
-                            << "algorithm.\n";
-                    }
-                }
+    // Look for illegal reorderings
+    for (size_t i = 0; i < idx.size(); i++) {
+        if (dims[idx[i]].is_pure()) continue;
+        for (size_t j = i+1; j < idx.size(); j++) {
+            if (dims[idx[j]].is_pure()) continue;
+
+            if (idx[i] > idx[j]) {
+                user_error
+                    << "In schedule for " << stage.name()
+                    << ", can't reorder RVars " << vars[i].name()
+                    << " and " << vars[j].name()
+                    << " because it may change the meaning of the algorithm.\n";
             }
         }
     }
@@ -1538,12 +1495,16 @@ Stage &Stage::reorder(const std::vector<VarOrRVar>& vars) {
     vector<size_t> sorted = idx;
     std::sort(sorted.begin(), sorted.end());
 
-    for (size_t i = 0; i < vars.size(); i++) {
+    for (size_t i = 0; i < size; i++) {
         dims[sorted[i]] = dims_old[idx[i]];
     }
 
     dims_old.swap(dims);
+}
+}
 
+Stage &Stage::reorder(const std::vector<VarOrRVar>& vars) {
+    reorder_vars(definition.schedule().dims(), &vars[0], vars.size(), *this);
     return *this;
 }
 
@@ -1992,12 +1953,6 @@ Func &Func::store_in(MemoryType t) {
     return *this;
 }
 
-Func &Func::async() {
-    invalidate_cache();
-    func.schedule().async() = true;
-    return *this;
-}
-
 Stage Func::specialize(Expr c) {
     invalidate_cache();
     return Stage(func, func.definition(), 0, args()).specialize(c);
@@ -2414,18 +2369,6 @@ Func &Func::compute_with(Stage s, VarOrRVar var, LoopAlignStrategy align) {
     return *this;
 }
 
-Func &Func::compute_with(LoopLevel loop_level, const std::vector<std::pair<VarOrRVar, LoopAlignStrategy>> &align) {
-    invalidate_cache();
-    Stage(func, func.definition(), 0, args()).compute_with(loop_level, align);
-    return *this;
-}
-
-Func &Func::compute_with(LoopLevel loop_level, LoopAlignStrategy align) {
-    invalidate_cache();
-    Stage(func, func.definition(), 0, args()).compute_with(loop_level, align);
-    return *this;
-}
-
 Func &Func::compute_root() {
     return compute_at(LoopLevel::root());
 }
@@ -2479,12 +2422,6 @@ Func &Func::profile(int level, bool show_threads, bool enable) {
 Func &Func::profile_at(Internal::Function &parent, int level, bool show_threads, bool enable) {
     invalidate_cache();
     func.profile_at(parent, level, show_threads, enable);
-    return *this;
-}
-
-Func &Func::add_trace_tag(const std::string &trace_tag) {
-    invalidate_cache();
-    func.add_trace_tag(trace_tag);
     return *this;
 }
 
@@ -2853,55 +2790,44 @@ FuncTupleElementRef::operator Expr() const {
     return Internal::Call::make(func_ref.function(), args, idx);
 }
 
-Realization Func::realize(std::vector<int32_t> sizes, const Target &target,
-                          const ParamMap &param_map) {
+Realization Func::realize(std::vector<int32_t> sizes, const Target &target, const ParamMap &param_map) {
     user_assert(defined()) << "Can't realize undefined Func.\n";
     return pipeline().realize(sizes, target, param_map);
 }
 
-Realization Func::realize(int x_size, int y_size, int z_size, int w_size, const Target &target,
-                          const ParamMap &param_map) {
+Realization Func::realize(int x_size, int y_size, int z_size, int w_size, const Target &target, const ParamMap &param_map) {
     return realize({x_size, y_size, z_size, w_size}, target, param_map);
 }
 
-Realization Func::realize(int x_size, int y_size, int z_size, const Target &target,
-                          const ParamMap &param_map) {
+Realization Func::realize(int x_size, int y_size, int z_size, const Target &target, const ParamMap &param_map) {
     return realize({x_size, y_size, z_size}, target, param_map);
 }
 
-Realization Func::realize(int x_size, int y_size, const Target &target,
-                          const ParamMap &param_map) {
+Realization Func::realize(int x_size, int y_size, const Target &target, const ParamMap &param_map) {
     return realize({x_size, y_size}, target, param_map);
 }
 
-Realization Func::realize(int x_size, const Target &target,
-                          const ParamMap &param_map) {
+Realization Func::realize(int x_size, const Target &target, const ParamMap &param_map) {
     return realize(std::vector<int>{x_size}, target, param_map);
 }
 
-Realization Func::realize(const Target &target,
-                          const ParamMap &param_map) {
+Realization Func::realize(const Target &target, const ParamMap &param_map) {
     return realize(std::vector<int>{}, target, param_map);
 }
 
-void Func::infer_input_bounds(int x_size, int y_size, int z_size, int w_size,
-                              const ParamMap &param_map) {
+  void Func::infer_input_bounds(int x_size, int y_size, int z_size, int w_size, const ParamMap &param_map) {
     user_assert(defined()) << "Can't infer input bounds on an undefined Func.\n";
     vector<Buffer<>> outputs(func.outputs());
     int sizes[] = {x_size, y_size, z_size, w_size};
     for (size_t i = 0; i < outputs.size(); i++) {
         // We're not actually going to read from these outputs, so
-        // make the allocation tiny, then "expand" them by directly manipulating
-        // the halide_buffer_t fields. (We can't use crop because it explicitly
-        // disallows expanding the fields in this unsafe manner.)
+        // make the allocation tiny, then expand them with unsafe
+        // cropping.
         Buffer<> im = Buffer<>::make_scalar(func.output_types()[i]);
         for (int s : sizes) {
             if (!s) break;
             im.add_dimension();
-            // buf.host is going to be wrong no matter what, so don't
-            // bother adjusting it.
-            im.raw_buffer()->dim[im.dimensions()-1].min = 0;
-            im.raw_buffer()->dim[im.dimensions()-1].extent = s;
+            im.crop(im.dimensions()-1, 0, s);
         }
         outputs[i] = std::move(im);
     }
@@ -3005,13 +2931,6 @@ void Func::compile_to_lowered_stmt(const string &filename,
     pipeline().compile_to_lowered_stmt(filename, args, fmt, target);
 }
 
-void Func::compile_to_python_extension(const string &filename_prefix,
-                                       const vector<Argument> &args,
-                                       const string &fn_name,
-                                       const Target &target) {
-    pipeline().compile_to_python_extension(filename_prefix, args, fn_name, target);
-}
-
 void Func::print_loop_nest() {
     pipeline().print_loop_nest();
 }
@@ -3072,7 +2991,7 @@ void Func::set_custom_print(void (*cust_print)(void *, const char *)) {
     pipeline().set_custom_print(cust_print);
 }
 
-void Func::add_custom_lowering_pass(IRMutator2 *pass, std::function<void()> deleter) {
+void Func::add_custom_lowering_pass(IRMutator2 *pass, void (*deleter)(IRMutator2 *)) {
     pipeline().add_custom_lowering_pass(pass, deleter);
 }
 
@@ -3088,14 +3007,12 @@ const Internal::JITHandlers &Func::jit_handlers() {
     return pipeline().jit_handlers();
 }
 
-void Func::realize(Pipeline::RealizationArg outputs, const Target &target,
-                   const ParamMap &param_map) {
-    pipeline().realize(std::move(outputs), target, param_map);
+void Func::realize(Realization dst, const Target &target, const ParamMap &param_map) {
+    pipeline().realize(dst, target, param_map);
 }
 
-void Func::infer_input_bounds(Pipeline::RealizationArg outputs,
-                              const ParamMap &param_map) {
-    pipeline().infer_input_bounds(std::move(outputs), param_map);
+void Func::infer_input_bounds(Realization dst, const ParamMap &param_map) {
+    pipeline().infer_input_bounds(dst, param_map);
 }
 
 void *Func::compile_jit(const Target &target) {
@@ -3106,4 +3023,4 @@ Var _("_");
 Var _0("_0"), _1("_1"), _2("_2"), _3("_3"), _4("_4"),
            _5("_5"), _6("_6"), _7("_7"), _8("_8"), _9("_9");
 
-}  // namespace Halide
+}

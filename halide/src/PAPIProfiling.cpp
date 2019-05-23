@@ -283,7 +283,7 @@ private:
 
         body = Block::make(Evaluate::make(set_task), body);
 
-        stmt = ProducerConsumer::make(op->name, op->is_producer, body, op->must_profile);
+        stmt = ProducerConsumer::make(op->name, op->is_producer, body);
 
         if(must_profile && !profile_stack.empty()) {
             int parent = stack.back();

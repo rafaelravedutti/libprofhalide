@@ -8,10 +8,10 @@
 namespace Halide {
 namespace Internal {
 
-using std::map;
-using std::pair;
 using std::string;
+using std::map;
 using std::vector;
+using std::pair;
 
 using namespace llvm;
 
@@ -153,15 +153,13 @@ bool function_takes_user_context(const std::string &name) {
         "halide_device_and_host_malloc",
         "halide_device_sync",
         "halide_do_par_for",
-        "halide_do_loop_task",
         "halide_do_task",
-        "halide_do_async_consumer",
         "halide_error",
         "halide_free",
         "halide_malloc",
         "halide_print",
         "halide_papi_pipeline_start",
-        "halide_papi_pipeline_stop",
+        "halide_papi_pipeline_end",
         "halide_profiler_memory_allocate",
         "halide_profiler_memory_free",
         "halide_profiler_pipeline_start",
@@ -180,7 +178,6 @@ bool function_takes_user_context(const std::string &name) {
         "halide_opengl_run",
         "halide_openglcompute_run",
         "halide_metal_run",
-        "halide_d3d12compute_run",
         "halide_msan_annotate_buffer_is_initialized_as_destructor",
         "halide_msan_annotate_buffer_is_initialized",
         "halide_msan_annotate_memory_is_initialized",
@@ -200,7 +197,6 @@ bool function_takes_user_context(const std::string &name) {
         "halide_opengl_initialize_kernels",
         "halide_openglcompute_initialize_kernels",
         "halide_metal_initialize_kernels",
-        "halide_d3d12compute_initialize_kernels",
         "halide_get_gpu_device",
         "halide_upgrade_buffer_t",
         "halide_downgrade_buffer_t",
@@ -398,18 +394,16 @@ void get_target_options(const llvm::Module &module, llvm::TargetOptions &options
     get_md_string(module.getModuleFlag("halide_mcpu"), mcpu);
     get_md_string(module.getModuleFlag("halide_mattrs"), mattrs);
 
-    bool per_instruction_fast_math_flags = false;
-    get_md_bool(module.getModuleFlag("halide_per_instruction_fast_math_flags"), per_instruction_fast_math_flags);
-
     options = llvm::TargetOptions();
     #if LLVM_VERSION < 50
-    options.LessPreciseFPMADOption = !per_instruction_fast_math_flags;
+    options.LessPreciseFPMADOption = true;
     #endif
-    options.AllowFPOpFusion = per_instruction_fast_math_flags ? llvm::FPOpFusion::Strict : llvm::FPOpFusion::Fast;
-    options.UnsafeFPMath = !per_instruction_fast_math_flags;
-    options.NoInfsFPMath = !per_instruction_fast_math_flags;
-    options.NoNaNsFPMath = !per_instruction_fast_math_flags;
-    options.HonorSignDependentRoundingFPMathOption = !per_instruction_fast_math_flags;
+    options.AllowFPOpFusion = llvm::FPOpFusion::Fast;
+    options.UnsafeFPMath = true;
+
+    options.NoInfsFPMath = true;
+    options.NoNaNsFPMath = true;
+    options.HonorSignDependentRoundingFPMathOption = false;
     options.NoZerosInBSS = false;
     options.GuaranteedTailCallOpt = false;
     options.StackAlignmentOverride = 0;
@@ -445,8 +439,8 @@ void clone_target_options(const llvm::Module &from, llvm::Module &to) {
 std::unique_ptr<llvm::TargetMachine> make_target_machine(const llvm::Module &module) {
     std::string error_string;
 
-    const llvm::Target *llvm_target = llvm::TargetRegistry::lookupTarget(module.getTargetTriple(), error_string);
-    if (!llvm_target) {
+    const llvm::Target *target = llvm::TargetRegistry::lookupTarget(module.getTargetTriple(), error_string);
+    if (!target) {
         std::cout << error_string << std::endl;
 #if LLVM_VERSION < 60
         llvm::TargetRegistry::printRegisteredTargetsForVersion();
@@ -454,15 +448,14 @@ std::unique_ptr<llvm::TargetMachine> make_target_machine(const llvm::Module &mod
         llvm::TargetRegistry::printRegisteredTargetsForVersion(llvm::outs());
 #endif
     }
-    auto triple = llvm::Triple(module.getTargetTriple());
-    internal_assert(llvm_target) << "Could not create LLVM target for " << triple.str() << "\n";
+    internal_assert(target) << "Could not create target for " << module.getTargetTriple() << "\n";
 
     llvm::TargetOptions options;
     std::string mcpu = "";
     std::string mattrs = "";
     get_target_options(module, options, mcpu, mattrs);
 
-    return std::unique_ptr<llvm::TargetMachine>(llvm_target->createTargetMachine(module.getTargetTriple(),
+    return std::unique_ptr<llvm::TargetMachine>(target->createTargetMachine(module.getTargetTriple(),
                                                 mcpu, mattrs,
                                                 options,
                                                 llvm::Reloc::PIC_,
@@ -480,5 +473,5 @@ void set_function_attributes_for_target(llvm::Function *fn, Target t) {
     fn->addFnAttr("reciprocal-estimates", "none");
 }
 
-}  // namespace Internal
-}  // namespace Halide
+}
+}

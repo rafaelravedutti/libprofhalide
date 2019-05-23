@@ -1,13 +1,13 @@
 diff --git a/src/CodeGen_Internal.cpp b/src/CodeGen_Internal.cpp
-index 5d539537b..1d4c84d95 100644
+index 0164097d1..b82bf6a7d 100644
 --- a/src/CodeGen_Internal.cpp
 +++ b/src/CodeGen_Internal.cpp
-@@ -160,6 +160,8 @@ bool function_takes_user_context(const std::string &name) {
+@@ -158,6 +158,8 @@ bool function_takes_user_context(const std::string &name) {
          "halide_free",
          "halide_malloc",
          "halide_print",
 +        "halide_papi_pipeline_start",
-+        "halide_papi_pipeline_stop",
++        "halide_papi_pipeline_end",
          "halide_profiler_memory_allocate",
          "halide_profiler_memory_free",
          "halide_profiler_pipeline_start",

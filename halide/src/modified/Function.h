@@ -5,15 +5,14 @@
  * Defines the internal representation of a halide function and related classes
  */
 
-#include "Buffer.h"
-#include "Definition.h"
 #include "Expr.h"
-#include "FunctionPtr.h"
 #include "IntrusivePtr.h"
-#include "PAPIProfiling.h"
+#include "FunctionPtr.h"
 #include "Parameter.h"
-#include "Reduction.h"
 #include "Schedule.h"
+#include "Reduction.h"
+#include "Definition.h"
+#include "Buffer.h"
 #include "Util.h"
 
 #include <map>
@@ -218,7 +217,7 @@ public:
     /** Make a call node to the extern definition. An error if the
      * function has no extern definition. */
     Expr make_call_to_extern_definition(const std::vector<Expr> &args,
-                                        const Target &t) const;
+                                               const Target &t) const;
 
     /** Check if the extern function being called expects the legacy
      * buffer_t type. */
@@ -281,12 +280,9 @@ public:
     void trace_realizations();
     void profile(int level = 1, bool show_threads = false, bool enable = true);
     void profile_at(Function &parent, int level = 1, bool show_threads = false, bool enable = true);
-    void add_trace_tag(const std::string &trace_tag);
     bool is_tracing_loads() const;
     bool is_tracing_stores() const;
     bool is_tracing_realizations() const;
-    bool is_profiling() const;
-    const std::vector<std::string> &get_trace_tags() const;
     // @}
 
     /** Replace this Function's LoopLevels with locked copies that
@@ -341,7 +337,6 @@ std::pair<std::vector<Function>, std::map<std::string, Function>> deep_copy(
     const std::vector<Function> &outputs,
     const std::map<std::string, Function> &env);
 
-}  // namespace Internal
-}  // namespace Halide
+}}
 
 #endif

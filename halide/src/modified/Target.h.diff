@@ -1,8 +1,8 @@
 diff --git a/src/Target.h b/src/Target.h
-index 313c106b8..e3ca92bcf 100644
+index 37e5ae3fd..4b657c2e3 100644
 --- a/src/Target.h
 +++ b/src/Target.h
-@@ -71,6 +71,7 @@ struct Target {
+@@ -64,6 +64,7 @@ struct Target {
          OpenGLCompute = halide_target_feature_openglcompute,
          UserContext = halide_target_feature_user_context,
          Matlab = halide_target_feature_matlab,

@@ -1,8 +1,8 @@
 diff --git a/src/Func.cpp b/src/Func.cpp
-index d582f7818..211a24cfe 100644
+index 0831afde7..84c3f2795 100644
 --- a/src/Func.cpp
 +++ b/src/Func.cpp
-@@ -2470,6 +2470,18 @@ Func &Func::trace_realizations() {
+@@ -2413,6 +2413,18 @@ Func &Func::trace_realizations() {
      return *this;
  }
  
@@ -18,6 +18,6 @@ index d582f7818..211a24cfe 100644
 +    return *this;
 +}
 +
- Func &Func::add_trace_tag(const std::string &trace_tag) {
+ void Func::debug_to_file(const string &filename) {
      invalidate_cache();
-     func.add_trace_tag(trace_tag);
+     func.debug_file() = filename;

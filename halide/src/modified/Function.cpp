@@ -1,30 +1,30 @@
-#include <atomic>
-#include <memory>
 #include <set>
 #include <stdlib.h>
+#include <atomic>
+#include <memory>
 
-#include "CSE.h"
-#include "Function.h"
 #include "IR.h"
-#include "IREquality.h"
 #include "IRMutator.h"
+#include "Function.h"
+#include "Scope.h"
+#include "CSE.h"
+#include "Random.h"
+#include "Introspection.h"
+#include "IREquality.h"
 #include "IROperator.h"
 #include "IRPrinter.h"
-#include "Introspection.h"
 #include "PAPIProfiling.h"
 #include "ParallelRVar.h"
-#include "Random.h"
-#include "Scope.h"
 #include "Var.h"
 
 namespace Halide {
 namespace Internal {
 
+using std::vector;
+using std::string;
+using std::set;
 using std::map;
 using std::pair;
-using std::set;
-using std::string;
-using std::vector;
 
 typedef map<FunctionPtr, FunctionPtr> DeepCopyMap;
 
@@ -58,7 +58,7 @@ public:
     int count = 0;
     WeakenFunctionPtrs(FunctionContents *f) : func(f) {}
 };
-}  // namespace
+}
 
 struct FunctionContents {
     std::string name;
@@ -91,11 +91,8 @@ struct FunctionContents {
     Expr extern_proxy_expr;
 
     bool trace_loads = false, trace_stores = false, trace_realizations = false;
-    std::vector<string> trace_tags;
 
     bool frozen = false;
-
-    bool profile = false;
 
     void accept(IRVisitor *visitor) const {
         func_schedule.accept(visitor);
@@ -346,11 +343,9 @@ void Function::deep_copy(FunctionPtr copy, DeepCopyMap &copied_map) const {
     copy->trace_loads = contents->trace_loads;
     copy->trace_stores = contents->trace_stores;
     copy->trace_realizations = contents->trace_realizations;
-    copy->trace_tags = contents->trace_tags;
     copy->frozen = contents->frozen;
     copy->output_buffers = contents->output_buffers;
     copy->func_schedule = contents->func_schedule.deep_copy(copied_map);
-    copy->profile = contents->profile;
 
     // Copy the pure definition
     if (contents->init_def.defined()) {
@@ -893,9 +888,8 @@ void Function::trace_stores() {
 void Function::trace_realizations() {
     contents->trace_realizations = true;
 }
-void Function::profile(int level, bool show_threads, bool enable) {
-    contents->profile = true;
 
+void Function::profile(int level, bool show_threads, bool enable) {
     if(show_threads) {
         level |= PROFILE_SHOW_THREADS;
     }
@@ -903,16 +897,11 @@ void Function::profile(int level, bool show_threads, bool enable) {
     papi_profiler_defs.push_back(std::make_tuple(contents->name, level, enable, ""));
 }
 void Function::profile_at(Function &parent, int level, bool show_threads, bool enable) {
-    contents->profile = true;
-
     if(show_threads) {
         level |= PROFILE_SHOW_THREADS;
     }
 
     papi_profiler_defs.push_back(std::make_tuple(contents->name, level, enable, parent.name()));
-}
-void Function::add_trace_tag(const std::string &trace_tag) {
-    contents->trace_tags.push_back(trace_tag);
 }
 
 bool Function::is_tracing_loads() const {
@@ -923,12 +912,6 @@ bool Function::is_tracing_stores() const {
 }
 bool Function::is_tracing_realizations() const {
     return contents->trace_realizations;
-}
-bool Function::is_profiling() const {
-    return contents->profile;
-}
-const std::vector<std::string> &Function::get_trace_tags() const {
-    return contents->trace_tags;
 }
 
 void Function::freeze() {
@@ -1039,7 +1022,7 @@ public:
         : substitutions(substitutions) {}
 };
 
-}  // anonymous namespace
+} // anonymous namespace
 
 Function &Function::substitute_calls(const map<FunctionPtr, FunctionPtr> &substitutions) {
     debug(4) << "Substituting calls in " << name() << "\n";
@@ -1110,5 +1093,6 @@ pair<vector<Function>, map<string, Function>> deep_copy(
     return { copy_outputs, copy_env };
 }
 
-}  // namespace Internal
-}  // namespace Halide
+
+}
+}

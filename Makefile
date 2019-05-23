@@ -7,42 +7,28 @@ CFLAGS=-DPERF_VERBOSE -Wall -I ${PAPI_SOURCE_DIR}
 CURRENT_DIR := ${CURDIR}
 
 # Halide directories
-HALIDE_DIR=/home/rafael/hdd/repositories/macalan/Halide
+HALIDE_DIR=/home/rafael/hdd/repositories/Halide
 HALIDE_RUNTIME_DIR=${HALIDE_DIR}/src/runtime
 
 # Halide flags
 HALIDE_FLAGS=-I ${HALIDE_RUNTIME_DIR}
 
 # PAPI directory
-PAPI_DIR=/home/rafael/hdd/repositories/macalan/papi
+PAPI_DIR=/home/rafael/hdd/repositories/papi
 PAPI_SOURCE_DIR=${PAPI_DIR}/src
 
 # Halide files to synchronize
 HALIDE_SYNC_FILES = \
-	src/AsyncProducers.cpp \
 	src/CodeGen_Internal.cpp \
 	src/Func.cpp \
 	src/Func.h \
 	src/Function.cpp \
 	src/Function.h \
-	src/IR.cpp \
-	src/IR.h \
-	src/IRMutator.cpp \
-	src/IRPrinter.cpp \
 	src/LLVM_Runtime_Linker.cpp \
-	src/LoopCarry.cpp \
 	src/Lower.cpp \
-	src/Memoization.cpp \
 	src/Pipeline.cpp \
-	src/Profiling.cpp \
-	src/RemoveUndef.cpp \
-	src/ScheduleFunctions.cpp \
-	src/Simplify_Stmts.cpp \
-	src/SkipStages.cpp \
-	src/StorageFolding.cpp \
 	src/Target.cpp \
 	src/Target.h \
-	src/Tracing.cpp \
 	src/runtime/HalideRuntime.h \
 	src/runtime/runtime_api.cpp \
 	src/runtime/runtime_internal.h

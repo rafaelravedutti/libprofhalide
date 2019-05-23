@@ -3,6 +3,8 @@
 #include "scoped_mutex_lock.h"
 #include "papi_profiler.h"
 
+#define PROFILE_GRANULARITY   100
+
 extern "C" {
 
 namespace Halide { namespace Runtime { namespace Internal {
@@ -203,7 +205,7 @@ WEAK void halide_papi_report_func_prod_cons(void *user_context, halide_papi_func
         sstr << "_t" << th << ",";
 
         for(int e = 0; e < papi_halide_number_of_events(); ++e) {
-          sstr << fs->event_counters[stage][th][e] << ",";
+          sstr << (fs->event_counters[stage][th][e] * PROFILE_GRANULARITY) << ",";
         }
 
         sstr.erase(1);
@@ -231,7 +233,7 @@ WEAK void halide_papi_report_func_prod_cons(void *user_context, halide_papi_func
     }
 
     for(int e = 0; e < papi_halide_number_of_events(); ++e) {
-      sstr << total_events[e] << ",";
+      sstr << (total_events[e] * PROFILE_GRANULARITY) << ",";
     }
 
     sstr.erase(1);
@@ -264,7 +266,7 @@ WEAK void halide_papi_report_func_overhead(void *user_context, halide_papi_func_
         sstr << fs->name << "_overhead" << "_t" << th << ",";
 
         for(int e = 0; e < papi_halide_number_of_events(); ++e) {
-          sstr << fs->overhead_counters[th][e] << ",";
+          sstr << (fs->overhead_counters[th][e] * PROFILE_GRANULARITY) << ",";
         }
 
         sstr.erase(1);
@@ -286,7 +288,7 @@ WEAK void halide_papi_report_func_overhead(void *user_context, halide_papi_func_
     }
 
     for(int e = 0; e < papi_halide_number_of_events(); ++e) {
-      sstr << total_events[e] << ",";
+      sstr << (total_events[e] * PROFILE_GRANULARITY) << ",";
     }
 
     sstr.erase(1);
@@ -414,13 +416,17 @@ WEAK __attribute__((always_inline)) int halide_papi_set_current_func(halide_papi
 }
 
 WEAK __attribute__((always_inline)) int halide_papi_enter_current_func(halide_papi_state *state, int tok, int t, bool is_producer) {
-  /*
   halide_papi_func_stats *fs = current_pipeline_stats->funcs + t;
   int level = is_producer ? 0 : 1;
 
+  /*
   fs->clock_start[level] = halide_current_time_ns(NULL);
   */
-  papi_halide_marker_start();
+
+  if(fs->iterations[level] % PROFILE_GRANULARITY == 0) {
+    papi_halide_marker_start();
+  }
+
   return 0;
 }
 
@@ -429,19 +435,27 @@ WEAK __attribute__((always_inline)) int halide_papi_leave_current_func(halide_pa
   int thread_idx = papi_halide_get_thread_index();
   int level = is_producer ? 0 : 1;
 
-  papi_halide_marker_stop(fs->event_counters[level][thread_idx], fs->counter_used[level][thread_idx]);
-  //fs->clock_accum[level] += halide_current_time_ns(NULL) - fs->clock_start[level];
-  fs->counter_used[level][thread_idx] = 1;
+  if(fs->iterations[level] % PROFILE_GRANULARITY == 0) {
+    papi_halide_marker_stop(fs->event_counters[level][thread_idx], fs->counter_used[level][thread_idx]);
+    //fs->clock_accum[level] += halide_current_time_ns(NULL) - fs->clock_start[level];
+    fs->counter_used[level][thread_idx] = 1;
+  }
+
+  fs->iterations[level]++;
   return 0;
 }
 
 WEAK __attribute__((always_inline)) int halide_papi_enter_overhead_region(halide_papi_state *state, int tok, int t) {
-  /*
   halide_papi_func_stats *fs = current_pipeline_stats->funcs + t;
 
+  /*
   fs->overhead_clock_start = halide_current_time_ns(NULL);
   */
-  papi_halide_marker_start();
+
+  if(fs->overhead_iterations % PROFILE_GRANULARITY == 0) {
+    papi_halide_marker_start();
+  }
+
   return 0;
 }
 
@@ -449,9 +463,13 @@ WEAK __attribute__((always_inline)) int halide_papi_leave_overhead_region(halide
   halide_papi_func_stats *fs = current_pipeline_stats->funcs + t;
   int thread_idx = papi_halide_get_thread_index();
 
-  papi_halide_marker_stop(fs->overhead_counters[thread_idx], fs->overhead_counter_used[thread_idx]);
-  //fs->overhead_clock_accum += halide_current_time_ns(NULL) - fs->overhead_clock_start;
-  fs->overhead_counter_used[thread_idx] = 1;
+  if(fs->overhead_iterations % PROFILE_GRANULARITY == 0) {
+    papi_halide_marker_stop(fs->overhead_counters[thread_idx], fs->overhead_counter_used[thread_idx]);
+    //fs->overhead_clock_accum += halide_current_time_ns(NULL) - fs->overhead_clock_start;
+    fs->overhead_counter_used[thread_idx] = 1;
+  }
+
+  fs->overhead_iterations++;
   return 0;
 }
 
