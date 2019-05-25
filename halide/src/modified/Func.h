@@ -2246,8 +2246,8 @@ public:
     /** Profile this function. */
     Func &profile(int level = 1, bool show_threads = false, bool enable = true);
 
-    /** Profile this function at some level. */
-    Func &profile_at(Internal::Function &parent, int level = 1, bool show_threads = false, bool enable = true);
+    /** Profile this function inside some parent. */
+    Func &profile_in(Internal::Function &parent, int level = 1, bool show_threads = false, bool enable = true);
 
     /** Get a handle on the internal halide function that this Func
      * represents. Useful if you want to do introspection on Halide

@@ -1,5 +1,5 @@
 diff --git a/src/Func.cpp b/src/Func.cpp
-index 0831afde7..84c3f2795 100644
+index 0831afde7..644ae6f12 100644
 --- a/src/Func.cpp
 +++ b/src/Func.cpp
 @@ -2413,6 +2413,18 @@ Func &Func::trace_realizations() {
@@ -12,9 +12,9 @@ index 0831afde7..84c3f2795 100644
 +    return *this;
 +}
 +
-+Func &Func::profile_at(Internal::Function &parent, int level, bool show_threads, bool enable) {
++Func &Func::profile_in(Internal::Function &parent, int level, bool show_threads, bool enable) {
 +    invalidate_cache();
-+    func.profile_at(parent, level, show_threads, enable);
++    func.profile_in(parent, level, show_threads, enable);
 +    return *this;
 +}
 +

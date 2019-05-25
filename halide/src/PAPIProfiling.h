@@ -25,6 +25,8 @@
  */
 
 #include "IR.h"
+#include "RDom.h"
+#include "Var.h"
 
 #define PROFILE_PRODUCTION      1
 #define PROFILE_CONSUMPTION     2
@@ -32,6 +34,11 @@
 #define PROFILE_SHOW_THREADS    4
 
 namespace Halide {
+
+void profile_at(LoopLevel loop_level, bool show_threads);
+void profile_at(Func f, RVar var, bool show_threads);
+void profile_at(Func f, Var var, bool show_threads);
+
 namespace Internal {
 
 /** Take a statement representing a halide pipeline insert

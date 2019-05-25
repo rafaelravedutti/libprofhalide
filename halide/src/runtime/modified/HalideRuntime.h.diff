@@ -1,5 +1,5 @@
 diff --git a/src/runtime/HalideRuntime.h b/src/runtime/HalideRuntime.h
-index 9ecd978f2..ff3cca8da 100644
+index 9ecd978f2..51fc89c2a 100644
 --- a/src/runtime/HalideRuntime.h
 +++ b/src/runtime/HalideRuntime.h
 @@ -1072,7 +1072,8 @@ typedef enum halide_target_feature_t {
@@ -12,7 +12,7 @@ index 9ecd978f2..ff3cca8da 100644
  } halide_target_feature_t;
  
  /** This function is called internally by Halide in some situations to determine
-@@ -1560,6 +1561,130 @@ extern float halide_float16_bits_to_float(uint16_t);
+@@ -1560,6 +1561,150 @@ extern float halide_float16_bits_to_float(uint16_t);
   *  the double that represents the same value */
  extern double halide_float16_bits_to_double(uint16_t);
  
@@ -44,9 +44,6 @@ index 9ecd978f2..ff3cca8da 100644
 +    /** Overhead event counter has been used? */
 +    int overhead_counter_used[32];
 +
-+    /** Parent in production level */
-+    int parent_prod, parent_cons;
-+
 +    /** Show threads in production level */
 +    bool show_threads_prod, show_threads_cons;
 +
@@ -55,6 +52,23 @@ index 9ecd978f2..ff3cca8da 100644
 +
 +    /** Overhead iteration counter */
 +    uint64_t overhead_iterations;
++};
++
++struct halide_papi_loop_stats {
++    /** The name of this Func. A global constant string. */
++    const char *name;
++
++    /** Show threads */
++    bool show_threads;
++
++    /** Loop event counters */
++    long long int loop_counters[32][128];
++
++    /** Loop event counter has been used? */
++    int loop_counter_used[32];
++
++    /** Iteration counter */
++    uint64_t iterations;
 +};
 +
 +struct halide_papi_pipeline_stats {
@@ -71,12 +85,18 @@ index 9ecd978f2..ff3cca8da 100644
 +    /** An array containing states for each Func in this pipeline. */
 +    struct halide_papi_func_stats *funcs;
 +
++    /** An array containing states for each Func in this pipeline. */
++    struct halide_papi_loop_stats *loops;
++
 +    /** The next pipeline_stats pointer. It's a void * because types
 +     * in the Halide runtime may not currently be recursive. */
 +    void *next;
 +
 +    /** The number of funcs in this pipeline. */
 +    int num_funcs;
++
++    /** The number of loops to profile in this pipeline. */
++    int num_loops;
 +
 +    /** An internal base id used to identify the funcs in this pipeline. */
 +    int first_func_id;

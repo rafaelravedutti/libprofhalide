@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index a715367ec..776a0051b 100644
+index a715367ec..55da41a35 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -18,7 +18,7 @@ ifeq ($(OS), Windows_NT)
@@ -7,7 +7,7 @@ index a715367ec..776a0051b 100644
  else
      # let's assume "normal" UNIX such as linux
 -    COMMON_LD_FLAGS=-ldl -lpthread -lz
-+    COMMON_LD_FLAGS=-ldl -lpthread -lz -lpapihalide -lpapi -L /home/rafael/hdd/repositories/macalan/libpapihalide -L /home/rafael/hdd/repositories/macalan/papi/src
++    COMMON_LD_FLAGS=-ldl -lpthread -lz -lpapihalide -lpapi -L /home/rafael/hdd/repositories/libpapihalide -L /home/rafael/hdd/repositories/papi/src
      FPIC=-fPIC
  ifeq ($(UNAME), Darwin)
      SHARED_EXT=dylib

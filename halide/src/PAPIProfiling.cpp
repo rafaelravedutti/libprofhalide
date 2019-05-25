@@ -11,9 +11,9 @@
 #include "Simplify.h"
 #include "Substitute.h"
 #include "Util.h"
+#include "Func.h"
 
 namespace Halide {
-namespace Internal {
 
 using std::map;
 using std::pair;
@@ -21,15 +21,34 @@ using std::string;
 using std::tuple;
 using std::vector;
 
+vector<tuple<string, string, bool>> papi_profiler_loops;
+
+void profile_at(LoopLevel loop_level, bool show_threads) {
+    auto locked_loop_level = loop_level.lock();
+    papi_profiler_loops.push_back(std::make_tuple(locked_loop_level.func(), locked_loop_level.var().name(), show_threads));
+}
+
+void profile_at(Func f, RVar var, bool show_threads) {
+    auto locked_loop_level = LoopLevel(f, var).lock();
+    papi_profiler_loops.push_back(std::make_tuple(locked_loop_level.func(), locked_loop_level.var().name(), show_threads));
+}
+
+void profile_at(Func f, Var var, bool show_threads) {
+    auto locked_loop_level = LoopLevel(f, var).lock();
+    papi_profiler_loops.push_back(std::make_tuple(locked_loop_level.func(), locked_loop_level.var().name(), show_threads));
+}
+
+namespace Internal {
+
 vector<tuple<string, int, bool, string>> papi_profiler_defs;
 
 class InjectPAPIProfiling : public IRMutator2 {
 public:
     map<string, int> indices;   // maps from func name -> index in buffer.
-    map<int, int> parent_prod;   // maps from func int -> parent func id in production level.
-    map<int, int> parent_cons;   // maps from func int -> parent func id in consumption level.
+    map<string, int> loops;   // maps from loop name -> index in buffer.
     map<int, int> show_threads_prod;   // maps from func int -> show threads in profiler in production level.
     map<int, int> show_threads_cons;   // maps from func int -> show threads in profiler in consumption level.
+    map<int, int> show_threads_loop;   // maps from loop int -> show threads in profiler.
 
     vector<int> stack; // What produce nodes are we currently inside of.
     vector<pair<bool, bool>> profile_stack; // Produce node we are inside of must be profiled?
@@ -109,93 +128,6 @@ private:
         size = simplify(Select::make(condition, size * type.bytes(), make_zero(UInt(64))));
         return size;
     }
-
-    /*
-    Stmt visit(const Allocate *op) override {
-        int idx = get_func_id(op->name);
-
-        vector<Expr> new_extents;
-        bool all_extents_unmodified = true;
-        for (size_t i = 0; i < op->extents.size(); i++) {
-            new_extents.push_back(mutate(op->extents[i]));
-            all_extents_unmodified &= new_extents[i].same_as(op->extents[i]);
-        }
-        Expr condition = mutate(op->condition);
-
-        bool on_stack;
-        Expr size = compute_allocation_size(new_extents, condition, op->type, op->name, on_stack);
-        internal_assert(size.type() == UInt(64));
-        func_alloc_sizes.push(op->name, {on_stack, size});
-
-        // compute_allocation_size() might return a zero size, if the allocation is
-        // always conditionally false. remove_dead_allocations() is called after
-        // inject_profiling() so this is a possible scenario.
-        if (!is_zero(size) && on_stack) {
-            const uint64_t *int_size = as_const_uint(size);
-            internal_assert(int_size != NULL); // Stack size is always a const int
-            func_stack_current[idx] += *int_size;
-            func_stack_peak[idx] = std::max(func_stack_peak[idx], func_stack_current[idx]);
-            debug(3) << "  Allocation on stack: " << op->name << "(" << size << ") in pipeline " << pipeline_name
-                     << "; current: " << func_stack_current[idx] << "; peak: " << func_stack_peak[idx] << "\n";
-        }
-
-        Stmt body = mutate(op->body);
-        Expr new_expr;
-        Stmt stmt;
-        if (op->new_expr.defined()) {
-            new_expr = mutate(op->new_expr);
-        }
-        if (all_extents_unmodified &&
-            body.same_as(op->body) &&
-            condition.same_as(op->condition) &&
-            new_expr.same_as(op->new_expr)) {
-            stmt = op;
-        } else {
-            stmt = Allocate::make(op->name, op->type, op->memory_type,
-                                  new_extents, condition, body, new_expr, op->free_function);
-        }
-
-        if (!is_zero(size) && !on_stack && profiling_memory) {
-            Expr profiler_pipeline_state = Variable::make(Handle(), "profiler_pipeline_state");
-            debug(3) << "  Allocation on heap: " << op->name << "(" << size << ") in pipeline " << pipeline_name << "\n";
-            Expr set_task = Call::make(Int(32), "halide_papi_memory_allocate",
-                                       {profiler_pipeline_state, idx, size}, Call::Extern);
-            stmt = Block::make(Evaluate::make(set_task), stmt);
-        }
-        return stmt;
-    }
-
-    Stmt visit(const Free *op) override {
-        int idx = get_func_id(op->name);
-
-        AllocSize alloc = func_alloc_sizes.get(op->name);
-        internal_assert(alloc.size.type() == UInt(64));
-        func_alloc_sizes.pop(op->name);
-
-        Stmt stmt = IRMutator2::visit(op);
-
-        if (!is_zero(alloc.size)) {
-            Expr profiler_pipeline_state = Variable::make(Handle(), "profiler_pipeline_state");
-
-            if (!alloc.on_stack) {
-                if (profiling_memory) {
-                    debug(3) << "  Free on heap: " << op->name << "(" << alloc.size << ") in pipeline " << pipeline_name << "\n";
-                    Expr set_task = Call::make(Int(32), "halide_papi_memory_free",
-                                               {profiler_pipeline_state, idx, alloc.size}, Call::Extern);
-                    stmt = Block::make(Evaluate::make(set_task), stmt);
-                }
-            } else {
-                const uint64_t *int_size = as_const_uint(alloc.size);
-                internal_assert(int_size != nullptr);
-
-                func_stack_current[idx] -= *int_size;
-                debug(3) << "  Free on stack: " << op->name << "(" << alloc.size << ") in pipeline " << pipeline_name
-                         << "; current: " << func_stack_current[idx] << "; peak: " << func_stack_peak[idx] << "\n";
-            }
-        }
-        return stmt;
-    }
-    */
 
     Stmt visit(const ProducerConsumer *op) override {
         int idx;
@@ -300,10 +232,8 @@ private:
         auto fid = get_func_id(op->name);
 
         if(op->is_producer) {
-          parent_prod[fid] = parent;
           show_threads_prod[fid] = must_show_threads;
         } else {
-          parent_cons[fid] = parent;
           show_threads_cons[fid] = must_show_threads;
         }
 
@@ -311,6 +241,7 @@ private:
     }
 
     Stmt visit(const For *op) override {
+
         Stmt body = op->body;
 
         // The for loop indicates a device transition or a
@@ -367,6 +298,28 @@ private:
 
         Stmt stmt = For::make(op->name, op->min, op->extent, op->for_type, op->device_api, body);
 
+        auto it = find_if(papi_profiler_loops.begin(), papi_profiler_loops.end(),
+                          [op](std::tuple<string, string, bool> const &elem) {
+            return starts_with(op->name, std::get<0>(elem) + ".") && ends_with(op->name, "." + std::get<1>(elem));
+        });
+
+        if (it != papi_profiler_loops.end()) {
+            Expr profiler_token = Variable::make(Int(32), "profiler_token");
+            Expr profiler_state = Variable::make(Handle(), "profiler_state");
+            int loop_id = (int) loops.size();
+
+            Stmt enter_loop = Evaluate::make(Call::make(Int(32), "halide_papi_enter_loop",
+                                             {profiler_state, profiler_token, make_const(UInt(64), loop_id)}, Call::Extern));
+
+            Stmt leave_loop = Evaluate::make(Call::make(Int(32), "halide_papi_leave_loop",
+                                             {profiler_state, profiler_token, make_const(UInt(64), loop_id)}, Call::Extern));
+
+            stmt = Block::make({enter_loop, stmt, leave_loop});
+
+            loops[op->name] = loop_id;
+            show_threads_loop[loop_id] = std::get<2>(*it);
+        }
+
         if (update_active_threads) {
             stmt = Block::make({decr_active_threads, enter_parallel_region, stmt, leave_parallel_region, incr_active_threads});
         }
@@ -379,21 +332,18 @@ Stmt inject_papi_profiling(Stmt s, string pipeline_name) {
     s = profiling.mutate(s);
 
     int num_funcs = (int)(profiling.indices.size());
+    int num_loops = (int)(profiling.loops.size());
 
     Expr func_names_buf = Variable::make(Handle(), "profiling_func_names");
-
-    Expr func_parents_prod_buf = Variable::make(Handle(), "profiling_func_parents_prod");
-
-    Expr func_parents_cons_buf = Variable::make(Handle(), "profiling_func_parents_cons");
+    Expr loop_names_buf = Variable::make(Handle(), "profiling_loop_names");
 
     Expr func_threads_prod_buf = Variable::make(Handle(), "profiling_func_threads_prod");
-
     Expr func_threads_cons_buf = Variable::make(Handle(), "profiling_func_threads_cons");
+    Expr loop_threads_buf = Variable::make(Handle(), "profiling_loop_threads");
 
     Expr start_profiler = Call::make(Int(32), "halide_papi_pipeline_start",
-                                     {pipeline_name, num_funcs, func_names_buf,
-                                      func_parents_prod_buf, func_parents_cons_buf,
-                                      func_threads_prod_buf, func_threads_cons_buf}, Call::Extern);
+                                     {pipeline_name, num_funcs, num_loops, func_names_buf, loop_names_buf,
+                                      func_threads_prod_buf, func_threads_cons_buf, loop_threads_buf}, Call::Extern);
 
     Expr get_state = Call::make(Handle(), "halide_papi_get_state", {}, Call::Extern);
 
@@ -403,18 +353,6 @@ Stmt inject_papi_profiling(Stmt s, string pipeline_name) {
 
     Expr stop_profiler = Call::make(Int(32), Call::register_destructor,
                                     {Expr("halide_papi_pipeline_end"), get_state}, Call::Intrinsic);
-
-    /*
-    bool no_stack_alloc = profiling.func_stack_peak.empty();
-    if (!no_stack_alloc) {
-        Expr func_stack_peak_buf = Variable::make(Handle(), "profiling_func_stack_peak_buf");
-
-        Expr profiler_pipeline_state = Variable::make(Handle(), "profiler_pipeline_state");
-        Stmt update_stack = Evaluate::make(Call::make(Int(32), "halide_papi_stack_peak_update",
-                                           {profiler_pipeline_state, func_stack_peak_buf}, Call::Extern));
-        s = Block::make(update_stack, s);
-    }
-    */
 
     Expr profiler_state = Variable::make(Handle(), "profiler_state");
 
@@ -435,29 +373,12 @@ Stmt inject_papi_profiling(Stmt s, string pipeline_name) {
     s = Block::make(AssertStmt::make(profiler_token >= 0, profiler_token), s);
     s = LetStmt::make("profiler_token", start_profiler, s);
 
-    /*
-    if (!no_stack_alloc) {
-        for (int i = num_funcs-1; i >= 0; --i) {
-            s = Block::make(Store::make("profiling_func_stack_peak_buf",
-                                        make_const(UInt(64), profiling.func_stack_peak[i]),
-                                        i, Parameter(), const_true()), s);
-        }
-        s = Block::make(s, Free::make("profiling_func_stack_peak_buf"));
-        s = Allocate::make("profiling_func_stack_peak_buf", UInt(64),
-                           MemoryType::Auto, {num_funcs}, const_true(), s);
-    }
-    */
-
     for (std::pair<string, int> p : profiling.indices) {
         s = Block::make(Store::make("profiling_func_names", p.first, p.second, Parameter(), const_true()), s);
     }
 
-    for (std::pair<int, int> p : profiling.parent_prod) {
-        s = Block::make(Store::make("profiling_func_parents_prod", p.second, p.first, Parameter(), const_true()), s);
-    }
-
-    for (std::pair<int, int> p : profiling.parent_cons) {
-        s = Block::make(Store::make("profiling_func_parents_cons", p.second, p.first, Parameter(), const_true()), s);
+    for (std::pair<string, int> p : profiling.loops) {
+        s = Block::make(Store::make("profiling_loop_names", p.first, p.second, Parameter(), const_true()), s);
     }
 
     for (std::pair<int, int> p : profiling.show_threads_prod) {
@@ -468,21 +389,27 @@ Stmt inject_papi_profiling(Stmt s, string pipeline_name) {
         s = Block::make(Store::make("profiling_func_threads_cons", p.second, p.first, Parameter(), const_true()), s);
     }
 
-    s = Block::make(s, Free::make("profiling_func_parents_prod"));
-    s = Block::make(s, Free::make("profiling_func_parents_cons"));
+    for (std::pair<int, int> p : profiling.show_threads_loop) {
+        s = Block::make(Store::make("profiling_loop_threads", p.second, p.first, Parameter(), const_true()), s);
+    }
+
     s = Block::make(s, Free::make("profiling_func_threads_prod"));
     s = Block::make(s, Free::make("profiling_func_threads_cons"));
+    s = Block::make(s, Free::make("profiling_loop_threads"));
     s = Block::make(s, Free::make("profiling_func_names"));
+    s = Block::make(s, Free::make("profiling_loop_names"));
+
     s = Allocate::make("profiling_func_names", Handle(),
                        MemoryType::Auto, {num_funcs}, const_true(), s);
+    s = Allocate::make("profiling_loop_names", Handle(),
+                       MemoryType::Auto, {num_loops}, const_true(), s);
     s = Allocate::make("profiling_func_threads_prod", Handle(),
                        MemoryType::Auto, {num_funcs}, const_true(), s);
     s = Allocate::make("profiling_func_threads_cons", Handle(),
                        MemoryType::Auto, {num_funcs}, const_true(), s);
-    s = Allocate::make("profiling_func_parents_prod", Handle(),
-                       MemoryType::Auto, {num_funcs}, const_true(), s);
-    s = Allocate::make("profiling_func_parents_cons", Handle(),
-                       MemoryType::Auto, {num_funcs}, const_true(), s);
+    s = Allocate::make("profiling_loop_threads", Handle(),
+                       MemoryType::Auto, {num_loops}, const_true(), s);
+
     s = Block::make(Evaluate::make(stop_profiler), s);
 
     return s;

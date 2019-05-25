@@ -279,7 +279,8 @@ public:
     void trace_stores();
     void trace_realizations();
     void profile(int level = 1, bool show_threads = false, bool enable = true);
-    void profile_at(Function &parent, int level = 1, bool show_threads = false, bool enable = true);
+    void profile_in(Function &parent, int level = 1, bool show_threads = false, bool enable = true);
+
     bool is_tracing_loads() const;
     bool is_tracing_stores() const;
     bool is_tracing_realizations() const;

@@ -1,5 +1,5 @@
 diff --git a/src/Function.cpp b/src/Function.cpp
-index 1a2569b9a..cf2a9fa82 100644
+index 1a2569b9a..52af9b787 100644
 --- a/src/Function.cpp
 +++ b/src/Function.cpp
 @@ -13,6 +13,7 @@
@@ -31,7 +31,7 @@ index 1a2569b9a..cf2a9fa82 100644
 +
 +    papi_profiler_defs.push_back(std::make_tuple(contents->name, level, enable, ""));
 +}
-+void Function::profile_at(Function &parent, int level, bool show_threads, bool enable) {
++void Function::profile_in(Function &parent, int level, bool show_threads, bool enable) {
 +    if(show_threads) {
 +        level |= PROFILE_SHOW_THREADS;
 +    }

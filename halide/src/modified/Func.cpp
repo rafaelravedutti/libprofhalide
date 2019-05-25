@@ -2419,9 +2419,9 @@ Func &Func::profile(int level, bool show_threads, bool enable) {
     return *this;
 }
 
-Func &Func::profile_at(Internal::Function &parent, int level, bool show_threads, bool enable) {
+Func &Func::profile_in(Internal::Function &parent, int level, bool show_threads, bool enable) {
     invalidate_cache();
-    func.profile_at(parent, level, show_threads, enable);
+    func.profile_in(parent, level, show_threads, enable);
     return *this;
 }
 

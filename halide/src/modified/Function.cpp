@@ -896,7 +896,7 @@ void Function::profile(int level, bool show_threads, bool enable) {
 
     papi_profiler_defs.push_back(std::make_tuple(contents->name, level, enable, ""));
 }
-void Function::profile_at(Function &parent, int level, bool show_threads, bool enable) {
+void Function::profile_in(Function &parent, int level, bool show_threads, bool enable) {
     if(show_threads) {
         level |= PROFILE_SHOW_THREADS;
     }

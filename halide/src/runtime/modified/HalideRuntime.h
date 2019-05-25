@@ -1589,9 +1589,6 @@ struct halide_papi_func_stats {
     /** Overhead event counter has been used? */
     int overhead_counter_used[32];
 
-    /** Parent in production level */
-    int parent_prod, parent_cons;
-
     /** Show threads in production level */
     bool show_threads_prod, show_threads_cons;
 
@@ -1600,6 +1597,23 @@ struct halide_papi_func_stats {
 
     /** Overhead iteration counter */
     uint64_t overhead_iterations;
+};
+
+struct halide_papi_loop_stats {
+    /** The name of this Func. A global constant string. */
+    const char *name;
+
+    /** Show threads */
+    bool show_threads;
+
+    /** Loop event counters */
+    long long int loop_counters[32][128];
+
+    /** Loop event counter has been used? */
+    int loop_counter_used[32];
+
+    /** Iteration counter */
+    uint64_t iterations;
 };
 
 struct halide_papi_pipeline_stats {
@@ -1616,12 +1630,18 @@ struct halide_papi_pipeline_stats {
     /** An array containing states for each Func in this pipeline. */
     struct halide_papi_func_stats *funcs;
 
+    /** An array containing states for each Func in this pipeline. */
+    struct halide_papi_loop_stats *loops;
+
     /** The next pipeline_stats pointer. It's a void * because types
      * in the Halide runtime may not currently be recursive. */
     void *next;
 
     /** The number of funcs in this pipeline. */
     int num_funcs;
+
+    /** The number of loops to profile in this pipeline. */
+    int num_loops;
 
     /** An internal base id used to identify the funcs in this pipeline. */
     int first_func_id;

@@ -1,13 +1,14 @@
 diff --git a/src/Function.h b/src/Function.h
-index d215510b4..457b6d8bd 100644
+index d215510b4..46f6668f7 100644
 --- a/src/Function.h
 +++ b/src/Function.h
-@@ -278,6 +278,8 @@ public:
+@@ -278,6 +278,9 @@ public:
      void trace_loads();
      void trace_stores();
      void trace_realizations();
 +    void profile(int level = 1, bool show_threads = false, bool enable = true);
-+    void profile_at(Function &parent, int level = 1, bool show_threads = false, bool enable = true);
++    void profile_in(Function &parent, int level = 1, bool show_threads = false, bool enable = true);
++
      bool is_tracing_loads() const;
      bool is_tracing_stores() const;
      bool is_tracing_realizations() const;
