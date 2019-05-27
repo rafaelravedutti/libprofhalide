@@ -6,6 +6,11 @@ CXX=g++
 CCFLAGS=
 CXXFLAGS=-g
 
+# Must profile code?
+ifdef PROFILE
+	CXXFLAGS+=-DPROFILE
+endif
+
 # Halide path
 HALIDE_PATH=/home/ppginf/rrlmachado/nobackup/repositories/Halide
 

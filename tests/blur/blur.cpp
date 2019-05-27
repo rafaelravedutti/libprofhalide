@@ -26,49 +26,61 @@ int main(int argc, const char **argv) {
   blur_x(x, y, c) = (input(x - 1, y, c) + input(x, y, c) + input(x + 1, y, c)) / 3.0f;
   blur_y(x, y, c) = (blur_x(x, y - 1, c) + blur_x(x, y, c) + blur_x(x, y + 1, c)) / 3.0f;
 
-  #if SCHEDULE == 1
+#if SCHEDULE == 1
     /* Breadth-first */
     schedule = "breadth_first";
 
     blur_x.compute_root();
 
+  #ifdef PROFILE
     blur_x.profile(PROFILE_PRODUCTION, false, true);
     blur_y.profile(PROFILE_PRODUCTION, false, true);
+  #endif
 
-  #elif SCHEDULE == 2
+#elif SCHEDULE == 2
     /* Full-fusion */
     schedule = "full_fusion";
 
+  #ifdef PROFILE
     blur_x.profile(PROFILE_PRODUCTION, false, true);
     blur_y.profile(PROFILE_PRODUCTION, false, true);
+  #endif
 
-  #elif SCHEDULE == 3
+#elif SCHEDULE == 3
     /* Sliding window */
     schedule = "sliding_window";
 
     blur_x.store_at(blur_y, c).compute_at(blur_y, x);
 
+  #ifdef PROFILE
     profile_at(blur_y, c, false);
+  #endif
 
-  #elif SCHEDULE == 4
+#elif SCHEDULE == 4
     /* Tile (block dimension = 32x32) */
     blur_y.tile(x, y, xi, yi, 32, 32);
     blur_x.compute_at(blur_y, x);
 
+  #ifdef PROFILE
     blur_x.profile(PROFILE_PRODUCTION, false, true);
     blur_y.profile(PROFILE_PRODUCTION, false, true);
+  #endif
 
-  #else
+#else
     schedule = "invalid";
 
     #error "Invalid schedule!"
-  #endif
+
+#endif
 
   output.set_min(1, 1);
 
 #ifdef COMPILE_AOT
 
+#ifdef PROFILE
   blur_y.compile_to_lowered_stmt("blur_" + schedule + ".html", {input}, HTML);
+#endif
+
   blur_y.compile_to_static_library("blur_aot", {input}, "blur_y");
 
 #else

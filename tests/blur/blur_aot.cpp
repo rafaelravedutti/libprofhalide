@@ -13,19 +13,19 @@ int main(int argc, const char **argv) {
   Halide::Runtime::Buffer<double> output(input.width() - 2, input.height() - 2, input.channels());
   int error;
 
-  for(int x = 0; x < input.width(); ++x) {
-    for(int y = 0; y < input.height(); ++y) {
-      for(int c = 0; c < input.channels(); ++c) {
-        input(x, y, c) = rand();
-      }
-    }
-  }
+  halide_set_num_threads(4);
 
   output.set_min(1, 1);
 
-  halide_set_num_threads(4);
-
   for(int i = 0; i < 30; ++i) {
+    for(int c = 0; c < input.channels(); ++c) {
+      for(int y = 0; y < input.height(); ++y) {
+        for(int x = 0; x < input.width(); ++x) {
+          input(x, y, c) = rand();
+        }
+      }
+    }
+
     if((error = blur_y(input, output)) != 0) {
       fprintf(stderr, "Halide returned an error: %d\n", error);
     }
