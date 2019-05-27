@@ -7,7 +7,7 @@ CCFLAGS=
 CXXFLAGS=-g
 
 # Halide path
-HALIDE_PATH=/home/rafael/hdd/repositories/macalan/Halide
+HALIDE_PATH=/home/ppginf/rrlmachado/nobackup/repositories/Halide
 
 # Use Halide static library?
 USE_HALIDE_STATIC_LIB=false
@@ -22,7 +22,7 @@ else
 endif
 
 # PAPI path
-PAPI_PATH=/home/rafael/hdd/repositories/macalan/papi
+PAPI_PATH=/home/ppginf/rrlmachado/nobackup/repositories/papi
 PAPI_SRC=${PAPI_PATH}/src
 
 # PAPI flags
@@ -32,7 +32,7 @@ PAPI_FLAGS=-L ${PAPI_SRC} -lpapi
 LIBPFM_PATH=${PAPI_SRC}/libpfm4/lib/
 
 # PAPI Halide path
-PAPI_HALIDE_PATH=/home/rafael/hdd/repositories/macalan/libpapihalide
+PAPI_HALIDE_PATH=/home/ppginf/rrlmachado/nobackup/repositories/libpapihalide
 
 # Likwid path
 LIKWID_PATH=$(dirname $(which likwid-perfctr))
@@ -42,10 +42,10 @@ LIKWID_INCLUDE=${LIKWID_PATH}/../include
 all: blur_jit blur_aot
 
 blur_jit: blur.cpp
-	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} ${PAPI_FLAGS} -o $@
+	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} ${PAPI_FLAGS} -DSCHEDULE=${SCHEDULE} -o $@
 
 blur_gen_aot: blur.cpp
-	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} ${PAPI_FLAGS} -DCOMPILE_AOT -o $@
+	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} ${PAPI_FLAGS} -DSCHEDULE=${SCHEDULE} -DCOMPILE_AOT -o $@
 
 blur_aot.cpp: blur_gen_aot
 	./$^

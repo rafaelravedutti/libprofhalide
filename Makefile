@@ -7,14 +7,14 @@ CFLAGS=-DPERF_VERBOSE -Wall -I ${PAPI_SOURCE_DIR}
 CURRENT_DIR := ${CURDIR}
 
 # Halide directories
-HALIDE_DIR=/home/rafael/hdd/repositories/Halide
+HALIDE_DIR=/home/ppginf/rrlmachado/nobackup/repositories/Halide
 HALIDE_RUNTIME_DIR=${HALIDE_DIR}/src/runtime
 
 # Halide flags
 HALIDE_FLAGS=-I ${HALIDE_RUNTIME_DIR}
 
 # PAPI directory
-PAPI_DIR=/home/rafael/hdd/repositories/papi
+PAPI_DIR=/home/ppginf/rrlmachado/nobackup/repositories/papi
 PAPI_SOURCE_DIR=${PAPI_DIR}/src
 
 # Halide files to synchronize

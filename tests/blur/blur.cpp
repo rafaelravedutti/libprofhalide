@@ -3,40 +3,72 @@
 #include "halide_image_io.h"
 /* ... */
 #include <iostream>
+#include <string>
 
 using namespace Halide;
 using namespace Halide::Tools;
 
 using std::vector;
+using std::string;
+
+#if !defined SCHEDULE
+  #error "You must define a schedule!"
+#endif
 
 int main(int argc, const char **argv) {
-  Buffer<float> input(10112, 10112, 1);
+  Buffer<double> input(10112, 10112, 1);
   //Buffer<float> input = Tools::load_and_convert_image("input.png");
-  Buffer<float> output(input.width() - 2, input.height() - 2, input.channels());
+  Buffer<double> output(input.width() - 2, input.height() - 2, input.channels());
   Func blur_x, blur_y;
   Var x, y, c, xi, yi;
+  string schedule;
 
   blur_x(x, y, c) = (input(x - 1, y, c) + input(x, y, c) + input(x + 1, y, c)) / 3.0f;
   blur_y(x, y, c) = (blur_x(x, y - 1, c) + blur_x(x, y, c) + blur_x(x, y + 1, c)) / 3.0f;
 
-  //blur_y.tile(x, y, xi, yi, 32, 32);
-  //blur_x.compute_at(blur_y, x);
+  #if SCHEDULE == 1
+    /* Breadth-first */
+    schedule = "breadth_first";
 
-  //blur_y.tile(x, y, xi, yi, 256, 32).vectorize(xi, 8).parallel(y);
-  //blur_y.tile(x, y, xi, yi, 256, 32).vectorize(xi, 8);
-  //blur_x.compute_at(blur_y, x).vectorize(x, 8);
+    blur_x.compute_root();
 
-  //blur_x.store_at(blur_y, c).compute_at(blur_y, y);
+    blur_x.profile(PROFILE_PRODUCTION, false, true);
+    blur_y.profile(PROFILE_PRODUCTION, false, true);
 
-  //blur_x.compute_root();
+  #elif SCHEDULE == 2
+    /* Full-fusion */
+    schedule = "full_fusion";
 
-  blur_y.profile(PROFILE_PRODUCTION, true, true);
+    blur_x.profile(PROFILE_PRODUCTION, false, true);
+    blur_y.profile(PROFILE_PRODUCTION, false, true);
+
+  #elif SCHEDULE == 3
+    /* Sliding window */
+    schedule = "sliding_window";
+
+    blur_x.store_at(blur_y, c).compute_at(blur_y, x);
+
+    profile_at(blur_y, c, false);
+
+  #elif SCHEDULE == 4
+    /* Tile (block dimension = 32x32) */
+    blur_y.tile(x, y, xi, yi, 32, 32);
+    blur_x.compute_at(blur_y, x);
+
+    blur_x.profile(PROFILE_PRODUCTION, false, true);
+    blur_y.profile(PROFILE_PRODUCTION, false, true);
+
+  #else
+    schedule = "invalid";
+
+    #error "Invalid schedule!"
+  #endif
 
   output.set_min(1, 1);
 
 #ifdef COMPILE_AOT
 
-  blur_y.compile_to_lowered_stmt("blur.html", {input}, HTML);
+  blur_y.compile_to_lowered_stmt("blur_" + schedule + ".html", {input}, HTML);
   blur_y.compile_to_static_library("blur_aot", {input}, "blur_y");
 
 #else
