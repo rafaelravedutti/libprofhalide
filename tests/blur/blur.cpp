@@ -16,9 +16,9 @@ using std::string;
 #endif
 
 int main(int argc, const char **argv) {
-  Buffer<double> input(10112, 10112, 1);
+  Buffer<float> input(3840, 2160, 1);
   //Buffer<float> input = Tools::load_and_convert_image("input.png");
-  Buffer<double> output(input.width() - 2, input.height() - 2, input.channels());
+  Buffer<float> output(input.width() - 2, input.height() - 2, input.channels());
   Func blur_x, blur_y;
   Var x, y, c, xi, yi;
   string schedule;
