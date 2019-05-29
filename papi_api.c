@@ -108,141 +108,14 @@ struct papi_api_event *new_event(int event_id, long long int (*transform)(long l
 }
 
 struct papi_api_event *get_event(const char *event_name) {
-  #ifndef event_match
+  int event_id, ret;
 
-  #ifdef PAPI_API_DEBUG
+  if((ret = PAPI_event_name_to_code(event_name, &event_id)) != PAPI_OK) {
+    fprintf(stderr, "PAPI_event_name_to_code(%s): %d\n", event_name, ret);
+    return NULL;
+  }
 
-  #define event_match(event_name, string, event_id, tfunc, type)  \
-    if(strncmp(event_name, string, strlen(string)) == 0) {        \
-      if(PAPI_query_event(event_id) != PAPI_OK) {                 \
-        fprintf(stderr, "Event not available: " #event_id "\n");  \
-      }                                                           \
-                                                                  \
-      return new_event(event_id, tfunc, type);                    \
-    }
-
-  #else
-
-  #define event_match(event_name, string, event_id, tfunc, type)  \
-    if(strncmp(event_name, string, strlen(string)) == 0) {        \
-      return new_event(event_id, tfunc, type);                    \
-    }
-
-  #endif
-
-  event_match(event_name, "PAPI_L1_DCM", PAPI_L1_DCM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L1_ICM", PAPI_L1_ICM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_DCM", PAPI_L2_DCM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_ICM", PAPI_L2_ICM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L3_DCM", PAPI_L3_DCM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L3_ICM", PAPI_L3_ICM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L1_TCM", PAPI_L1_TCM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_TCM", PAPI_L2_TCM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L3_TCM", PAPI_L3_TCM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_CA_SNP", PAPI_CA_SNP, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_CA_SHR", PAPI_CA_SHR, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_CA_CLN", PAPI_CA_CLN, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_CA_INV", PAPI_CA_INV, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_CA_ITV", PAPI_CA_ITV, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L3_LDM", PAPI_L3_LDM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L3_STM", PAPI_L3_STM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_BRU_IDL", PAPI_BRU_IDL, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_FXU_IDL", PAPI_FXU_IDL, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_FPU_IDL", PAPI_FPU_IDL, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_LSU_IDL", PAPI_LSU_IDL, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_TLB_DM", PAPI_TLB_DM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_TLB_IM", PAPI_TLB_IM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_TLB_TL", PAPI_TLB_TL, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L1_LDM", PAPI_L1_LDM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L1_STM", PAPI_L1_STM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_LDM", PAPI_L2_LDM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_STM", PAPI_L2_STM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_BTAC_M", PAPI_BTAC_M, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_PRF_DM", PAPI_PRF_DM, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L3_DCH", PAPI_L3_DCH, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_TLB_SD", PAPI_TLB_SD, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_CSR_FAL", PAPI_CSR_FAL, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_CSR_SUC", PAPI_CSR_SUC, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_CSR_TOT", PAPI_CSR_TOT, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_MEM_SCY", PAPI_MEM_SCY, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_MEM_RCY", PAPI_MEM_RCY, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_MEM_WCY", PAPI_MEM_WCY, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_STL_ICY", PAPI_STL_ICY, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_FUL_ICY", PAPI_FUL_ICY, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_STL_CCY", PAPI_STL_CCY, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_FUL_CCY", PAPI_FUL_CCY, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_HW_INT", PAPI_HW_INT, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_BR_UCN", PAPI_BR_UCN, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_BR_CN", PAPI_BR_CN, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_BR_TKN", PAPI_BR_TKN, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_BR_NTK", PAPI_BR_NTK, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_BR_MSP", PAPI_BR_MSP, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_BR_PRC", PAPI_BR_PRC, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_FMA_INS", PAPI_FMA_INS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_TOT_IIS", PAPI_TOT_IIS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_TOT_INS", PAPI_TOT_INS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_INT_INS", PAPI_INT_INS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_FP_INS", PAPI_FP_INS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_LD_INS", PAPI_LD_INS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_SR_INS", PAPI_SR_INS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_BR_INS", PAPI_BR_INS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_VEC_INS", PAPI_VEC_INS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_RES_STL", PAPI_RES_STL, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_FP_STAL", PAPI_FP_STAL, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_TOT_CYC", PAPI_TOT_CYC, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_LST_INS", PAPI_LST_INS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_SYC_INS", PAPI_SYC_INS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L1_DCH", PAPI_L1_DCH, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_DCH", PAPI_L2_DCH, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L1_DCA", PAPI_L1_DCA, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_DCA", PAPI_L2_DCA, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L3_DCA", PAPI_L3_DCA, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L1_DCR", PAPI_L1_DCR, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_DCR", PAPI_L2_DCR, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L3_DCR", PAPI_L3_DCR, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L1_DCW", PAPI_L1_DCW, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_DCW", PAPI_L2_DCW, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L3_DCW", PAPI_L3_DCW, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L1_ICH", PAPI_L1_ICH, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_ICH", PAPI_L2_ICH, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L3_ICH", PAPI_L3_ICH, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L1_ICA", PAPI_L1_ICA, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_ICA", PAPI_L2_ICA, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L3_ICA", PAPI_L3_ICA, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L1_ICR", PAPI_L1_ICR, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_ICR", PAPI_L2_ICR, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L3_ICR", PAPI_L3_ICR, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L1_ICW", PAPI_L1_ICW, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_ICW", PAPI_L2_ICW, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L3_ICW", PAPI_L3_ICW, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L1_TCH", PAPI_L1_TCH, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_TCH", PAPI_L2_TCH, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L3_TCH", PAPI_L3_TCH, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L1_TCA", PAPI_L1_TCA, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_TCA", PAPI_L2_TCA, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L3_TCA", PAPI_L3_TCA, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L1_TCR", PAPI_L1_TCR, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_TCR", PAPI_L2_TCR, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L3_TCR", PAPI_L3_TCR, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L1_TCW", PAPI_L1_TCW, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L2_TCW", PAPI_L2_TCW, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_L3_TCW", PAPI_L3_TCW, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_FML_INS", PAPI_FML_INS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_FAD_INS", PAPI_FAD_INS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_FDV_INS", PAPI_FDV_INS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_FSQ_INS", PAPI_FSQ_INS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_FNV_INS", PAPI_FNV_INS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_FP_OPS", PAPI_FP_OPS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_SP_OPS", PAPI_SP_OPS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_DP_OPS", PAPI_DP_OPS, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_VEC_SP", PAPI_VEC_SP, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_VEC_DP", PAPI_VEC_DP, transform_skip, VALUE_TYPE_INTEGER);
-  event_match(event_name, "PAPI_REF_CYC", PAPI_REF_CYC, transform_skip, VALUE_TYPE_INTEGER);
-
-  #endif
-  #undef event_match
-
-  return NULL;
+  return new_event(event_id, transform_skip, VALUE_TYPE_INTEGER);
 }
 
 struct papi_api_config *get_papi_api_config() {
@@ -263,7 +136,7 @@ struct papi_api_config *get_papi_api_config() {
   if(config != NULL) {
     while((read = getline(&line, &len, fp)) > 0) {
       for(i = 0, j = 0, eq = -1; i < len; ++i) {
-        if(line[i] != ' ') {
+        if(line[i] != ' ' && line[i] != '\n') {
           if(line[i] == '=' && eq == -1) {
             eq = j;
           }
@@ -367,17 +240,17 @@ int papi_halide_initialize() {
     return -1;
   }
 
+  if((ret = PAPI_library_init(PAPI_VER_CURRENT)) != PAPI_VER_CURRENT) {
+    fprintf(stderr, "PAPI_library_init(): %d", ret);
+    return -1;
+  }
+
   global_state->parallel_level = 0;
   global_state->event_set = -1;
   global_state->events = NULL;
 
   global_config = get_papi_api_config();
   global_state->num_events = build_events(&(global_state->events), global_state->event_array, global_config);
-
-  if((ret = PAPI_library_init(PAPI_VER_CURRENT)) != PAPI_VER_CURRENT) {
-    fprintf(stderr, "PAPI_library_init(): %d", ret);
-    return -1;
-  }
 
   if((ret = PAPI_thread_init((unsigned long (*)(void))(pthread_self))) != PAPI_OK) {
     fprintf(stderr, "PAPI_thread_init(): %d\n", ret);
@@ -463,33 +336,16 @@ int papi_halide_leave_parallel_region() {
 }
 
 int papi_halide_marker_start() {
-  int ret;
   int thread_idx = papi_halide_get_thread_index();
 
-  if((ret = PAPI_reset(threadsInfo[thread_idx].event_set)) != PAPI_OK) {
-    fprintf(stderr, "PAPI_reset(): %d\n", ret);
-    return -1;
-  }
-
+  PAPI_reset(threadsInfo[thread_idx].event_set);
   return 0;
 }
 
 int papi_halide_marker_stop(long long int *values, int accum) {
-  int ret;
   int thread_idx = papi_halide_get_thread_index();
 
-  if(!accum) {
-    if((ret = PAPI_read(threadsInfo[thread_idx].event_set, values)) != PAPI_OK) {
-      fprintf(stderr, "PAPI_read(): %d\n", ret);
-      return -1;
-    }
-  } else {
-    if((ret = PAPI_accum(threadsInfo[thread_idx].event_set, values)) != PAPI_OK) {
-      fprintf(stderr, "PAPI_accum(): %d\n", ret);
-      return -1;
-    }
-  }
-
+  PAPI_accum(threadsInfo[thread_idx].event_set, values);
   return 0;
 }
 
