@@ -114,18 +114,50 @@ for algorithm in algorithms:
 
         counter += 1
 
-for i in range(len(schedules), counter):
+for i in range(0, counter, len(schedules)):
   y_pos = np.arange(len(schedules))
 
   time_array = []
+  cache_miss_array = []
+  flop_array = []
+  data_volume_array = []
 
-  for j in range(i, i + len(schedules)):
-    time_array.append(time_results[j]['time_data']['all'][0] / time_results[j]['time_iter']['all'][0])
-
-  print(time_array)
+  for j in range(len(schedules)):
+    time_avg = time_results[i + j]['time_data']['all'][0] / time_results[i + j]['time_iter']['all'][0]
+    cache_miss_avg = profile_results[i + j]['profile_data']['total'][0] / profile_results[i + j]['profile_iter']['total'][0]
+    flop_avg = profile_results[i + j]['profile_data']['total'][1] / profile_results[i + j]['profile_iter']['total'][1]
+    lines_out_avg = profile_results[i + j]['profile_data']['total'][2] / profile_results[i + j]['profile_iter']['total'][2]
+    rqsts_miss_avg = profile_results[i + j]['profile_data']['total'][3] / profile_results[i + j]['profile_iter']['total'][3]
+    
+    time_array.append(time_avg)
+    cache_miss_array.append(cache_miss_avg)
+    flop_array.append(flop_avg)
+    data_volume_array.append(1.E-6 * (lines_out_avg + rqsts_miss_avg) * 64)
 
   plt.bar(y_pos, time_array, align='center', alpha=0.5)
   plt.xticks(y_pos, schedules)
-  plt.ylabel("Schedule")
-  plt.title("Execution time per schedule (ms) for a {} image".format(time_results[j]['image_size']))
+  plt.xlabel("Schedule")
+  plt.ylabel("Time (ms)")
+  plt.title("Execution time per schedule for {} image".format(time_results[i]['image_size']))
+  plt.show()
+
+  plt.bar(y_pos, cache_miss_array, align='center', alpha=0.5)
+  plt.xticks(y_pos, schedules)
+  plt.xlabel("Schedule")
+  plt.ylabel("Cache misses")
+  plt.title("L1 Cache Misses per schedule for {} image".format(time_results[i]['image_size']))
+  plt.show()
+
+  plt.bar(y_pos, flop_array, align='center', alpha=0.5)
+  plt.xticks(y_pos, schedules)
+  plt.xlabel("Schedule")
+  plt.ylabel("FLOP")
+  plt.title("FLOP per schedule for {} image".format(time_results[i]['image_size']))
+  plt.show()
+
+  plt.bar(y_pos, data_volume_array, align='center', alpha=0.5)
+  plt.xticks(y_pos, schedules)
+  plt.xlabel("Schedule")
+  plt.ylabel("L3 Data Volume")
+  plt.title("L3 Data Volume per schedule for {} image".format(time_results[i]['image_size']))
   plt.show()
