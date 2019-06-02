@@ -87,10 +87,19 @@ def print_results(results):
 
       print(profile_output)
 
+def stage_match(stage, stage_list):
+  for stg in stage_list:
+    if stage.startswith(stg):
+      return True
+
+  return False
+
 algorithms = ['blur']
 hostnames = ['i35']
 image_sizes = ['4K', '10K']
 schedules = ['breadth_first', 'full_fusion', 'sliding_window', 'tile_32x32']
+blur_x_stages = ['blur_x_prod']
+blur_y_stages = ['blur_y_prod', 'blur_x_cons', 'blur_y_overhead', 'blur_y.s0.c_t0']
 
 profile_results = {}
 time_results = {}
@@ -117,47 +126,96 @@ for algorithm in algorithms:
 for i in range(0, counter, len(schedules)):
   y_pos = np.arange(len(schedules))
 
-  time_array = []
-  cache_miss_array = []
-  flop_array = []
-  data_volume_array = []
+  blur_x_time_array = []
+  blur_x_cache_miss_array = []
+  blur_x_flop_array = []
+  blur_x_data_volume_array = []
+
+  blur_y_time_array = []
+  blur_y_cache_miss_array = []
+  blur_y_flop_array = []
+  blur_y_data_volume_array = []
 
   for j in range(len(schedules)):
-    time_avg = time_results[i + j]['time_data']['all'][0] / time_results[i + j]['time_iter']['all'][0]
-    cache_miss_avg = profile_results[i + j]['profile_data']['total'][0] / profile_results[i + j]['profile_iter']['total'][0]
-    flop_avg = profile_results[i + j]['profile_data']['total'][1] / profile_results[i + j]['profile_iter']['total'][1]
-    lines_out_avg = profile_results[i + j]['profile_data']['total'][2] / profile_results[i + j]['profile_iter']['total'][2]
-    rqsts_miss_avg = profile_results[i + j]['profile_data']['total'][3] / profile_results[i + j]['profile_iter']['total'][3]
-    
-    time_array.append(time_avg)
-    cache_miss_array.append(cache_miss_avg)
-    flop_array.append(flop_avg)
-    data_volume_array.append(1.E-6 * (lines_out_avg + rqsts_miss_avg) * 64)
+    tdata = time_results[i + j]['time_data']
+    titer = time_results[i + j]['time_iter']
+    pdata = profile_results[i + j]['profile_data']
+    piter = profile_results[i + j]['profile_iter']
 
-  plt.bar(y_pos, time_array, align='center', alpha=0.5)
+    blur_x_time_avg = 0
+    blur_x_cache_miss_avg = 0
+    blur_x_flop_avg = 0
+    blur_x_lines_out_avg = 0
+    blur_x_rqsts_miss_avg = 0
+
+    blur_y_time_avg = 0
+    blur_y_cache_miss_avg = 0
+    blur_y_flop_avg = 0
+    blur_y_lines_out_avg = 0
+    blur_y_rqsts_miss_avg = 0
+
+    for stage in tdata:
+      if stage == 'blur_x':
+        blur_x_time_avg += tdata[stage][0] / titer[stage][0]
+
+      if stage == 'blur_y':
+        blur_y_time_avg += tdata[stage][0] / titer[stage][0]
+
+    for stage in pdata:
+      if stage_match(stage, blur_x_stages):
+        blur_x_cache_miss_avg += pdata[stage][0] / piter[stage][0]
+        blur_x_flop_avg += pdata[stage][1] / piter[stage][1]
+        blur_x_lines_out_avg += pdata[stage][2] / piter[stage][2]
+        blur_x_rqsts_miss_avg += pdata[stage][3] / piter[stage][3]
+
+      if stage_match(stage, blur_y_stages):
+        blur_y_cache_miss_avg += pdata[stage][0] / piter[stage][0]
+        blur_y_flop_avg += pdata[stage][1] / piter[stage][1]
+        blur_y_lines_out_avg += pdata[stage][2] / piter[stage][2]
+        blur_y_rqsts_miss_avg += pdata[stage][3] / piter[stage][3]
+
+    blur_x_time_array.append(blur_x_time_avg)
+    blur_x_cache_miss_array.append(blur_x_cache_miss_avg)
+    blur_x_flop_array.append(blur_x_flop_avg)
+    blur_x_data_volume_array.append(1.E-6 * (blur_x_lines_out_avg + blur_x_rqsts_miss_avg) * 64)
+
+    blur_y_time_array.append(blur_y_time_avg)
+    blur_y_cache_miss_array.append(blur_y_cache_miss_avg)
+    blur_y_flop_array.append(blur_y_flop_avg)
+    blur_y_data_volume_array.append(1.E-6 * (blur_y_lines_out_avg + blur_y_rqsts_miss_avg) * 64)
+
+  p1 = plt.bar(y_pos, blur_x_time_array, align='center', alpha=0.5)
+  p2 = plt.bar(y_pos, blur_y_time_array, align='center', alpha=0.5, bottom=blur_x_time_array)
   plt.xticks(y_pos, schedules)
   plt.xlabel("Schedule")
   plt.ylabel("Time (ms)")
   plt.title("Execution time per schedule for {} image".format(time_results[i]['image_size']))
+  plt.legend((p1[0], p2[0]), ('blur_x', 'blur_y'))
   plt.show()
 
-  plt.bar(y_pos, cache_miss_array, align='center', alpha=0.5)
+  p1 = plt.bar(y_pos, blur_x_cache_miss_array, align='center', alpha=0.5)
+  p2 = plt.bar(y_pos, blur_y_cache_miss_array, align='center', alpha=0.5, bottom=blur_x_cache_miss_array)
   plt.xticks(y_pos, schedules)
   plt.xlabel("Schedule")
   plt.ylabel("Cache misses")
   plt.title("L1 Cache Misses per schedule for {} image".format(time_results[i]['image_size']))
+  plt.legend((p1[0], p2[0]), ('blur_x', 'blur_y'))
   plt.show()
 
-  plt.bar(y_pos, flop_array, align='center', alpha=0.5)
+  p1 = plt.bar(y_pos, blur_x_flop_array, align='center', alpha=0.5)
+  p2 = plt.bar(y_pos, blur_y_flop_array, align='center', alpha=0.5, bottom=blur_x_flop_array)
   plt.xticks(y_pos, schedules)
   plt.xlabel("Schedule")
   plt.ylabel("FLOP")
   plt.title("FLOP per schedule for {} image".format(time_results[i]['image_size']))
+  plt.legend((p1[0], p2[0]), ('blur_x', 'blur_y'))
   plt.show()
 
-  plt.bar(y_pos, data_volume_array, align='center', alpha=0.5)
+  p1 = plt.bar(y_pos, blur_x_data_volume_array, align='center', alpha=0.5)
+  p2 = plt.bar(y_pos, blur_y_data_volume_array, align='center', alpha=0.5, bottom=blur_x_data_volume_array)
   plt.xticks(y_pos, schedules)
   plt.xlabel("Schedule")
-  plt.ylabel("L3 Data Volume")
+  plt.ylabel("Data volume (Mb)")
   plt.title("L3 Data Volume per schedule for {} image".format(time_results[i]['image_size']))
+  plt.legend((p1[0], p2[0]), ('blur_x', 'blur_y'))
   plt.show()
