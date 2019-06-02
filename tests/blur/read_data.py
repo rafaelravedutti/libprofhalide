@@ -1,6 +1,8 @@
 import csv
+import matplotlib.pyplot as plt
+import numpy as np
 
-def get_file_results(filename, profile_file):
+def get_file_results(filename, profile_file, image_size, schedule):
   time_data = {}
   time_iter = {}
 
@@ -54,6 +56,8 @@ def get_file_results(filename, profile_file):
           time_results = not time_results
 
   return {
+    'image_size': image_size,
+    'schedule': schedule,
     'time_data': time_data,
     'time_iter': time_iter,
     'profile_data': profile_data,
@@ -84,22 +88,44 @@ def print_results(results):
       print(profile_output)
 
 algorithms = ['blur']
-schedules = ['breadth_first', 'full_fusion', 'sliding_window', 'tile_32x32']
 hostnames = ['i35']
-image_sizes = ['4K', '10K', '20K']
+image_sizes = ['4K', '10K']
+schedules = ['breadth_first', 'full_fusion', 'sliding_window', 'tile_32x32']
+
+profile_results = {}
+time_results = {}
+counter = 0
 
 for algorithm in algorithms:
-  for schedule in schedules:
-    for hostname in hostnames:
-      for image_size in image_sizes:
+  for hostname in hostnames:
+    for image_size in image_sizes:
+      for schedule in schedules:
         filename = "{}_{}_profile_{}_{}.csv".format(algorithm, schedule, hostname, image_size)
-        results = get_file_results(filename, True)
+        profile_results[counter] = get_file_results(filename, True, image_size, schedule)
         print(filename)
-        print_results(results)
-
+        print_results(profile_results[counter])
         print(" ")
 
         filename = "{}_{}_time_{}_{}.csv".format(algorithm, schedule, hostname, image_size)
-        results = get_file_results(filename, False)
+        time_results[counter] = get_file_results(filename, False, image_size, schedule)
         print(filename)
-        print_results(results)
+        print_results(time_results[counter])
+        print(" ")
+
+        counter += 1
+
+for i in range(len(schedules), counter):
+  y_pos = np.arange(len(schedules))
+
+  time_array = []
+
+  for j in range(i, i + len(schedules)):
+    time_array.append(time_results[j]['time_data']['all'][0] / time_results[j]['time_iter']['all'][0])
+
+  print(time_array)
+
+  plt.bar(y_pos, time_array, align='center', alpha=0.5)
+  plt.xticks(y_pos, schedules)
+  plt.ylabel("Schedule")
+  plt.title("Execution time per schedule (ms) for a {} image".format(time_results[j]['image_size']))
+  plt.show()
