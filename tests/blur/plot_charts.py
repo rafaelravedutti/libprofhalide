@@ -200,6 +200,7 @@ for i in range(0, counter, len(schedules)):
     total_flop_array.append(total_flop_avg)
     total_data_volume_array.append(1.E-6 * (total_lines_out_avg + total_rqsts_miss_avg) * 64)
 
+  fig = plt.figure()
   p1 = plt.bar(y_pos, blur_x_time_array, align='center', alpha=0.5)
   p2 = plt.bar(y_pos, blur_y_time_array, align='center', alpha=0.5, bottom=blur_x_time_array)
   plt.xticks(y_pos, schedules)
@@ -214,8 +215,9 @@ for i in range(0, counter, len(schedules)):
     plt.text(bar.get_x() + 0.1, tot + 0.5, int(tot))
     bar_counter += 1
 
-  plt.show()
+  fig.savefig("time_per_schedule_{}.pdf".format(time_results[i]['image_size']))
 
+  fig = plt.figure()
   p1 = plt.bar(y_pos, blur_x_cache_miss_array, align='center', alpha=0.5)
   p2 = plt.bar(y_pos, blur_y_cache_miss_array, align='center', alpha=0.5, bottom=blur_x_cache_miss_array)
   plt.xticks(y_pos, schedules)
@@ -230,8 +232,9 @@ for i in range(0, counter, len(schedules)):
     plt.text(bar.get_x() + 0.1, tot + 0.5, int(tot))
     bar_counter += 1
 
-  plt.show()
+  fig.savefig("cache_miss_per_schedule_{}.pdf".format(time_results[i]['image_size']))
 
+  fig = plt.figure()
   p1 = plt.bar(y_pos, blur_x_flop_array, align='center', alpha=0.5)
   p2 = plt.bar(y_pos, blur_y_flop_array, align='center', alpha=0.5, bottom=blur_x_flop_array)
   plt.xticks(y_pos, schedules)
@@ -246,8 +249,9 @@ for i in range(0, counter, len(schedules)):
     plt.text(bar.get_x() + 0.1, tot + 0.5, int(tot))
     bar_counter += 1
 
-  plt.show()
+  fig.savefig("flop_per_schedule_{}.pdf".format(time_results[i]['image_size']))
 
+  fig = plt.figure()
   p1 = plt.bar(y_pos, blur_x_data_volume_array, align='center', alpha=0.5)
   p2 = plt.bar(y_pos, blur_y_data_volume_array, align='center', alpha=0.5, bottom=blur_x_data_volume_array)
   plt.xticks(y_pos, schedules)
@@ -262,4 +266,4 @@ for i in range(0, counter, len(schedules)):
     plt.text(bar.get_x() + 0.1, tot + 0.5, int(tot))
     bar_counter += 1
 
-  plt.show()
+  fig.savefig("data_volume_per_schedule_{}.pdf".format(time_results[i]['image_size']))
