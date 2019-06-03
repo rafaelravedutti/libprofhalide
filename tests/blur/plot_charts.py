@@ -212,7 +212,7 @@ for i in range(0, counter, len(schedules)):
   bar_counter = 0
   for bar in p2:
     tot = total_time_array[bar_counter]
-    plt.text(bar.get_x() + 0.1, tot + 0.5, int(tot))
+    plt.text(bar.get_x() + 0.3, tot + 0.3, int(tot))
     bar_counter += 1
 
   fig.savefig("time_per_schedule_{}.pdf".format(time_results[i]['image_size']))
@@ -229,7 +229,7 @@ for i in range(0, counter, len(schedules)):
   bar_counter = 0
   for bar in p2:
     tot = total_cache_miss_array[bar_counter]
-    plt.text(bar.get_x() + 0.1, tot + 0.5, int(tot))
+    plt.text(bar.get_x() + 0.15, tot + 10000.0, int(tot))
     bar_counter += 1
 
   fig.savefig("cache_miss_per_schedule_{}.pdf".format(time_results[i]['image_size']))
@@ -246,7 +246,7 @@ for i in range(0, counter, len(schedules)):
   bar_counter = 0
   for bar in p2:
     tot = total_flop_array[bar_counter]
-    plt.text(bar.get_x() + 0.1, tot + 0.5, int(tot))
+    plt.text(bar.get_x() + 0.075, tot + 500000.0, int(tot))
     bar_counter += 1
 
   fig.savefig("flop_per_schedule_{}.pdf".format(time_results[i]['image_size']))
@@ -263,7 +263,7 @@ for i in range(0, counter, len(schedules)):
   bar_counter = 0
   for bar in p2:
     tot = total_data_volume_array[bar_counter]
-    plt.text(bar.get_x() + 0.1, tot + 0.5, int(tot))
+    plt.text(bar.get_x() + 0.275, tot + 2.0, int(tot))
     bar_counter += 1
 
   fig.savefig("data_volume_per_schedule_{}.pdf".format(time_results[i]['image_size']))
