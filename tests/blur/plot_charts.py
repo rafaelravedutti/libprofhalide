@@ -128,17 +128,17 @@ for i in range(0, counter, len(schedules)):
 
   blur_x_time_array = []
   blur_x_cache_miss_array = []
-  blur_x_flop_array = []
+  blur_x_mflop_array = []
   blur_x_data_volume_array = []
 
   blur_y_time_array = []
   blur_y_cache_miss_array = []
-  blur_y_flop_array = []
+  blur_y_mflop_array = []
   blur_y_data_volume_array = []
 
   total_time_array = []
   total_cache_miss_array = []
-  total_flop_array = []
+  total_mflop_array = []
   total_data_volume_array = []
 
   for j in range(len(schedules)):
@@ -187,26 +187,27 @@ for i in range(0, counter, len(schedules)):
 
     blur_x_time_array.append(blur_x_time_avg)
     blur_x_cache_miss_array.append(blur_x_cache_miss_avg)
-    blur_x_flop_array.append(blur_x_flop_avg)
+    blur_x_mflop_array.append(1.E-6 * blur_x_flop_avg)
     blur_x_data_volume_array.append(1.E-6 * (blur_x_lines_out_avg + blur_x_rqsts_miss_avg) * 64)
 
     blur_y_time_array.append(blur_y_time_avg)
     blur_y_cache_miss_array.append(blur_y_cache_miss_avg)
-    blur_y_flop_array.append(blur_y_flop_avg)
+    blur_y_mflop_array.append(1.E-6 * blur_y_flop_avg)
     blur_y_data_volume_array.append(1.E-6 * (blur_y_lines_out_avg + blur_y_rqsts_miss_avg) * 64)
 
     total_time_array.append(total_time_avg)
     total_cache_miss_array.append(total_cache_miss_avg)
-    total_flop_array.append(total_flop_avg)
+    total_mflop_array.append(1.E-6 * total_flop_avg)
     total_data_volume_array.append(1.E-6 * (total_lines_out_avg + total_rqsts_miss_avg) * 64)
 
   fig = plt.figure()
-  p1 = plt.bar(y_pos, blur_x_time_array, align='center', alpha=0.5)
-  p2 = plt.bar(y_pos, blur_y_time_array, align='center', alpha=0.5, bottom=blur_x_time_array)
+  p1 = plt.bar(y_pos, blur_x_time_array, color='#cc0000ff', align='center', alpha=0.5)
+  p2 = plt.bar(y_pos, blur_y_time_array, color='#0000ccff', align='center', alpha=0.5, bottom=blur_x_time_array)
   plt.xticks(y_pos, schedules)
   plt.xlabel("Schedule")
   plt.ylabel("Time (ms)")
-  plt.title("Execution time per schedule for {} image".format(time_results[i]['image_size']))
+  plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
+  # plt.title("Execution time per schedule for {} image".format(time_results[i]['image_size']))
   plt.legend((p1[0], p2[0]), ('blur_x', 'blur_y'))
 
   bar_counter = 0
@@ -218,12 +219,13 @@ for i in range(0, counter, len(schedules)):
   fig.savefig("time_per_schedule_{}.pdf".format(time_results[i]['image_size']))
 
   fig = plt.figure()
-  p1 = plt.bar(y_pos, blur_x_cache_miss_array, align='center', alpha=0.5)
-  p2 = plt.bar(y_pos, blur_y_cache_miss_array, align='center', alpha=0.5, bottom=blur_x_cache_miss_array)
+  p1 = plt.bar(y_pos, blur_x_cache_miss_array, color='#cc0000ff', align='center', alpha=0.5)
+  p2 = plt.bar(y_pos, blur_y_cache_miss_array, color='#0000ccff', align='center', alpha=0.5, bottom=blur_x_cache_miss_array)
   plt.xticks(y_pos, schedules)
   plt.xlabel("Schedule")
-  plt.ylabel("Cache misses")
-  plt.title("L1 Cache Misses per schedule for {} image".format(time_results[i]['image_size']))
+  plt.ylabel("L1 cache misses")
+  plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
+  # plt.title("L1 Cache Misses per schedule for {} image".format(time_results[i]['image_size']))
   plt.legend((p1[0], p2[0]), ('blur_x', 'blur_y'))
 
   bar_counter = 0
@@ -235,29 +237,32 @@ for i in range(0, counter, len(schedules)):
   fig.savefig("cache_miss_per_schedule_{}.pdf".format(time_results[i]['image_size']))
 
   fig = plt.figure()
-  p1 = plt.bar(y_pos, blur_x_flop_array, align='center', alpha=0.5)
-  p2 = plt.bar(y_pos, blur_y_flop_array, align='center', alpha=0.5, bottom=blur_x_flop_array)
+  p1 = plt.bar(y_pos, blur_x_mflop_array, color='#cc0000ff', align='center', alpha=0.5)
+  p2 = plt.bar(y_pos, blur_y_mflop_array, color='#0000ccff', align='center', alpha=0.5, bottom=blur_x_mflop_array)
   plt.xticks(y_pos, schedules)
   plt.xlabel("Schedule")
-  plt.ylabel("FLOP")
-  plt.title("FLOP per schedule for {} image".format(time_results[i]['image_size']))
+  plt.ylabel("MFLOP")
+  plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
+  # plt.title("FLOP per schedule for {} image".format(time_results[i]['image_size']))
   plt.legend((p1[0], p2[0]), ('blur_x', 'blur_y'))
 
   bar_counter = 0
+
   for bar in p2:
-    tot = total_flop_array[bar_counter]
+    tot = total_mflop_array[bar_counter]
     plt.text(bar.get_x() + 0.075, tot + 500000.0, int(tot))
     bar_counter += 1
 
   fig.savefig("flop_per_schedule_{}.pdf".format(time_results[i]['image_size']))
 
   fig = plt.figure()
-  p1 = plt.bar(y_pos, blur_x_data_volume_array, align='center', alpha=0.5)
-  p2 = plt.bar(y_pos, blur_y_data_volume_array, align='center', alpha=0.5, bottom=blur_x_data_volume_array)
+  p1 = plt.bar(y_pos, blur_x_data_volume_array, color='#cc0000ff', align='center', alpha=0.5)
+  p2 = plt.bar(y_pos, blur_y_data_volume_array, color='#0000ccff', align='center', alpha=0.5, bottom=blur_x_data_volume_array)
   plt.xticks(y_pos, schedules)
   plt.xlabel("Schedule")
-  plt.ylabel("Data volume (Mb)")
-  plt.title("L3 Data Volume per schedule for {} image".format(time_results[i]['image_size']))
+  plt.ylabel("L3 data volume (Mb)")
+  plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
+  # plt.title("L3 Data Volume per schedule for {} image".format(time_results[i]['image_size']))
   plt.legend((p1[0], p2[0]), ('blur_x', 'blur_y'))
 
   bar_counter = 0
