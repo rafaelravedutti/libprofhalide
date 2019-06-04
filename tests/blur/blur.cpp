@@ -16,7 +16,9 @@ using std::string;
 #endif
 
 int main(int argc, const char **argv) {
-  Buffer<float> input(3840, 2160, 1);
+  //Buffer<float> input(3840, 2160, 1);
+  //Buffer<float> input(10240, 4320, 1);
+  Buffer<float> input(10112, 10112, 1);
   //Buffer<float> input = Tools::load_and_convert_image("input.png");
   Buffer<float> output(input.width() - 2, input.height() - 2, input.channels());
   Func blur_x, blur_y;
@@ -71,6 +73,8 @@ int main(int argc, const char **argv) {
 
 #elif SCHEDULE == 4
     /* Tile (block dimension = 32x32) */
+    schedule = "tile_32x32";
+
     blur_y.tile(x, y, xi, yi, 32, 32);
     blur_x.compute_at(blur_y, x);
 
