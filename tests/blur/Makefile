@@ -11,6 +11,11 @@ ifdef PROFILE
 	CXXFLAGS+=-DPROFILE
 endif
 
+# Must use parallel schedule?
+ifdef PARALLEL
+	CXXFLAGS+=-DPARALLEL
+endif
+
 # Halide path
 HALIDE_PATH=/home/ppginf/rrlmachado/nobackup/repositories/Halide
 

@@ -96,9 +96,9 @@ int main(int argc, const char **argv) {
 
 #ifdef PROFILE
   #ifndef PARALLEL
-    blur_y.compile_to_lowered_stmt("blur_" + schedule + "_serial.html", {input}, HTML);
+    blur_y.compile_to_lowered_stmt("html/blur_" + schedule + "_serial.html", {input}, HTML);
   #else
-    blur_y.compile_to_lowered_stmt("blur_" + schedule + "_parallel.html", {input}, HTML);
+    blur_y.compile_to_lowered_stmt("html/blur_" + schedule + "_parallel.html", {input}, HTML);
   #endif
 #endif
 
