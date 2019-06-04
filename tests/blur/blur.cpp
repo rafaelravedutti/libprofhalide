@@ -32,6 +32,11 @@ int main(int argc, const char **argv) {
 
     blur_x.compute_root();
 
+  #ifdef PARALLEL
+    blur_x.parallel(y);
+    blur_y.parallel(y);
+  #endif
+
   #ifdef PROFILE
     blur_x.profile(PROFILE_PRODUCTION, false, true);
     blur_y.profile(PROFILE_PRODUCTION, false, true);
@@ -40,6 +45,10 @@ int main(int argc, const char **argv) {
 #elif SCHEDULE == 2
     /* Full-fusion */
     schedule = "full_fusion";
+
+  #ifdef PARALLEL
+    blur_y.parallel(y);
+  #endif
 
   #ifdef PROFILE
     blur_x.profile(PROFILE_PRODUCTION, false, true);
@@ -52,6 +61,10 @@ int main(int argc, const char **argv) {
 
     blur_x.store_at(blur_y, c).compute_at(blur_y, x);
 
+  #ifdef PARALLEL
+    blur_y.parallel(y);
+  #endif
+
   #ifdef PROFILE
     profile_at(blur_y, c, false);
   #endif
@@ -60,6 +73,10 @@ int main(int argc, const char **argv) {
     /* Tile (block dimension = 32x32) */
     blur_y.tile(x, y, xi, yi, 32, 32);
     blur_x.compute_at(blur_y, x);
+
+  #ifdef PARALLEL
+    blur_y.parallel(y);
+  #endif
 
   #ifdef PROFILE
     blur_x.profile(PROFILE_PRODUCTION, false, true);
@@ -78,7 +95,11 @@ int main(int argc, const char **argv) {
 #ifdef COMPILE_AOT
 
 #ifdef PROFILE
-  blur_y.compile_to_lowered_stmt("blur_" + schedule + ".html", {input}, HTML);
+  #ifndef PARALLEL
+    blur_y.compile_to_lowered_stmt("blur_" + schedule + "_serial.html", {input}, HTML);
+  #else
+    blur_y.compile_to_lowered_stmt("blur_" + schedule + "_parallel.html", {input}, HTML);
+  #endif
 #endif
 
   blur_y.compile_to_static_library("blur_aot", {input}, "blur_y");
