@@ -123,152 +123,223 @@ for algorithm in algorithms:
 
         counter += 1
 
-for i in range(0, counter, len(schedules)):
-  y_pos = np.arange(len(schedules))
+scheds = len(schedules)
+isizes = len(image_sizes)
 
-  blur_x_time_array = []
-  blur_x_cache_miss_array = []
-  blur_x_mflop_array = []
-  blur_x_data_volume_array = []
+for i in range(0, counter, isizes * scheds):
+  y_pos = np.arange(scheds)
+  bar_width = 0.35
 
-  blur_y_time_array = []
-  blur_y_cache_miss_array = []
-  blur_y_mflop_array = []
-  blur_y_data_volume_array = []
+  blur_x_time_mat = []
+  blur_x_cache_miss_mat = []
+  blur_x_mflop_mat = []
+  blur_x_data_volume_mat = []
 
-  total_time_array = []
-  total_cache_miss_array = []
-  total_mflop_array = []
-  total_data_volume_array = []
+  blur_y_time_mat = []
+  blur_y_cache_miss_mat = []
+  blur_y_mflop_mat = []
+  blur_y_data_volume_mat = []
 
-  for j in range(len(schedules)):
-    tdata = time_results[i + j]['time_data']
-    titer = time_results[i + j]['time_iter']
-    pdata = profile_results[i + j]['profile_data']
-    piter = profile_results[i + j]['profile_iter']
+  total_time_mat = []
+  total_cache_miss_mat = []
+  total_mflop_mat = []
+  total_data_volume_mat = []
 
-    blur_x_time_avg = 0
-    blur_x_cache_miss_avg = 0
-    blur_x_flop_avg = 0
-    blur_x_lines_out_avg = 0
-    blur_x_rqsts_miss_avg = 0
+  for j in range(isizes):
+    blur_x_time_array = []
+    blur_x_cache_miss_array = []
+    blur_x_mflop_array = []
+    blur_x_data_volume_array = []
 
-    blur_y_time_avg = 0
-    blur_y_cache_miss_avg = 0
-    blur_y_flop_avg = 0
-    blur_y_lines_out_avg = 0
-    blur_y_rqsts_miss_avg = 0
+    blur_y_time_array = []
+    blur_y_cache_miss_array = []
+    blur_y_mflop_array = []
+    blur_y_data_volume_array = []
 
-    total_time_avg = tdata['all'][0] / titer['all'][0]
-    total_cache_miss_avg = pdata['total'][0] / piter['total'][0]
-    total_flop_avg = pdata['total'][1] / piter['total'][1]
-    total_lines_out_avg = pdata['total'][2] / piter['total'][2]
-    total_rqsts_miss_avg = pdata['total'][3] / piter['total'][3]
+    total_time_array = []
+    total_cache_miss_array = []
+    total_mflop_array = []
+    total_data_volume_array = []
 
-    for stage in tdata:
-      if stage == 'blur_x':
-        blur_x_time_avg += tdata[stage][0] / titer[stage][0]
+    for k in range(scheds):
+      tdata = time_results[i + j * scheds + k]['time_data']
+      titer = time_results[i + j * scheds + k]['time_iter']
+      pdata = profile_results[i + j * scheds + k]['profile_data']
+      piter = profile_results[i + j * scheds + k]['profile_iter']
 
-      if stage == 'blur_y':
-        blur_y_time_avg += tdata[stage][0] / titer[stage][0]
+      blur_x_time_avg = 0
+      blur_x_cache_miss_avg = 0
+      blur_x_flop_avg = 0
+      blur_x_lines_out_avg = 0
+      blur_x_rqsts_miss_avg = 0
 
-    for stage in pdata:
-      if stage_match(stage, blur_x_stages):
-        blur_x_cache_miss_avg += pdata[stage][0] / piter[stage][0]
-        blur_x_flop_avg += pdata[stage][1] / piter[stage][1]
-        blur_x_lines_out_avg += pdata[stage][2] / piter[stage][2]
-        blur_x_rqsts_miss_avg += pdata[stage][3] / piter[stage][3]
+      blur_y_time_avg = 0
+      blur_y_cache_miss_avg = 0
+      blur_y_flop_avg = 0
+      blur_y_lines_out_avg = 0
+      blur_y_rqsts_miss_avg = 0
 
-      if stage_match(stage, blur_y_stages):
-        blur_y_cache_miss_avg += pdata[stage][0] / piter[stage][0]
-        blur_y_flop_avg += pdata[stage][1] / piter[stage][1]
-        blur_y_lines_out_avg += pdata[stage][2] / piter[stage][2]
-        blur_y_rqsts_miss_avg += pdata[stage][3] / piter[stage][3]
+      total_time_avg = tdata['all'][0] / titer['all'][0]
+      total_cache_miss_avg = pdata['total'][0] / piter['total'][0]
+      total_flop_avg = pdata['total'][1] / piter['total'][1]
+      total_lines_out_avg = pdata['total'][2] / piter['total'][2]
+      total_rqsts_miss_avg = pdata['total'][3] / piter['total'][3]
 
-    blur_x_time_array.append(blur_x_time_avg)
-    blur_x_cache_miss_array.append(blur_x_cache_miss_avg)
-    blur_x_mflop_array.append(1.E-6 * blur_x_flop_avg)
-    blur_x_data_volume_array.append(1.E-6 * (blur_x_lines_out_avg + blur_x_rqsts_miss_avg) * 64)
+      for stage in tdata:
+        if stage == 'blur_x':
+          blur_x_time_avg += tdata[stage][0] / titer[stage][0]
 
-    blur_y_time_array.append(blur_y_time_avg)
-    blur_y_cache_miss_array.append(blur_y_cache_miss_avg)
-    blur_y_mflop_array.append(1.E-6 * blur_y_flop_avg)
-    blur_y_data_volume_array.append(1.E-6 * (blur_y_lines_out_avg + blur_y_rqsts_miss_avg) * 64)
+        if stage == 'blur_y':
+          blur_y_time_avg += tdata[stage][0] / titer[stage][0]
 
-    total_time_array.append(total_time_avg)
-    total_cache_miss_array.append(total_cache_miss_avg)
-    total_mflop_array.append(1.E-6 * total_flop_avg)
-    total_data_volume_array.append(1.E-6 * (total_lines_out_avg + total_rqsts_miss_avg) * 64)
+      for stage in pdata:
+        if stage_match(stage, blur_x_stages):
+          blur_x_cache_miss_avg += pdata[stage][0] / piter[stage][0]
+          blur_x_flop_avg += pdata[stage][1] / piter[stage][1]
+          blur_x_lines_out_avg += pdata[stage][2] / piter[stage][2]
+          blur_x_rqsts_miss_avg += pdata[stage][3] / piter[stage][3]
+
+        if stage_match(stage, blur_y_stages):
+          blur_y_cache_miss_avg += pdata[stage][0] / piter[stage][0]
+          blur_y_flop_avg += pdata[stage][1] / piter[stage][1]
+          blur_y_lines_out_avg += pdata[stage][2] / piter[stage][2]
+          blur_y_rqsts_miss_avg += pdata[stage][3] / piter[stage][3]
+
+      blur_x_time_array.append(blur_x_time_avg)
+      blur_x_cache_miss_array.append(blur_x_cache_miss_avg)
+      blur_x_mflop_array.append(1.E-6 * blur_x_flop_avg)
+      blur_x_data_volume_array.append(1.E-6 * (blur_x_lines_out_avg + blur_x_rqsts_miss_avg) * 64)
+
+      blur_y_time_array.append(blur_y_time_avg)
+      blur_y_cache_miss_array.append(blur_y_cache_miss_avg)
+      blur_y_mflop_array.append(1.E-6 * blur_y_flop_avg)
+      blur_y_data_volume_array.append(1.E-6 * (blur_y_lines_out_avg + blur_y_rqsts_miss_avg) * 64)
+
+      total_time_array.append(total_time_avg)
+      total_cache_miss_array.append(total_cache_miss_avg)
+      total_mflop_array.append(1.E-6 * total_flop_avg)
+      total_data_volume_array.append(1.E-6 * (total_lines_out_avg + total_rqsts_miss_avg) * 64)
+
+    blur_x_time_mat.append(blur_x_time_array)
+    blur_x_cache_miss_mat.append(blur_x_cache_miss_array)
+    blur_x_mflop_mat.append(blur_x_mflop_array)
+    blur_x_data_volume_mat.append(blur_x_data_volume_array)
+
+    blur_y_time_mat.append(blur_y_time_array)
+    blur_y_cache_miss_mat.append(blur_y_cache_miss_array)
+    blur_y_mflop_mat.append(blur_y_mflop_array)
+    blur_y_data_volume_mat.append(blur_y_data_volume_array)
+
+    total_time_mat.append(total_time_array)
+    total_cache_miss_mat.append(total_cache_miss_array)
+    total_mflop_mat.append(total_mflop_array)
+    total_data_volume_mat.append(total_data_volume_array)
+
 
   fig = plt.figure()
-  p1 = plt.bar(y_pos, blur_x_time_array, color='#cc0000ff', align='center', alpha=0.5)
-  p2 = plt.bar(y_pos, blur_y_time_array, color='#0000ccff', align='center', alpha=0.5, bottom=blur_x_time_array)
-  plt.xticks(y_pos, schedules)
+
+  for k in range(isizes):
+    if k == 0:
+      label1 = 'blur_x'
+      label2 = 'blur_y'
+
+    else:
+      label1 = None
+      label2 = None
+
+    p1 = plt.bar(
+      y_pos + bar_width * k, blur_x_time_mat[k], bar_width, color='#cc0000ff',
+      align='center', alpha=0.5, label=label1)
+
+    p2 = plt.bar(
+      y_pos + bar_width * k, blur_y_time_mat[k], bar_width, color='#0000ccff',
+      align='center', alpha=0.5, label=label2, bottom=blur_x_time_mat[k])
+
+  plt.xticks(y_pos + bar_width * 0.5 * (isizes - 1), schedules)
   plt.xlabel("Schedule")
   plt.ylabel("Time (ms)")
   plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
-  # plt.title("Execution time per schedule for {} image".format(time_results[i]['image_size']))
-  plt.legend((p1[0], p2[0]), ('blur_x', 'blur_y'))
+  plt.legend()
 
-  bar_counter = 0
-  for bar in p2:
-    tot = total_time_array[bar_counter]
-    plt.text(bar.get_x() + 0.3, tot + 0.3, int(tot))
-    bar_counter += 1
-
-  fig.savefig("time_per_schedule_{}.pdf".format(time_results[i]['image_size']))
+  fig.savefig("time_per_schedule.pdf")
 
   fig = plt.figure()
-  p1 = plt.bar(y_pos, blur_x_cache_miss_array, color='#cc0000ff', align='center', alpha=0.5)
-  p2 = plt.bar(y_pos, blur_y_cache_miss_array, color='#0000ccff', align='center', alpha=0.5, bottom=blur_x_cache_miss_array)
-  plt.xticks(y_pos, schedules)
+
+  for k in range(isizes):
+    if k == 0:
+      label1 = 'blur_x'
+      label2 = 'blur_y'
+
+    else:
+      label1 = None
+      label2 = None
+
+    p1 = plt.bar(
+      y_pos + bar_width * k, blur_x_cache_miss_mat[k], bar_width, color='#cc0000ff',
+      align='center', alpha=0.5, label=label1)
+
+    p2 = plt.bar(
+      y_pos + bar_width * k, blur_y_cache_miss_mat[k], bar_width, color='#0000ccff',
+      align='center', alpha=0.5, label=label2, bottom=blur_x_cache_miss_mat[k])
+
+  plt.xticks(y_pos + bar_width * 0.5 * (isizes - 1), schedules)
   plt.xlabel("Schedule")
   plt.ylabel("L1 cache misses")
   plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
-  # plt.title("L1 Cache Misses per schedule for {} image".format(time_results[i]['image_size']))
-  plt.legend((p1[0], p2[0]), ('blur_x', 'blur_y'))
+  plt.legend()
 
-  bar_counter = 0
-  for bar in p2:
-    tot = total_cache_miss_array[bar_counter]
-    plt.text(bar.get_x() + 0.15, tot + 10000.0, int(tot))
-    bar_counter += 1
-
-  fig.savefig("cache_miss_per_schedule_{}.pdf".format(time_results[i]['image_size']))
+  fig.savefig("cache_miss_per_schedule.pdf")
 
   fig = plt.figure()
-  p1 = plt.bar(y_pos, blur_x_mflop_array, color='#cc0000ff', align='center', alpha=0.5)
-  p2 = plt.bar(y_pos, blur_y_mflop_array, color='#0000ccff', align='center', alpha=0.5, bottom=blur_x_mflop_array)
-  plt.xticks(y_pos, schedules)
+
+  for k in range(isizes):
+    if k == 0:
+      label1 = 'blur_x'
+      label2 = 'blur_y'
+
+    else:
+      label1 = None
+      label2 = None
+
+    p1 = plt.bar(
+      y_pos + bar_width * k, blur_x_mflop_mat[k], bar_width, color='#cc0000ff',
+      align='center', alpha=0.5, label=label1)
+
+    p2 = plt.bar(
+      y_pos + bar_width * k, blur_y_mflop_mat[k], bar_width, color='#0000ccff',
+      align='center', alpha=0.5, label=label2, bottom=blur_x_mflop_mat[k])
+
+  plt.xticks(y_pos + bar_width * 0.5 * (isizes - 1), schedules)
   plt.xlabel("Schedule")
   plt.ylabel("MFLOP")
   plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
-  # plt.title("FLOP per schedule for {} image".format(time_results[i]['image_size']))
-  plt.legend((p1[0], p2[0]), ('blur_x', 'blur_y'))
+  plt.legend()
 
-  bar_counter = 0
-
-  for bar in p2:
-    tot = total_mflop_array[bar_counter]
-    plt.text(bar.get_x() + 0.075, tot + 500000.0, int(tot))
-    bar_counter += 1
-
-  fig.savefig("flop_per_schedule_{}.pdf".format(time_results[i]['image_size']))
+  fig.savefig("flop_per_schedule.pdf")
 
   fig = plt.figure()
-  p1 = plt.bar(y_pos, blur_x_data_volume_array, color='#cc0000ff', align='center', alpha=0.5)
-  p2 = plt.bar(y_pos, blur_y_data_volume_array, color='#0000ccff', align='center', alpha=0.5, bottom=blur_x_data_volume_array)
-  plt.xticks(y_pos, schedules)
+
+  for k in range(isizes):
+    if k == 0:
+      label1 = 'blur_x'
+      label2 = 'blur_y'
+
+    else:
+      label1 = None
+      label2 = None
+
+    p1 = plt.bar(
+      y_pos + bar_width * k, blur_x_data_volume_mat[k], bar_width, color='#cc0000ff',
+      align='center', alpha=0.5, label=label1)
+
+    p2 = plt.bar(
+      y_pos + bar_width * k, blur_y_data_volume_mat[k], bar_width, color='#0000ccff',
+      align='center', alpha=0.5, label=label2, bottom=blur_x_data_volume_mat[k])
+
+  plt.xticks(y_pos + bar_width * 0.5 * (isizes - 1), schedules)
   plt.xlabel("Schedule")
   plt.ylabel("L3 data volume (Mb)")
   plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
-  # plt.title("L3 Data Volume per schedule for {} image".format(time_results[i]['image_size']))
-  plt.legend((p1[0], p2[0]), ('blur_x', 'blur_y'))
+  plt.legend()
 
-  bar_counter = 0
-  for bar in p2:
-    tot = total_data_volume_array[bar_counter]
-    plt.text(bar.get_x() + 0.275, tot + 2.0, int(tot))
-    bar_counter += 1
-
-  fig.savefig("data_volume_per_schedule_{}.pdf".format(time_results[i]['image_size']))
+  fig.savefig("data_volume_per_schedule.pdf")
