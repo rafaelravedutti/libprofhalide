@@ -114,6 +114,34 @@ def is_thread_stage(stage):
 
   return False
 
+def get_thread_bar_values(values):
+  threads = ['t0', 't1', 't2', 't3']
+  bar_values = []
+
+  for thread in threads:
+    thread_values = []
+
+    for sched in range(scheds):
+      if thread not in values[sched]:
+        thread_values.append(0)
+      else:
+        thread_values.append(values[sched][thread])
+
+    bar_values.append(thread_values)
+
+  return bar_values
+
+def vector_add(v1, v2):
+  if len(v1) == len(v2):
+    result = []
+
+    for i in range(len(v1)):
+      result.append(v1[i] + v2[i])
+
+    return result
+
+  return []
+
 algorithms = ['blur']
 hostnames = ['i34']
 image_sizes = ['4K', '10K']
@@ -121,6 +149,7 @@ schedules = ['breadth_first', 'full_fusion', 'sliding_window', 'tile_32x32']
 blur_x_stages = ['blur_x_prod']
 blur_y_stages = ['blur_y_prod', 'blur_x_cons', 'blur_y_overhead', 'blur_y.s0.c_t0']
 variants = ['serial', 'parallel']
+hatches = (' ', '//', '+', '-')
 
 profile_results = {}
 time_results = {}
@@ -193,16 +222,16 @@ for i in range(0, counter, scheds * varnts):
         img_size = time_results[idx]['image_size']
 
       blur_x_time_avg = 0
-      blur_x_cache_miss_avg = 0
-      blur_x_flop_avg = 0
-      blur_x_lines_out_avg = 0
-      blur_x_rqsts_miss_avg = 0
+      blur_x_cache_miss_avg = {}
+      blur_x_flop_avg = {}
+      blur_x_lines_out_avg = {}
+      blur_x_rqsts_miss_avg = {}
 
       blur_y_time_avg = 0
-      blur_y_cache_miss_avg = 0
-      blur_y_flop_avg = 0
-      blur_y_lines_out_avg = 0
-      blur_y_rqsts_miss_avg = 0
+      blur_y_cache_miss_avg = {}
+      blur_y_flop_avg = {}
+      blur_y_lines_out_avg = {}
+      blur_y_rqsts_miss_avg = {}
 
       total_time_avg = 0
       total_cache_miss_avg = 0
@@ -231,27 +260,58 @@ for i in range(0, counter, scheds * varnts):
 
         for stage in pdata:
           if is_thread_stage(stage):
+            thread = stage[-2:]
+
             if stage_match(stage, blur_x_stages):
-              blur_x_cache_miss_avg += pdata[stage][0] / piter[stage][0]
-              blur_x_flop_avg += pdata[stage][1] / piter[stage][1]
-              blur_x_lines_out_avg += pdata[stage][2] / piter[stage][2]
-              blur_x_rqsts_miss_avg += pdata[stage][3] / piter[stage][3]
+              if thread not in blur_x_cache_miss_avg:
+                blur_x_cache_miss_avg[thread] = 0
+                blur_x_flop_avg[thread] = 0
+                blur_x_lines_out_avg[thread] = 0
+                blur_x_rqsts_miss_avg[thread] = 0
+
+              blur_x_cache_miss_avg[thread] += pdata[stage][0] / piter[stage][0]
+              blur_x_flop_avg[thread] += pdata[stage][1] / piter[stage][1]
+              blur_x_lines_out_avg[thread] += pdata[stage][2] / piter[stage][2]
+              blur_x_rqsts_miss_avg[thread] += pdata[stage][3] / piter[stage][3]
 
             if stage_match(stage, blur_y_stages):
-              blur_y_cache_miss_avg += pdata[stage][0] / piter[stage][0]
-              blur_y_flop_avg += pdata[stage][1] / piter[stage][1]
-              blur_y_lines_out_avg += pdata[stage][2] / piter[stage][2]
-              blur_y_rqsts_miss_avg += pdata[stage][3] / piter[stage][3]
+              if thread not in blur_y_cache_miss_avg:
+                blur_y_cache_miss_avg[thread] = 0
+                blur_y_flop_avg[thread] = 0
+                blur_y_lines_out_avg[thread] = 0
+                blur_y_rqsts_miss_avg[thread] = 0
+
+              blur_y_cache_miss_avg[thread] += pdata[stage][0] / piter[stage][0]
+              blur_y_flop_avg[thread] += pdata[stage][1] / piter[stage][1]
+              blur_y_lines_out_avg[thread] += pdata[stage][2] / piter[stage][2]
+              blur_y_rqsts_miss_avg[thread] += pdata[stage][3] / piter[stage][3]
+
+      blur_x_mflop_avg = {}
+      blur_y_mflop_avg = {}
+      blur_x_data_volume_avg = {}
+      blur_y_data_volume_avg = {}
+
+      for t in blur_x_flop_avg:
+        blur_x_mflop_avg[t] = 1.E-6 * blur_x_flop_avg[t]
+
+      for t in blur_y_flop_avg:
+        blur_y_mflop_avg[t] = 1.E-6 * blur_y_flop_avg[t]
+
+      for t in blur_x_lines_out_avg:
+        blur_x_data_volume_avg[t] = 1.E-6 * (blur_x_lines_out_avg[t] + blur_x_rqsts_miss_avg[t]) * 64
+
+      for t in blur_y_lines_out_avg:
+        blur_y_data_volume_avg[t] = 1.E-6 * (blur_y_lines_out_avg[t] + blur_y_rqsts_miss_avg[t]) * 64
 
       blur_x_time_array.append(blur_x_time_avg)
       blur_x_cache_miss_array.append(blur_x_cache_miss_avg)
-      blur_x_mflop_array.append(1.E-6 * blur_x_flop_avg)
-      blur_x_data_volume_array.append(1.E-6 * (blur_x_lines_out_avg + blur_x_rqsts_miss_avg) * 64)
+      blur_x_mflop_array.append(blur_x_mflop_avg)
+      blur_x_data_volume_array.append(blur_x_data_volume_avg)
 
       blur_y_time_array.append(blur_y_time_avg)
       blur_y_cache_miss_array.append(blur_y_cache_miss_avg)
-      blur_y_mflop_array.append(1.E-6 * blur_y_flop_avg)
-      blur_y_data_volume_array.append(1.E-6 * (blur_y_lines_out_avg + blur_y_rqsts_miss_avg) * 64)
+      blur_y_mflop_array.append(blur_y_mflop_avg)
+      blur_y_data_volume_array.append(blur_y_data_volume_avg)
 
       total_time_array.append(total_time_avg)
       total_cache_miss_array.append(total_cache_miss_avg)
@@ -273,7 +333,6 @@ for i in range(0, counter, scheds * varnts):
     total_mflop_mat.append(total_mflop_array)
     total_data_volume_mat.append(total_data_volume_array)
 
-
   fig = plt.figure()
 
   for k in range(varnts):
@@ -290,7 +349,7 @@ for i in range(0, counter, scheds * varnts):
       align='center', alpha=0.5, label=label1)
 
     p2 = plt.bar(
-      y_pos + bar_width * k, blur_y_time_mat[k], bar_width - bar_sep * 0.5, color='#0000ccff',
+      y_pos + bar_width * k, blur_y_time_mat[k], bar_width - bar_sep * 0.5, color='#00ff00ff',
       align='center', alpha=0.5, label=label2, bottom=blur_x_time_mat[k])
 
   plt.xticks(y_pos + bar_width * 0.5 * (varnts - 1), schedules)
@@ -306,18 +365,35 @@ for i in range(0, counter, scheds * varnts):
     if k == 0:
       label1 = 'blur_x'
       label2 = 'blur_y'
-
     else:
       label1 = None
       label2 = None
 
-    p1 = plt.bar(
-      y_pos + bar_width * k, blur_x_cache_miss_mat[k], bar_width - bar_sep * 0.5, color='#cc0000ff',
-      align='center', alpha=0.5, label=label1)
+    previous_values = [0, 0, 0, 0]
 
-    p2 = plt.bar(
-      y_pos + bar_width * k, blur_y_cache_miss_mat[k], bar_width - bar_sep * 0.5, color='#0000ccff',
-      align='center', alpha=0.5, label=label2, bottom=blur_x_cache_miss_mat[k])
+    bar_values = get_thread_bar_values(blur_x_cache_miss_mat[k])
+    hatch_idx = 0
+
+    for values in bar_values:
+      p1 = plt.bar(
+        y_pos + bar_width * k, values, bar_width - bar_sep * 0.5, color='#cc0000ff', align='center',
+        alpha=0.5, label=label1, hatch=hatches[hatch_idx], bottom=previous_values)
+
+      label1 = None
+      previous_values = vector_add(previous_values, values)
+      hatch_idx += 1
+
+    bar_values = get_thread_bar_values(blur_y_cache_miss_mat[k])
+    hatch_idx = 0
+
+    for values in bar_values:
+      p2 = plt.bar(
+        y_pos + bar_width * k, values, bar_width - bar_sep * 0.5, color='#00ff00ff', align='center',
+        alpha=0.5, label=label2, hatch=hatches[hatch_idx], bottom=previous_values)
+
+      label2 = None
+      previous_values = vector_add(previous_values, values)
+      hatch_idx += 1
 
   plt.xticks(y_pos + bar_width * 0.5 * (varnts - 1), schedules)
   plt.ylabel("L1 cache misses")
@@ -332,18 +408,35 @@ for i in range(0, counter, scheds * varnts):
     if k == 0:
       label1 = 'blur_x'
       label2 = 'blur_y'
-
     else:
       label1 = None
       label2 = None
 
-    p1 = plt.bar(
-      y_pos + bar_width * k, blur_x_mflop_mat[k], bar_width - bar_sep * 0.5, color='#cc0000ff',
-      align='center', alpha=0.5, label=label1)
+    previous_values = [0, 0, 0, 0]
 
-    p2 = plt.bar(
-      y_pos + bar_width * k, blur_y_mflop_mat[k], bar_width - bar_sep * 0.5, color='#0000ccff',
-      align='center', alpha=0.5, label=label2, bottom=blur_x_mflop_mat[k])
+    bar_values = get_thread_bar_values(blur_x_mflop_mat[k])
+    hatch_idx = 0
+
+    for values in bar_values:
+      p1 = plt.bar(
+        y_pos + bar_width * k, values, bar_width - bar_sep * 0.5, color='#cc0000ff', align='center',
+        alpha=0.5, label=label1, hatch=hatches[hatch_idx], bottom=previous_values)
+
+      label1 = None
+      previous_values = vector_add(previous_values, values)
+      hatch_idx += 1
+
+    bar_values = get_thread_bar_values(blur_y_mflop_mat[k])
+    hatch_idx = 0
+
+    for values in bar_values:
+      p2 = plt.bar(
+        y_pos + bar_width * k, values, bar_width - bar_sep * 0.5, color='#00ff00ff', align='center',
+        alpha=0.5, label=label2, hatch=hatches[hatch_idx], bottom=previous_values)
+
+      label2 = None
+      previous_values = vector_add(previous_values, values)
+      hatch_idx += 1
 
   plt.xticks(y_pos + bar_width * 0.5 * (varnts - 1), schedules)
   plt.ylabel("MFLOP")
@@ -358,18 +451,35 @@ for i in range(0, counter, scheds * varnts):
     if k == 0:
       label1 = 'blur_x'
       label2 = 'blur_y'
-
     else:
       label1 = None
       label2 = None
 
-    p1 = plt.bar(
-      y_pos + bar_width * k, blur_x_data_volume_mat[k], bar_width - bar_sep * 0.5, color='#cc0000ff',
-      align='center', alpha=0.5, label=label1)
+    previous_values = [0, 0, 0, 0]
 
-    p2 = plt.bar(
-      y_pos + bar_width * k, blur_y_data_volume_mat[k], bar_width - bar_sep * 0.5, color='#0000ccff',
-      align='center', alpha=0.5, label=label2, bottom=blur_x_data_volume_mat[k])
+    bar_values = get_thread_bar_values(blur_x_data_volume_mat[k])
+    hatch_idx = 0
+
+    for values in bar_values:
+      p1 = plt.bar(
+        y_pos + bar_width * k, values, bar_width - bar_sep * 0.5, color='#cc0000ff', align='center',
+        alpha=0.5, label=label1, hatch=hatches[hatch_idx], bottom=previous_values)
+
+      label1 = None
+      previous_values = vector_add(previous_values, values)
+      hatch_idx += 1
+
+    bar_values = get_thread_bar_values(blur_y_data_volume_mat[k])
+    hatch_idx = 0
+
+    for values in bar_values:
+      p2 = plt.bar(
+        y_pos + bar_width * k, values, bar_width - bar_sep * 0.5, color='#00ff00ff', align='center',
+        alpha=0.5, label=label2, hatch=hatches[hatch_idx], bottom=previous_values)
+
+      label2 = None
+      previous_values = vector_add(previous_values, values)
+      hatch_idx += 1
 
   plt.xticks(y_pos + bar_width * 0.5 * (varnts - 1), schedules)
   plt.ylabel("L3 data volume (Mb)")
