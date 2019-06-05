@@ -109,13 +109,13 @@ for algorithm in algorithms:
   for hostname in hostnames:
     for image_size in image_sizes:
       for schedule in schedules:
-        filename = "{}_{}_profile_{}_{}.csv".format(algorithm, schedule, hostname, image_size)
+        filename = "csv/{}_{}_profile_{}_{}.csv".format(algorithm, schedule, hostname, image_size)
         profile_results[counter] = get_file_results(filename, True, image_size, schedule)
         print(filename)
         print_results(profile_results[counter])
         print(" ")
 
-        filename = "{}_{}_time_{}_{}.csv".format(algorithm, schedule, hostname, image_size)
+        filename = "csv/{}_{}_time_{}_{}.csv".format(algorithm, schedule, hostname, image_size)
         time_results[counter] = get_file_results(filename, False, image_size, schedule)
         print(filename)
         print_results(time_results[counter])
@@ -261,7 +261,7 @@ for i in range(0, counter, isizes * scheds):
   plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
   plt.legend()
 
-  fig.savefig("time_per_schedule.pdf")
+  fig.savefig("pdf/time_per_schedule.pdf")
 
   fig = plt.figure()
 
@@ -288,7 +288,7 @@ for i in range(0, counter, isizes * scheds):
   plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
   plt.legend()
 
-  fig.savefig("cache_miss_per_schedule.pdf")
+  fig.savefig("pdf/cache_miss_per_schedule.pdf")
 
   fig = plt.figure()
 
@@ -315,7 +315,7 @@ for i in range(0, counter, isizes * scheds):
   plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
   plt.legend()
 
-  fig.savefig("flop_per_schedule.pdf")
+  fig.savefig("pdf/flop_per_schedule.pdf")
 
   fig = plt.figure()
 
@@ -342,4 +342,4 @@ for i in range(0, counter, isizes * scheds):
   plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
   plt.legend()
 
-  fig.savefig("data_volume_per_schedule.pdf")
+  fig.savefig("pdf/data_volume_per_schedule.pdf")
