@@ -143,7 +143,7 @@ def vector_add(v1, v2):
   return []
 
 algorithms = ['blur']
-hostnames = ['i34']
+hostnames = ['i35']
 image_sizes = ['4K', '10K']
 schedules = ['breadth_first', 'full_fusion', 'sliding_window', 'tile_32x32']
 blur_x_stages = ['blur_x_prod']
