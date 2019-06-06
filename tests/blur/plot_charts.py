@@ -176,7 +176,7 @@ for algorithm in algorithms:
 scheds = len(schedules)
 varnts = len(variants)
 
-plt.rcParams.update({'font.size': 16})
+plt.rcParams.update({'font.size': 18})
 sched_labels = ["1t   4t\n" + sched.replace("_", "\n") for sched in schedules]
 sched_labels[2] = sched_labels[2].replace("4t", "   ")
 hatches = (' ', '////', '++++', '----')
