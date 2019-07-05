@@ -11,6 +11,9 @@ namespace Halide { namespace Runtime { namespace Internal {
 
 static halide_papi_pipeline_stats *current_pipeline_stats = NULL;
 
+static long long int (*last_counters)[32][128];
+static int (*last_counters_used)[32];
+
 WEAK void bill_func(halide_papi_state *s, int func_id, uint64_t time, int active_threads) {
   halide_papi_pipeline_stats *p_prev = NULL;
   for(halide_papi_pipeline_stats *p = s->pipelines; p; p = (halide_papi_pipeline_stats *)(p->next)) {
@@ -543,6 +546,8 @@ WEAK __attribute__((always_inline)) int halide_papi_enter_current_func(halide_pa
   int level = is_producer ? 0 : 1;
 
   if((fs->iterations[level] % PROFILE_GRANULARITY) == 0) {
+    last_counters = &(fs->event_counters[level]);
+    last_counters_used = &(fs->counter_used[level]);
     papi_halide_marker_start();
   }
 
@@ -551,12 +556,13 @@ WEAK __attribute__((always_inline)) int halide_papi_enter_current_func(halide_pa
 
 WEAK __attribute__((always_inline)) int halide_papi_leave_current_func(halide_papi_state *state, int tok, int t, bool is_producer) {
   halide_papi_func_stats *fs = current_pipeline_stats->funcs + t;
-  int thread_idx = papi_halide_get_thread_index();
   int level = is_producer ? 0 : 1;
+  int thread_idx = papi_halide_get_thread_index();
 
   if((fs->iterations[level] % PROFILE_GRANULARITY) == 0) {
-    papi_halide_marker_stop(fs->event_counters[level][thread_idx], fs->counter_used[level][thread_idx]);
+    papi_halide_marker_stop(fs->event_counters[level][thread_idx], 1);
     fs->counter_used[level][thread_idx] = 1;
+    last_counters = NULL;
   }
 
   fs->iterations[level]++;
@@ -567,6 +573,8 @@ WEAK __attribute__((always_inline)) int halide_papi_enter_loop(halide_papi_state
   halide_papi_loop_stats *ls = current_pipeline_stats->loops + id;
 
   if((ls->iterations % PROFILE_GRANULARITY) == 0) {
+    last_counters = &(ls->loop_counters);
+    last_counters_used = &(ls->loop_counter_used);
     papi_halide_marker_start();
   }
 
@@ -578,8 +586,9 @@ WEAK __attribute__((always_inline)) int halide_papi_leave_loop(halide_papi_state
   int thread_idx = papi_halide_get_thread_index();
 
   if((ls->iterations % PROFILE_GRANULARITY) == 0) {
-    papi_halide_marker_stop(ls->loop_counters[thread_idx], ls->loop_counter_used[thread_idx]);
+    papi_halide_marker_stop(ls->loop_counters[thread_idx], 1);
     ls->loop_counter_used[thread_idx] = 1;
+    last_counters = NULL;
   }
 
   ls->iterations++;
@@ -590,6 +599,8 @@ WEAK __attribute__((always_inline)) int halide_papi_enter_overhead_region(halide
   halide_papi_func_stats *fs = current_pipeline_stats->funcs + t;
 
   if((fs->overhead_iterations % PROFILE_GRANULARITY) == 0) {
+    last_counters = &(fs->overhead_counters);
+    last_counters_used = &(fs->overhead_counter_used);
     papi_halide_marker_start();
   }
 
@@ -601,12 +612,50 @@ WEAK __attribute__((always_inline)) int halide_papi_leave_overhead_region(halide
   int thread_idx = papi_halide_get_thread_index();
 
   if((fs->overhead_iterations % PROFILE_GRANULARITY) == 0) {
-    papi_halide_marker_stop(fs->overhead_counters[thread_idx], fs->overhead_counter_used[thread_idx]);
+    papi_halide_marker_stop(fs->overhead_counters[thread_idx], 1);
     fs->overhead_counter_used[thread_idx] = 1;
+    last_counters = NULL;
   }
 
   fs->overhead_iterations++;
   return 0;
+}
+
+WEAK __attribute__((always_inline)) int halide_papi_incr_active_threads(halide_papi_state *state) {
+    volatile int *ptr = &(state->active_threads);
+    asm volatile ("":::);
+    int ret = __sync_fetch_and_add(ptr, 1);
+    asm volatile ("":::);
+
+    papi_halide_start_thread();
+
+    return ret;
+}
+
+WEAK __attribute__((always_inline)) int halide_papi_decr_active_threads(halide_papi_state *state) {
+    int thread_idx = papi_halide_get_thread_index();
+    volatile int *ptr = &(state->active_threads);
+    asm volatile ("":::);
+    int ret = __sync_fetch_and_sub(ptr, 1);
+    asm volatile ("":::);
+
+    if(last_counters != NULL) {
+      papi_halide_marker_stop((*last_counters)[thread_idx], 1);
+      (*last_counters_used)[thread_idx] = 1;
+    }
+
+    papi_halide_stop_thread();
+    return ret;
+}
+
+WEAK __attribute__((always_inline)) int halide_papi_enter_parallel_region(halide_papi_state *state) {
+    papi_halide_enter_parallel_region();
+    return 0;
+}
+
+WEAK __attribute__((always_inline)) int halide_papi_leave_parallel_region(halide_papi_state *state) {
+    papi_halide_leave_parallel_region();
+    return 0;
 }
 
 } // extern "C"
