@@ -278,9 +278,11 @@ int papi_halide_start_thread() {
     return -1;
   }
 
-  if((ret = PAPI_add_events(threadsInfo[thread_idx].event_set, global_state->event_array, global_state->num_events)) != PAPI_OK) {
-    fprintf(stderr, "PAPI_add_events(): %d\n", ret);
-    return -1;
+  for(int i = 0; i < global_state->num_events; ++i) {
+    if((ret = PAPI_add_event(threadsInfo[thread_idx].event_set, global_state->event_array[i])) != PAPI_OK) {
+      fprintf(stderr, "PAPI_add_event(%d): %d\n", global_state->event_array[i], ret);
+      return -1;
+    }
   }
 
   if((ret = PAPI_start(threadsInfo[thread_idx].event_set)) != PAPI_OK) {
@@ -306,9 +308,11 @@ int papi_halide_stop_thread() {
     return -1;
   }
 
-  if((ret = PAPI_remove_events(threadsInfo[thread_idx].event_set, global_state->event_array, global_state->num_events)) != PAPI_OK) {
-    fprintf(stderr, "PAPI_remove_events(): %d\n", ret);
-    return -1;
+  for(int i = 0; i < global_state->num_events; ++i) {
+    if((ret = PAPI_remove_event(threadsInfo[thread_idx].event_set, global_state->event_array[i])) != PAPI_OK) {
+      fprintf(stderr, "PAPI_remove_event(%d): %d\n", global_state->event_array[i], ret);
+      return -1;
+    }
   }
 
   if((ret = PAPI_destroy_eventset(&threadsInfo[thread_idx].event_set)) != PAPI_OK) {
