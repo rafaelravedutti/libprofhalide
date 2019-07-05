@@ -176,8 +176,9 @@ for algorithm in algorithms:
 scheds = len(schedules)
 varnts = len(variants)
 
-plt.rcParams.update({'font.size': 18})
-sched_labels = ["1t   4t\n" + sched.replace("_", "\n") for sched in schedules]
+plt.rcParams.update({'font.size': 20})
+plt.rcParams.update({'hatch.color': 'black'})
+sched_labels = ["1t  4t\n" + sched.replace("_", "\n") for sched in schedules]
 sched_labels[2] = sched_labels[2].replace("4t", "   ")
 hatches = (' ', '////', '++++', '----')
 
@@ -290,10 +291,18 @@ for i in range(0, counter, scheds * varnts):
               blur_y_lines_out_avg[thread] += pdata[stage][2] / piter[stage][2]
               blur_y_rqsts_miss_avg[thread] += pdata[stage][3] / piter[stage][3]
 
+      blur_x_mcache_miss_avg = {}
+      blur_y_mcache_miss_avg = {}
       blur_x_mflop_avg = {}
       blur_y_mflop_avg = {}
       blur_x_data_volume_avg = {}
       blur_y_data_volume_avg = {}
+
+      for t in blur_x_cache_miss_avg:
+        blur_x_mcache_miss_avg[t] = 1.E-6 * blur_x_cache_miss_avg[t]
+
+      for t in blur_y_cache_miss_avg:
+        blur_y_mcache_miss_avg[t] = 1.E-6 * blur_y_cache_miss_avg[t]
 
       for t in blur_x_flop_avg:
         blur_x_mflop_avg[t] = 1.E-6 * blur_x_flop_avg[t]
@@ -308,12 +317,12 @@ for i in range(0, counter, scheds * varnts):
         blur_y_data_volume_avg[t] = 1.E-6 * (blur_y_lines_out_avg[t] + blur_y_rqsts_miss_avg[t]) * 64
 
       blur_x_time_array.append(blur_x_time_avg)
-      blur_x_cache_miss_array.append(blur_x_cache_miss_avg)
+      blur_x_cache_miss_array.append(blur_x_mcache_miss_avg)
       blur_x_mflop_array.append(blur_x_mflop_avg)
       blur_x_data_volume_array.append(blur_x_data_volume_avg)
 
       blur_y_time_array.append(blur_y_time_avg)
-      blur_y_cache_miss_array.append(blur_y_cache_miss_avg)
+      blur_y_cache_miss_array.append(blur_y_mcache_miss_avg)
       blur_y_mflop_array.append(blur_y_mflop_avg)
       blur_y_data_volume_array.append(blur_y_data_volume_avg)
 
@@ -362,7 +371,7 @@ for i in range(0, counter, scheds * varnts):
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/time_per_schedule_{}.pdf".format(img_size))
+  fig.savefig("pdf/time_per_schedule_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
 
   fig = plt.figure()
 
@@ -403,10 +412,19 @@ for i in range(0, counter, scheds * varnts):
   plt.xticks(y_pos + bar_width * 0.5 * (varnts - 1), sched_labels)
   plt.ylabel("L1 cache misses")
   plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
+
+  if img_size == '4K':
+    plt.yticks([0, 1, 2, 3, 4], ["0M", "1M", "2M", "3M", "4M"])
+    plt.ylim(top=5)
+
+  else:
+    plt.yticks([0, 5, 10, 15, 20], ["0M", "5M", "10M", "15M", "20M"])
+    plt.ylim(top=20)
+
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/cache_miss_per_schedule_{}.pdf".format(img_size))
+  fig.savefig("pdf/cache_miss_per_schedule_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
 
   fig = plt.figure()
 
@@ -447,10 +465,17 @@ for i in range(0, counter, scheds * varnts):
   plt.xticks(y_pos + bar_width * 0.5 * (varnts - 1), sched_labels)
   plt.ylabel("MFLOP")
   plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
+
+  if img_size == '4K':
+    plt.ylim(top=100)
+
+  else:
+    plt.ylim(top=500)
+
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/flop_per_schedule_{}.pdf".format(img_size))
+  fig.savefig("pdf/flop_per_schedule_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
 
   fig = plt.figure()
 
@@ -489,9 +514,9 @@ for i in range(0, counter, scheds * varnts):
       hatch_idx += 1
 
   plt.xticks(y_pos + bar_width * 0.5 * (varnts - 1), sched_labels)
-  plt.ylabel("L3 data volume (Mb)")
+  plt.ylabel("L3 data volume (MB)")
   plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/data_volume_per_schedule_{}.pdf".format(img_size))
+  fig.savefig("pdf/data_volume_per_schedule_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
