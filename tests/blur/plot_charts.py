@@ -149,7 +149,6 @@ schedules = ['breadth_first', 'full_fusion', 'sliding_window', 'tile_32x32']
 blur_x_stages = ['blur_x_prod']
 blur_y_stages = ['blur_y_prod', 'blur_x_cons', 'blur_y_overhead', 'blur_y.s0.c_t0']
 variants = ['serial', 'parallel']
-hatches = (' ', '//', '+', '-')
 
 profile_results = {}
 time_results = {}
@@ -176,6 +175,11 @@ for algorithm in algorithms:
 
 scheds = len(schedules)
 varnts = len(variants)
+
+plt.rcParams.update({'font.size': 18})
+sched_labels = ["1t   4t\n" + sched.replace("_", "\n") for sched in schedules]
+sched_labels[2] = sched_labels[2].replace("4t", "   ")
+hatches = (' ', '////', '++++', '----')
 
 for i in range(0, counter, scheds * varnts):
   y_pos = np.arange(scheds)
@@ -345,17 +349,18 @@ for i in range(0, counter, scheds * varnts):
       label2 = None
 
     p1 = plt.bar(
-      y_pos + bar_width * k, blur_x_time_mat[k], bar_width - bar_sep * 0.5, color='#cc0000ff',
+      y_pos + bar_width * k, blur_x_time_mat[k], bar_width - bar_sep * 0.5, color='#ff0000ff',
       align='center', alpha=0.5, label=label1)
 
     p2 = plt.bar(
       y_pos + bar_width * k, blur_y_time_mat[k], bar_width - bar_sep * 0.5, color='#00ff00ff',
       align='center', alpha=0.5, label=label2, bottom=blur_x_time_mat[k])
 
-  plt.xticks(y_pos + bar_width * 0.5 * (varnts - 1), schedules)
+  plt.xticks(y_pos + bar_width * 0.5 * (varnts - 1), sched_labels)
   plt.ylabel("Time (ms)")
   plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
   plt.legend()
+  plt.tight_layout()
 
   fig.savefig("pdf/time_per_schedule_{}.pdf".format(img_size))
 
@@ -376,7 +381,7 @@ for i in range(0, counter, scheds * varnts):
 
     for values in bar_values:
       p1 = plt.bar(
-        y_pos + bar_width * k, values, bar_width - bar_sep * 0.5, color='#cc0000ff', align='center',
+        y_pos + bar_width * k, values, bar_width - bar_sep * 0.5, color='#ff0000ff', align='center',
         alpha=0.5, label=label1, hatch=hatches[hatch_idx], bottom=previous_values)
 
       label1 = None
@@ -395,10 +400,11 @@ for i in range(0, counter, scheds * varnts):
       previous_values = vector_add(previous_values, values)
       hatch_idx += 1
 
-  plt.xticks(y_pos + bar_width * 0.5 * (varnts - 1), schedules)
+  plt.xticks(y_pos + bar_width * 0.5 * (varnts - 1), sched_labels)
   plt.ylabel("L1 cache misses")
   plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
   plt.legend()
+  plt.tight_layout()
 
   fig.savefig("pdf/cache_miss_per_schedule_{}.pdf".format(img_size))
 
@@ -419,7 +425,7 @@ for i in range(0, counter, scheds * varnts):
 
     for values in bar_values:
       p1 = plt.bar(
-        y_pos + bar_width * k, values, bar_width - bar_sep * 0.5, color='#cc0000ff', align='center',
+        y_pos + bar_width * k, values, bar_width - bar_sep * 0.5, color='#ff0000ff', align='center',
         alpha=0.5, label=label1, hatch=hatches[hatch_idx], bottom=previous_values)
 
       label1 = None
@@ -438,10 +444,11 @@ for i in range(0, counter, scheds * varnts):
       previous_values = vector_add(previous_values, values)
       hatch_idx += 1
 
-  plt.xticks(y_pos + bar_width * 0.5 * (varnts - 1), schedules)
+  plt.xticks(y_pos + bar_width * 0.5 * (varnts - 1), sched_labels)
   plt.ylabel("MFLOP")
   plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
   plt.legend()
+  plt.tight_layout()
 
   fig.savefig("pdf/flop_per_schedule_{}.pdf".format(img_size))
 
@@ -462,7 +469,7 @@ for i in range(0, counter, scheds * varnts):
 
     for values in bar_values:
       p1 = plt.bar(
-        y_pos + bar_width * k, values, bar_width - bar_sep * 0.5, color='#cc0000ff', align='center',
+        y_pos + bar_width * k, values, bar_width - bar_sep * 0.5, color='#ff0000ff', align='center',
         alpha=0.5, label=label1, hatch=hatches[hatch_idx], bottom=previous_values)
 
       label1 = None
@@ -481,9 +488,10 @@ for i in range(0, counter, scheds * varnts):
       previous_values = vector_add(previous_values, values)
       hatch_idx += 1
 
-  plt.xticks(y_pos + bar_width * 0.5 * (varnts - 1), schedules)
+  plt.xticks(y_pos + bar_width * 0.5 * (varnts - 1), sched_labels)
   plt.ylabel("L3 data volume (Mb)")
   plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
   plt.legend()
+  plt.tight_layout()
 
   fig.savefig("pdf/data_volume_per_schedule_{}.pdf".format(img_size))
