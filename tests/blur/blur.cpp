@@ -17,8 +17,8 @@ using std::string;
 
 int main(int argc, const char **argv) {
   //Buffer<float> input(3840, 2160, 1);
-  //Buffer<float> input(10240, 4320, 1);
-  Buffer<float> input(10112, 10112, 1);
+  Buffer<float> input(10240, 4320, 1);
+  //Buffer<float> input(10112, 10112, 1);
   //Buffer<float> input = Tools::load_and_convert_image("input.png");
   Buffer<float> output(input.width() - 2, input.height() - 2, input.channels());
   Func blur_x, blur_y;
@@ -40,8 +40,8 @@ int main(int argc, const char **argv) {
   #endif
 
   #ifdef PROFILE
-    blur_x.profile(PROFILE_PRODUCTION, false, true);
-    blur_y.profile(PROFILE_PRODUCTION, false, true);
+    blur_x.profile(PROFILE_PRODUCTION, true, true);
+    blur_y.profile(PROFILE_PRODUCTION, true, true);
   #endif
 
 #elif SCHEDULE == 2
@@ -53,8 +53,8 @@ int main(int argc, const char **argv) {
   #endif
 
   #ifdef PROFILE
-    blur_x.profile(PROFILE_PRODUCTION, false, true);
-    blur_y.profile(PROFILE_PRODUCTION, false, true);
+    blur_x.profile(PROFILE_PRODUCTION, true, true);
+    blur_y.profile(PROFILE_PRODUCTION, true, true);
   #endif
 
 #elif SCHEDULE == 3
@@ -68,7 +68,7 @@ int main(int argc, const char **argv) {
   #endif
 
   #ifdef PROFILE
-    profile_at(blur_y, c, false);
+    profile_at(blur_y, c, true);
   #endif
 
 #elif SCHEDULE == 4
@@ -83,8 +83,8 @@ int main(int argc, const char **argv) {
   #endif
 
   #ifdef PROFILE
-    blur_x.profile(PROFILE_PRODUCTION, false, true);
-    blur_y.profile(PROFILE_PRODUCTION, false, true);
+    blur_x.profile(PROFILE_PRODUCTION, true, true);
+    blur_y.profile(PROFILE_PRODUCTION, true, true);
   #endif
 
 #else
