@@ -16,6 +16,11 @@ ifdef PARALLEL
 	CXXFLAGS+=-DPARALLEL
 endif
 
+# Must use schedule with vectorization?
+ifdef VECTORIZE
+	CXXFLAGS+=-DVECTORIZE
+endif
+
 # Halide path
 HALIDE_PATH=/home/ppginf/rrlmachado/nobackup/repositories/Halide
 

@@ -16,8 +16,8 @@ using std::string;
 #endif
 
 int main(int argc, const char **argv) {
-  //Buffer<float> input(3840, 2160, 1);
-  Buffer<float> input(10240, 4320, 1);
+  Buffer<float> input(3840, 2160, 1);
+  //Buffer<float> input(10240, 4320, 1);
   //Buffer<float> input(10112, 10112, 1);
   //Buffer<float> input = Tools::load_and_convert_image("input.png");
   Buffer<float> output(input.width() - 2, input.height() - 2, input.channels());
@@ -28,11 +28,20 @@ int main(int argc, const char **argv) {
   blur_x(x, y, c) = (input(x - 1, y, c) + input(x, y, c) + input(x + 1, y, c)) / 3.0f;
   blur_y(x, y, c) = (blur_x(x, y - 1, c) + blur_x(x, y, c) + blur_x(x, y + 1, c)) / 3.0f;
 
+#ifndef PROFILE
+    set_profiler_status(false);
+#endif
+
 #if SCHEDULE == 1
     /* Breadth-first */
     schedule = "breadth_first";
 
     blur_x.compute_root();
+
+  #ifdef VECTORIZE
+    blur_x.vectorize(x, 4);
+    blur_y.vectorize(x, 4);
+  #endif
 
   #ifdef PARALLEL
     blur_x.parallel(y);
@@ -47,6 +56,10 @@ int main(int argc, const char **argv) {
 #elif SCHEDULE == 2
     /* Full-fusion */
     schedule = "full_fusion";
+
+  #ifdef VECTORIZE
+    blur_y.vectorize(x, 4);
+  #endif
 
   #ifdef PARALLEL
     blur_y.parallel(y);
@@ -63,6 +76,11 @@ int main(int argc, const char **argv) {
 
     blur_x.store_at(blur_y, c).compute_at(blur_y, x);
 
+  #ifdef VECTORIZE
+    blur_x.vectorize(x, 4);
+    blur_y.vectorize(x, 4);
+  #endif
+
   #ifdef PARALLEL
     blur_y.parallel(y);
   #endif
@@ -77,6 +95,11 @@ int main(int argc, const char **argv) {
 
     blur_y.tile(x, y, xi, yi, 32, 32);
     blur_x.compute_at(blur_y, x);
+
+  #ifdef VECTORIZE
+    blur_y.vectorize(xi, 4);
+    blur_x.vectorize(x, 4);
+  #endif
 
   #ifdef PARALLEL
     blur_y.parallel(y);
