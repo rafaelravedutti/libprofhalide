@@ -9,8 +9,8 @@ using namespace Halide::Tools;
 
 int main(int argc, const char **argv) {
   //Halide::Runtime::Buffer<float> input = Tools::load_and_convert_image("input.png");
-  //Halide::Runtime::Buffer<float> input(3840, 2160, 4);
-  Halide::Runtime::Buffer<float> input(10240, 4320, 4);
+  Halide::Runtime::Buffer<float> input(3840, 2160, 4);
+  //Halide::Runtime::Buffer<float> input(10240, 4320, 4);
   Halide::Runtime::Buffer<float> out(input.width(), input.height(), 3);
   int error;
 

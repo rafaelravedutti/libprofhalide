@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
   // Input must have four color channels - rgba
   input.dim(2).set_bounds(0, 4);
 
-  const int levels = 4;
+  const int levels = 10;
 
   Func downsampled[levels];
   Func downx[levels];
@@ -205,8 +205,8 @@ int main(int argc, char **argv) {
     // JIT compile the pipeline eagerly, so we don't interfere with timing
     //normalize.compile_jit(target);
 
-    //Buffer<float> input_buffer(3840, 2160, 4);
-    Buffer<float> input_buffer(10240, 4320, 4);
+    Buffer<float> input_buffer(3840, 2160, 4);
+    //Buffer<float> input_buffer(10240, 4320, 4);
     //Buffer<float> input_buffer = Tools::load_and_convert_image("input.png");
     Buffer<float> out(input_buffer.width(), input_buffer.height(), 3);
     assert(input_buffer.channels() == 4);
