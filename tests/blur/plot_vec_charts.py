@@ -159,13 +159,13 @@ for algorithm in algorithms:
     for image_size in image_sizes:
       for variant in variants:
         for schedule in schedules:
-          filename = "csv/{}_{}_{}_profile_{}_{}.csv".format(algorithm, schedule, variant, hostname, image_size)
+          filename = "csv/{}_{}_{}_profile_{}_vec_{}.csv".format(algorithm, schedule, variant, hostname, image_size)
           profile_results[counter] = get_file_results(filename, True, image_size, schedule)
           print(filename)
           print_results(profile_results[counter])
           print(" ")
 
-          filename = "csv/{}_{}_{}_time_{}_{}.csv".format(algorithm, schedule, variant, hostname, image_size)
+          filename = "csv/{}_{}_{}_time_{}_vec_{}.csv".format(algorithm, schedule, variant, hostname, image_size)
           time_results[counter] = get_file_results(filename, False, image_size, schedule)
           print(filename)
           print_results(time_results[counter])
@@ -371,7 +371,7 @@ for i in range(0, counter, scheds * varnts):
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/time_per_schedule_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
+  fig.savefig("pdf/time_per_schedule_vec_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
 
   fig = plt.figure()
 
@@ -424,7 +424,7 @@ for i in range(0, counter, scheds * varnts):
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/cache_miss_per_schedule_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
+  fig.savefig("pdf/cache_miss_per_schedule_vec_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
 
   fig = plt.figure()
 
@@ -475,7 +475,7 @@ for i in range(0, counter, scheds * varnts):
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/flop_per_schedule_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
+  fig.savefig("pdf/flop_per_schedule_vec_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
 
   fig = plt.figure()
 
@@ -519,4 +519,4 @@ for i in range(0, counter, scheds * varnts):
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/data_volume_per_schedule_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
+  fig.savefig("pdf/data_volume_per_schedule_vec_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
