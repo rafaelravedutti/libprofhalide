@@ -371,7 +371,7 @@ for i in range(0, counter, scheds * varnts):
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/time_per_schedule_vec_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
+  fig.savefig("pdf/{}_time_per_schedule_vec_{}.pdf".format(algorithms[0], img_size), bbox_inches = 'tight', pad_inches = 0)
 
   fig = plt.figure()
 
@@ -424,7 +424,7 @@ for i in range(0, counter, scheds * varnts):
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/cache_miss_per_schedule_vec_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
+  fig.savefig("pdf/{}_cache_miss_per_schedule_vec_{}.pdf".format(algorithms[0], img_size), bbox_inches = 'tight', pad_inches = 0)
 
   fig = plt.figure()
 
@@ -467,15 +467,15 @@ for i in range(0, counter, scheds * varnts):
   plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
 
   if img_size == '4K':
-    plt.ylim(top=100)
+    plt.ylim(top=20)
 
   else:
-    plt.ylim(top=500)
+    plt.ylim(top=120)
 
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/flop_per_schedule_vec_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
+  fig.savefig("pdf/{}_flop_per_schedule_vec_{}.pdf".format(algorithms[0], img_size), bbox_inches = 'tight', pad_inches = 0)
 
   fig = plt.figure()
 
@@ -519,4 +519,4 @@ for i in range(0, counter, scheds * varnts):
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/data_volume_per_schedule_vec_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
+  fig.savefig("pdf/{}_data_volume_per_schedule_vec_{}.pdf".format(algorithms[0], img_size), bbox_inches = 'tight', pad_inches = 0)

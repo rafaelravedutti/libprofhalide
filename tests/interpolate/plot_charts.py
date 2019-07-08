@@ -293,7 +293,7 @@ for i in range(0, counter, scheds):
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/time_per_schedule_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
+  fig.savefig("pdf/{}_time_per_schedule_{}.pdf".format(algorithms[0], img_size), bbox_inches = 'tight', pad_inches = 0)
 
   fig = plt.figure()
 
@@ -331,7 +331,7 @@ for i in range(0, counter, scheds):
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/cache_miss_per_schedule_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
+  fig.savefig("pdf/{}_cache_miss_per_schedule_{}.pdf".format(algorithms[0], img_size), bbox_inches = 'tight', pad_inches = 0)
 
   fig = plt.figure()
 
@@ -367,7 +367,7 @@ for i in range(0, counter, scheds):
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/flop_per_schedule_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
+  fig.savefig("pdf/{}_flop_per_schedule_{}.pdf".format(algorithms[0], img_size), bbox_inches = 'tight', pad_inches = 0)
 
   fig = plt.figure()
 
@@ -396,4 +396,4 @@ for i in range(0, counter, scheds):
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/data_volume_per_schedule_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
+  fig.savefig("pdf/{}_data_volume_per_schedule_{}.pdf".format(algorithms[0], img_size), bbox_inches = 'tight', pad_inches = 0)
