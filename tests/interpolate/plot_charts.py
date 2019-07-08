@@ -144,18 +144,17 @@ def vector_add(v1, v2):
 
 algorithms = ['interpolate']
 hostnames = ['i38']
-image_sizes = ['10K']
-#image_sizes = ['4K', '10K']
+image_sizes = ['4K', '10K']
 schedules = ['flat', 'flat_vec', 'flat_par_vec', 'flat_vec_sometimes']
 stages = [
-  'downsampled[0]', 'downsampled[1]', 'downsampled[2]', 'downsampled[3]',
-  'interpolated[0]', 'interpolated[1]', 'interpolated[2]', 'interpolated[3]',
+  'downsampled[0]', 'downsampled[1]', 'downsampled[2]', 'downsampled[3]', 'downsampled[4]',
+  'interpolated[0]', 'interpolated[1]', 'interpolated[2]', 'interpolated[3]', 'interpolated[4]',
   'normalize'
 ]
 
 colors = [
-  '#990000ff', '#bb0000ff', '#dd0000ff', '#ff0000ff',
-  '#009900ff', '#00bb00ff', '#00dd00ff', '#00ff00ff',
+  '#770000ff', '#990000ff', '#bb0000ff', '#dd0000ff', '#ff0000ff',
+  '#007700ff', '#009900ff', '#00bb00ff', '#00dd00ff', '#00ff00ff',
   '#ffff00ff'
 ]
 
@@ -213,7 +212,7 @@ for i in range(0, counter, scheds):
     stage_data_volume_array[stage] = []
 
   for j in range(scheds):
-    idx = i * scheds + j
+    idx = i + j
 
     if img_size is None:
       img_size = time_results[idx]['image_size']
@@ -294,7 +293,7 @@ for i in range(0, counter, scheds):
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/time_per_schedule_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
+  fig.savefig("pdf/{}_time_per_schedule_{}.pdf".format(algorithms[0], img_size), bbox_inches = 'tight', pad_inches = 0)
 
   fig = plt.figure()
 
@@ -332,7 +331,7 @@ for i in range(0, counter, scheds):
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/cache_miss_per_schedule_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
+  fig.savefig("pdf/{}_cache_miss_per_schedule_{}.pdf".format(algorithms[0], img_size), bbox_inches = 'tight', pad_inches = 0)
 
   fig = plt.figure()
 
@@ -359,16 +358,16 @@ for i in range(0, counter, scheds):
   plt.ylabel("MFLOP")
   plt.axes().yaxis.grid(linestyle=':', linewidth=0.15)
 
-  if img_size == '4K':
-    plt.ylim(top=100)
+  #if img_size == '4K':
+  #  plt.ylim(top=100)
 
-  else:
-    plt.ylim(top=500)
+  #else:
+  #  plt.ylim(top=500)
 
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/flop_per_schedule_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
+  fig.savefig("pdf/{}_flop_per_schedule_{}.pdf".format(algorithms[0], img_size), bbox_inches = 'tight', pad_inches = 0)
 
   fig = plt.figure()
 
@@ -397,4 +396,4 @@ for i in range(0, counter, scheds):
   plt.legend()
   plt.tight_layout()
 
-  fig.savefig("pdf/data_volume_per_schedule_{}.pdf".format(img_size), bbox_inches = 'tight', pad_inches = 0)
+  fig.savefig("pdf/{}_data_volume_per_schedule_{}.pdf".format(algorithms[0], img_size), bbox_inches = 'tight', pad_inches = 0)
