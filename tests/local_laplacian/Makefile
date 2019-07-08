@@ -1,58 +1,78 @@
-BIN ?= bin
+# C and C++ compilers
+CC=gcc
+CXX=g++
 
-all: $(BIN)/process
+# C and C++ compilers flags
+CCFLAGS=
+CXXFLAGS=-g
 
-$(BIN)/local_laplacian.generator: local_laplacian_generator.cpp $(GENERATOR_DEPS)
-	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) -g $(filter-out %.h,$^) -o $@ $(LDFLAGS) $(HALIDE_SYSTEM_LIBS)
+# Must profile code?
+ifdef PROFILE
+	CXXFLAGS+=-DPROFILE
+endif
 
-$(BIN)/local_laplacian.a: $(BIN)/local_laplacian.generator
-	@mkdir -p $(@D)
-	$^ -g local_laplacian -o $(BIN) -f local_laplacian target=$(HL_TARGET) auto_schedule=false
+# Must use parallel schedule?
+ifdef PARALLEL
+	CXXFLAGS+=-DPARALLEL
+endif
 
-$(BIN)/local_laplacian_auto_schedule.a: $(BIN)/local_laplacian.generator
-	@mkdir -p $(@D)
-	$^ -g local_laplacian -o $(BIN) -f local_laplacian_auto_schedule target=$(HL_TARGET)-no_runtime auto_schedule=true
+# Must use schedule with vectorization?
+ifdef VECTORIZE
+	CXXFLAGS+=-DVECTORIZE
+endif
 
-$(BIN)/process: process.cpp $(BIN)/local_laplacian.a $(BIN)/local_laplacian_auto_schedule.a
-	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) -I$(BIN) -Wall -O3 $^ -o $@ $(LDFLAGS) $(IMAGE_IO_FLAGS) $(CUDA_LDFLAGS) $(OPENCL_LDFLAGS) $(OPENGL_LDFLAGS)
+# Halide path
+HALIDE_PATH=/home/ppginf/rrlmachado/nobackup/repositories/Halide
 
-$(BIN)/out.png: $(BIN)/process
-	@mkdir -p $(@D)
-	$(BIN)/process $(IMAGES)/rgb.png 8 1 1 10 $(BIN)/out.png
+# Use Halide static library?
+USE_HALIDE_STATIC_LIB=false
 
-$(BIN)/out.tiff: $(BIN)/process
-	@mkdir -p $(@D)
-	$(BIN)/process $(IMAGES)/rgb.png 8 1 1 10 $(BIN)/out.tiff
+# Halide flags
+HALIDE_FLAGS=-I ${HALIDE_PATH}/include -I ${HALIDE_PATH}/tools -L ${HALIDE_PATH}/bin -L ${PAPI_HALIDE_PATH} -lpapihalide -lpthread -ljpeg -lz `libpng-config --cflags --ldflags` -ldl -std=c++11
 
-# Build rules for generating a visualization of the pipeline using HalideTraceViz
-$(BIN)/viz/local_laplacian.a: $(BIN)/local_laplacian.generator
-	@mkdir -p $(@D)
-	$^ -g local_laplacian -o $(BIN)/viz target=$(HL_TARGET)-trace_all pyramid_levels=6
+ifeq (${USE_HALIDE_STATIC_LIB}, true)
+	HALIDE_FLAGS+=${HALIDE_PATH}/lib/libHalide.a 
+else
+	HALIDE_FLAGS+=-L ${HALIDE_PATH}/bin -lHalide
+endif
 
-$(BIN)/process_viz: process.cpp $(BIN)/viz/local_laplacian.a
-	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) -DNO_AUTO_SCHEDULE -I$(BIN)/viz -Wall -O3 $^ -o $@ $(LDFLAGS) $(IMAGE_IO_FLAGS) $(CUDA_LDFLAGS) $(OPENCL_LDFLAGS) $(OPENGL_LDFLAGS)
+# PAPI path
+PAPI_PATH=/home/ppginf/rrlmachado/nobackup/repositories/papi
+PAPI_SRC=${PAPI_PATH}/src
 
-../../bin/HalideTraceViz: ../../util/HalideTraceViz.cpp
-	$(MAKE) -C ../../ bin/HalideTraceViz
+# PAPI flags
+PAPI_FLAGS=-L ${PAPI_SRC} -lpapi
 
-$(BIN)/local_laplacian.mp4: $(BIN)/process_viz ../../bin/HalideTraceViz
-	@mkdir -p $(@D)
-	HL_AVCONV=$(HL_AVCONV) bash viz.sh $(BIN)
+# PFM path
+LIBPFM_PATH=${PAPI_SRC}/libpfm4/lib/
+
+# PAPI Halide path
+PAPI_HALIDE_PATH=/home/ppginf/rrlmachado/nobackup/repositories/libpapihalide
+
+# Likwid path
+LIKWID_PATH=$(dirname $(which likwid-perfctr))
+LIKWID_LIB=${LIKWID_PATH}/../lib
+LIKWID_INCLUDE=${LIKWID_PATH}/../include
+
+all: local_laplacian_jit local_laplacian_aot
+
+local_laplacian_jit: local_laplacian.cpp
+	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} ${PAPI_FLAGS} -DSCHEDULE=${SCHEDULE} -o $@
+
+local_laplacian_gen_aot: local_laplacian.cpp
+	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} ${PAPI_FLAGS} -DSCHEDULE=${SCHEDULE} -DCOMPILE_AOT -o $@
+
+local_laplacian_aot.cpp: local_laplacian_gen_aot
+	./$^
+
+local_laplacian_aot: local_laplacian_aot.cpp local_laplacian_aot.h local_laplacian_aot.a
+	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} ${PAPI_FLAGS} -L ${LIBPFM_PATH} -lpfm -o $@
+
+likwid_test: likwid_test.c
+	${CC} -fopenmp -DLIKWID_PERFMON -L ${LIKWID_LIB} -I ${LIKWID_INCLUDE} $^ -o $@ -llikwid
+
+perf_test: perf_example.c
+	${CC} $^ -o $@
 
 clean:
-	rm -rf $(BIN)
-
-test: $(BIN)/out.png $(BIN)/out.tiff
-
-viz: $(BIN)/local_laplacian.mp4
-	$(HL_VIDEOPLAYER) $^
-
-$(BIN)/viz_auto.mp4: $(BIN)/process_viz ../support/viz_auto.sh ../../bin/HalideTraceViz
-	@mkdir -p $(@D)
-	HL_AVCONV=$(HL_AVCONV) bash ../support/viz_auto.sh "$(BIN)/process_viz $(IMAGES)/rgb_small.png 4 1 1 0 $(BIN)/out_small.png" ../../bin/HalideTraceViz $@
-
-viz_auto: $(BIN)/viz_auto.mp4
-	$(HL_VIDEOPLAYER) $^
+	rm -f local_laplacian_jit local_laplacian_gen_aot local_laplacian_aot.h local_laplacian_aot.a local_laplacian_aot likwid_test perf_test
