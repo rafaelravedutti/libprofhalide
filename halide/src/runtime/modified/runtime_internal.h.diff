@@ -1,10 +1,10 @@
 diff --git a/src/runtime/runtime_internal.h b/src/runtime/runtime_internal.h
-index 571351a3a..f8a848481 100644
+index 4270909a1..ad383cef0 100644
 --- a/src/runtime/runtime_internal.h
 +++ b/src/runtime/runtime_internal.h
-@@ -165,6 +165,22 @@ WEAK int halide_trace_helper(void *user_context,
-                              int code,
-                              int parent_id, int value_index, int dimensions);
+@@ -189,6 +189,22 @@ WEAK_INLINE int halide_malloc_alignment();
+ 
+ void halide_thread_yield();
  
 +WEAK int halide_papi_pipeline_start(void *user_context,
 +                                    const char *pipeline_name,
@@ -24,4 +24,4 @@ index 571351a3a..f8a848481 100644
 +
  }  // extern "C"
  
- /** A macro that calls halide_print if the supplied condition is
+ namespace {

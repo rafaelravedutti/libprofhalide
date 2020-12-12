@@ -1,8 +1,8 @@
 diff --git a/src/runtime/runtime_api.cpp b/src/runtime/runtime_api.cpp
-index 5c9b9a6c0..347ea1e90 100644
+index 607193200..4261948d3 100644
 --- a/src/runtime/runtime_api.cpp
 +++ b/src/runtime/runtime_api.cpp
-@@ -150,6 +150,11 @@ extern "C" __attribute__((used)) void *halide_runtime_api_functions[] = {
+@@ -157,6 +157,11 @@ extern "C" __attribute__((used)) void *halide_runtime_api_functions[] = {
      (void *)&halide_openglcompute_device_interface,
      (void *)&halide_openglcompute_initialize_kernels,
      (void *)&halide_openglcompute_run,

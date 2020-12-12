@@ -1,8 +1,8 @@
 diff --git a/src/Lower.cpp b/src/Lower.cpp
-index 906115f78..87d8b666e 100644
+index a25d18de3..1f6fc5bff 100644
 --- a/src/Lower.cpp
 +++ b/src/Lower.cpp
-@@ -35,6 +35,7 @@
+@@ -40,6 +40,7 @@
  #include "LoopCarry.h"
  #include "LowerWarpShuffles.h"
  #include "Memoization.h"
@@ -10,8 +10,8 @@ index 906115f78..87d8b666e 100644
  #include "PartitionLoops.h"
  #include "Prefetch.h"
  #include "Profiling.h"
-@@ -290,6 +291,12 @@ Module lower(const vector<Function> &output_funcs, const string &pipeline_name,
-         debug(2) << "Lowering after injecting profiling:\n" << s << "\n\n";
+@@ -406,6 +407,12 @@ Module lower(const vector<Function> &output_funcs,
+                  << s << "\n\n";
      }
  
 +    if (t.has_feature(Target::PAPI)) {
@@ -20,6 +20,6 @@ index 906115f78..87d8b666e 100644
 +        debug(2) << "Lowering after injecting PAPI profiling:\n" << s << "\n\n";
 +    }
 +
-     if (t.has_feature(Target::FuzzFloatStores)) {
-         debug(1) << "Fuzzing floating point stores...\n";
-         s = fuzz_float_stores(s);
+     if (t.has_feature(Target::CUDA)) {
+         debug(1) << "Injecting warp shuffles...\n";
+         s = lower_warp_shuffles(s);

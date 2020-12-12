@@ -1,30 +1,30 @@
-#include <set>
-#include <stdlib.h>
 #include <atomic>
+#include <cstdlib>
 #include <memory>
+#include <set>
+#include <utility>
 
-#include "IR.h"
-#include "IRMutator.h"
-#include "Function.h"
-#include "Scope.h"
 #include "CSE.h"
-#include "Random.h"
-#include "Introspection.h"
+#include "Func.h"
+#include "Function.h"
+#include "IR.h"
 #include "IREquality.h"
+#include "IRMutator.h"
 #include "IROperator.h"
 #include "IRPrinter.h"
 #include "PAPIProfiling.h"
 #include "ParallelRVar.h"
+#include "Random.h"
+#include "Scope.h"
 #include "Var.h"
 
 namespace Halide {
 namespace Internal {
 
-using std::vector;
-using std::string;
-using std::set;
 using std::map;
 using std::pair;
+using std::string;
+using std::vector;
 
 typedef map<FunctionPtr, FunctionPtr> DeepCopyMap;
 
@@ -35,11 +35,11 @@ extern std::vector<std::tuple<std::string, int, bool, std::string>> papi_profile
 namespace {
 // Weaken all the references to a particular Function to break
 // reference cycles. Also count the number of references found.
-class WeakenFunctionPtrs : public IRMutator2 {
-    using IRMutator2::visit;
+class WeakenFunctionPtrs : public IRMutator {
+    using IRMutator::visit;
 
     Expr visit(const Call *c) override {
-        Expr expr = IRMutator2::visit(c);
+        Expr expr = IRMutator::visit(c);
         c = expr.as<Call>();
         internal_assert(c);
         if (c->func.defined() &&
@@ -54,11 +54,14 @@ class WeakenFunctionPtrs : public IRMutator2 {
         return expr;
     }
     FunctionContents *func;
+
 public:
     int count = 0;
-    WeakenFunctionPtrs(FunctionContents *f) : func(f) {}
+    WeakenFunctionPtrs(FunctionContents *f)
+        : func(f) {
+    }
 };
-}
+}  // namespace
 
 struct FunctionContents {
     std::string name;
@@ -87,10 +90,10 @@ struct FunctionContents {
 
     NameMangling extern_mangling = NameMangling::Default;
     DeviceAPI extern_function_device_api = DeviceAPI::Host;
-    bool extern_uses_old_buffer_t = false;
     Expr extern_proxy_expr;
 
     bool trace_loads = false, trace_stores = false, trace_realizations = false;
+    std::vector<string> trace_tags;
 
     bool frozen = false;
 
@@ -105,7 +108,7 @@ struct FunctionContents {
         }
 
         if (!extern_function_name.empty()) {
-            for (ExternFuncArgument i : extern_arguments) {
+            for (const ExternFuncArgument &i : extern_arguments) {
                 if (i.is_func()) {
                     user_assert(i.func.get() != this)
                         << "Extern Func has itself as an argument";
@@ -119,7 +122,7 @@ struct FunctionContents {
             }
         }
 
-        for (Parameter i : output_buffers) {
+        for (const Parameter &i : output_buffers) {
             for (size_t j = 0; j < args.size(); j++) {
                 if (i.min_constraint(j).defined()) {
                     i.min_constraint(j).accept(visitor);
@@ -134,8 +137,8 @@ struct FunctionContents {
         }
     }
 
-    // Pass an IRMutator2 through to all Exprs referenced in the FunctionContents
-    void mutate(IRMutator2 *mutator) {
+    // Pass an IRMutator through to all Exprs referenced in the FunctionContents
+    void mutate(IRMutator *mutator) {
         func_schedule.mutate(mutator);
 
         if (init_def.defined()) {
@@ -166,7 +169,7 @@ FunctionContents *FunctionPtr::get() const {
 }
 
 template<>
-RefCount &ref_count<FunctionGroup>(const FunctionGroup *f) {
+RefCount &ref_count<FunctionGroup>(const FunctionGroup *f) noexcept {
     return f->ref_count;
 }
 
@@ -186,18 +189,19 @@ struct CheckVars : public IRGraphVisitor {
     const std::string name;
     bool unbound_reduction_vars_ok = false;
 
-    CheckVars(const std::string &n) :
-        name(n) {}
+    CheckVars(const std::string &n)
+        : name(n) {
+    }
 
     using IRVisitor::visit;
 
-    void visit(const Let *let) {
+    void visit(const Let *let) override {
         let->value.accept(this);
         ScopedBinding<> bind(defined_internally, let->name);
         let->body.accept(this);
     }
 
-    void visit(const Call *op) {
+    void visit(const Call *op) override {
         IRGraphVisitor::visit(op);
         if (op->name == name && op->call_type == Call::Halide) {
             for (size_t i = 0; i < op->args.size(); i++) {
@@ -213,16 +217,22 @@ struct CheckVars : public IRGraphVisitor {
         }
     }
 
-    void visit(const Variable *var) {
+    void visit(const Variable *var) override {
         // Is it a parameter?
-        if (var->param.defined()) return;
+        if (var->param.defined()) {
+            return;
+        }
 
         // Was it defined internally by a let expression?
-        if (defined_internally.contains(var->name)) return;
+        if (defined_internally.contains(var->name)) {
+            return;
+        }
 
         // Is it a pure argument?
         for (size_t i = 0; i < pure_args.size(); i++) {
-            if (var->name == pure_args[i]) return;
+            if (var->name == pure_args[i]) {
+                return;
+            }
         }
 
         // Is it in a reduction domain?
@@ -256,7 +266,7 @@ class FreezeFunctions : public IRGraphVisitor {
 
     const string &func;
 
-    void visit(const Call *op) {
+    void visit(const Call *op) override {
         IRGraphVisitor::visit(op);
         if (op->call_type == Call::Halide &&
             op->func.defined() &&
@@ -265,19 +275,20 @@ class FreezeFunctions : public IRGraphVisitor {
             f.freeze();
         }
     }
+
 public:
-    FreezeFunctions(const string &f) : func(f) {}
+    FreezeFunctions(const string &f)
+        : func(f) {
+    }
 };
 
 // A counter to use in tagging random variables
 namespace {
-static std::atomic<int> rand_counter;
+std::atomic<int> rand_counter{0};
 }
 
-Function::Function() {
-}
-
-Function::Function(const FunctionPtr &ptr) : contents(ptr) {
+Function::Function(const FunctionPtr &ptr)
+    : contents(ptr) {
     contents.strengthen();
     internal_assert(ptr.defined())
         << "Can't construct Function from undefined FunctionContents ptr\n";
@@ -298,14 +309,14 @@ Function::Function(const std::string &n) {
 
 // Return deep-copy of ExternFuncArgument 'src'
 ExternFuncArgument deep_copy_extern_func_argument_helper(
-        const ExternFuncArgument &src, DeepCopyMap &copied_map) {
+    const ExternFuncArgument &src, DeepCopyMap &copied_map) {
     ExternFuncArgument copy;
     copy.arg_type = src.arg_type;
     copy.buffer = src.buffer;
     copy.expr = src.expr;
     copy.image_param = src.image_param;
 
-    if (!src.func.defined()) { // No need to deep-copy the func if it's undefined
+    if (!src.func.defined()) {  // No need to deep-copy the func if it's undefined
         internal_assert(!src.is_func())
             << "ExternFuncArgument has type FuncArg but has no function definition\n";
         return copy;
@@ -320,7 +331,7 @@ ExternFuncArgument deep_copy_extern_func_argument_helper(
     return copy;
 }
 
-void Function::deep_copy(FunctionPtr copy, DeepCopyMap &copied_map) const {
+void Function::deep_copy(const FunctionPtr &copy, DeepCopyMap &copied_map) const {
     internal_assert(copy.defined() && contents.defined())
         << "Cannot deep-copy undefined Function\n";
 
@@ -338,11 +349,11 @@ void Function::deep_copy(FunctionPtr copy, DeepCopyMap &copied_map) const {
     copy->extern_function_name = contents->extern_function_name;
     copy->extern_mangling = contents->extern_mangling;
     copy->extern_function_device_api = contents->extern_function_device_api;
-    copy->extern_uses_old_buffer_t = contents->extern_uses_old_buffer_t;
     copy->extern_proxy_expr = contents->extern_proxy_expr;
     copy->trace_loads = contents->trace_loads;
     copy->trace_stores = contents->trace_stores;
     copy->trace_realizations = contents->trace_realizations;
+    copy->trace_tags = contents->trace_tags;
     copy->frozen = contents->frozen;
     copy->output_buffers = contents->output_buffers;
     copy->func_schedule = contents->func_schedule.deep_copy(copied_map);
@@ -368,9 +379,9 @@ void Function::deep_copy(FunctionPtr copy, DeepCopyMap &copied_map) const {
     }
 }
 
-void Function::deep_copy(string name, FunctionPtr copy, DeepCopyMap &copied_map) const {
+void Function::deep_copy(string name, const FunctionPtr &copy, DeepCopyMap &copied_map) const {
     deep_copy(copy, copied_map);
-    copy->name = name;
+    copy->name = std::move(name);
 }
 
 void Function::define(const vector<string> &args, vector<Expr> values) {
@@ -391,14 +402,14 @@ void Function::define(const vector<string> &args, vector<Expr> values) {
     // attached to some parameter
     CheckVars check(name());
     check.pure_args = args;
-    for (size_t i = 0; i < values.size(); i++) {
-        values[i].accept(&check);
+    for (const auto &value : values) {
+        value.accept(&check);
     }
 
     // Freeze all called functions
     FreezeFunctions freezer(name());
-    for (size_t i = 0; i < values.size(); i++) {
-        values[i].accept(&freezer);
+    for (const auto &value : values) {
+        value.accept(&freezer);
     }
 
     // Make sure all the vars in the args have unique non-empty names
@@ -416,14 +427,19 @@ void Function::define(const vector<string> &args, vector<Expr> values) {
         }
     }
 
-    for (size_t i = 0; i < values.size(); i++) {
-        values[i] = common_subexpression_elimination(values[i]);
+    for (auto &value : values) {
+        value = common_subexpression_elimination(value);
     }
 
     // Tag calls to random() with the free vars
     int tag = rand_counter++;
-    for (size_t i = 0; i < values.size(); i++) {
-        values[i] = lower_random(values[i], args, tag);
+    vector<VarOrRVar> free_vars;
+    free_vars.reserve(args.size());
+    for (const auto &arg : args) {
+        free_vars.emplace_back(Var(arg));
+    }
+    for (auto &value : values) {
+        value = lower_random(value, free_vars, tag);
     }
 
     user_assert(!check.reduction_domain.defined())
@@ -453,7 +469,7 @@ void Function::define(const vector<string> &args, vector<Expr> values) {
     contents->init_def = Definition(init_def_args, values, rdom, true);
 
     for (size_t i = 0; i < args.size(); i++) {
-        Dim d = {args[i], ForType::Serial, DeviceAPI::None, Dim::Type::PureVar};
+        Dim d = {args[i], ForType::Serial, DeviceAPI::None, DimType::PureVar};
         contents->init_def.schedule().dims().push_back(d);
         StorageDim sd = {args[i]};
         contents->func_schedule.storage_dims().push_back(sd);
@@ -461,7 +477,7 @@ void Function::define(const vector<string> &args, vector<Expr> values) {
 
     // Add the dummy outermost dim
     {
-        Dim d = {Var::outermost().name(), ForType::Serial, DeviceAPI::None, Dim::Type::PureVar};
+        Dim d = {Var::outermost().name(), ForType::Serial, DeviceAPI::None, DimType::PureVar};
         contents->init_def.schedule().dims().push_back(d);
     }
 
@@ -496,7 +512,6 @@ void Function::define_update(const vector<Expr> &_args, vector<Expr> values) {
         user_assert(values[i].defined())
             << "In update definition " << update_idx << " of Func \"" << name() << "\":\n"
             << "Undefined expression in right-hand-side of update.\n";
-
     }
 
     // Check the dimensionality matches
@@ -518,7 +533,7 @@ void Function::define_update(const vector<Expr> &_args, vector<Expr> values) {
         if (pure_type != values[i].type()) {
             std::ostringstream err;
             err << "In update definition " << update_idx << " of Func \"" << name() << "\":\n";
-            if (values.size()) {
+            if (!values.empty()) {
                 err << "Tuple element " << i << " of update definition has type ";
             } else {
                 err << "Update definition has type ";
@@ -540,7 +555,7 @@ void Function::define_update(const vector<Expr> &_args, vector<Expr> values) {
     bool pure = true;
     vector<string> pure_args(args.size());
     for (size_t i = 0; i < args.size(); i++) {
-        pure_args[i] = ""; // Will never match a var name
+        pure_args[i] = "";  // Will never match a var name
         user_assert(args[i].defined())
             << "In update definition " << update_idx << " of Func \"" << name() << "\":\n"
             << "Argument " << i
@@ -564,11 +579,11 @@ void Function::define_update(const vector<Expr> &_args, vector<Expr> values) {
     // vars in the LHS in the correct places.
     CheckVars check(name());
     check.pure_args = pure_args;
-    for (size_t i = 0; i < args.size(); i++) {
-        args[i].accept(&check);
+    for (const auto &arg : args) {
+        arg.accept(&check);
     }
-    for (size_t i = 0; i < values.size(); i++) {
-        values[i].accept(&check);
+    for (const auto &value : values) {
+        value.accept(&check);
     }
     if (check.reduction_domain.defined()) {
         check.unbound_reduction_vars_ok = true;
@@ -577,11 +592,11 @@ void Function::define_update(const vector<Expr> &_args, vector<Expr> values) {
 
     // Freeze all called functions
     FreezeFunctions freezer(name());
-    for (size_t i = 0; i < args.size(); i++) {
-        args[i].accept(&freezer);
+    for (const auto &arg : args) {
+        arg.accept(&freezer);
     }
-    for (size_t i = 0; i < values.size(); i++) {
-        values[i].accept(&freezer);
+    for (const auto &value : values) {
+        value.accept(&freezer);
     }
 
     // Freeze the reduction domain if defined
@@ -591,24 +606,28 @@ void Function::define_update(const vector<Expr> &_args, vector<Expr> values) {
     }
 
     // Tag calls to random() with the free vars
-    vector<string> free_vars;
-    for (size_t i = 0; i < pure_args.size(); i++) {
-        if (!pure_args[i].empty()) {
-            free_vars.push_back(pure_args[i]);
+    vector<VarOrRVar> free_vars;
+    int num_free_vars = (int)pure_args.size();
+    if (check.reduction_domain.defined()) {
+        num_free_vars += (int)check.reduction_domain.domain().size();
+    }
+    free_vars.reserve(num_free_vars);
+    for (const auto &pure_arg : pure_args) {
+        if (!pure_arg.empty()) {
+            free_vars.emplace_back(Var(pure_arg));
         }
     }
     if (check.reduction_domain.defined()) {
         for (size_t i = 0; i < check.reduction_domain.domain().size(); i++) {
-            string rvar = check.reduction_domain.domain()[i].var;
-            free_vars.push_back(rvar);
+            free_vars.emplace_back(RVar(check.reduction_domain, i));
         }
     }
     int tag = rand_counter++;
-    for (size_t i = 0; i < args.size(); i++) {
-        args[i] = lower_random(args[i], free_vars, tag);
+    for (auto &arg : args) {
+        arg = lower_random(arg, free_vars, tag);
     }
-    for (size_t i = 0; i < values.size(); i++) {
-        values[i] = lower_random(values[i], free_vars, tag);
+    for (auto &value : values) {
+        value = lower_random(value, free_vars, tag);
     }
     if (check.reduction_domain.defined()) {
         check.reduction_domain.set_predicate(lower_random(check.reduction_domain.predicate(), free_vars, tag));
@@ -618,11 +637,11 @@ void Function::define_update(const vector<Expr> &_args, vector<Expr> values) {
     // function itself, introducing circular references and hence
     // memory leaks. We need to break these cycles.
     WeakenFunctionPtrs weakener(contents.get());
-    for (size_t i = 0; i < args.size(); i++) {
-        args[i] = weakener.mutate(args[i]);
+    for (auto &arg : args) {
+        arg = weakener.mutate(arg);
     }
-    for (size_t i = 0; i < values.size(); i++) {
-        values[i] = weakener.mutate(values[i]);
+    for (auto &value : values) {
+        value = weakener.mutate(value);
     }
     if (check.reduction_domain.defined()) {
         check.reduction_domain.set_predicate(
@@ -644,22 +663,22 @@ void Function::define_update(const vector<Expr> &_args, vector<Expr> values) {
 
             bool pure = can_parallelize_rvar(v, name(), r);
             Dim d = {v, ForType::Serial, DeviceAPI::None,
-                     pure ? Dim::Type::PureRVar : Dim::Type::ImpureRVar};
+                     pure ? DimType::PureRVar : DimType::ImpureRVar};
             r.schedule().dims().push_back(d);
         }
     }
 
     // Then add the pure args outside of that
-    for (size_t i = 0; i < pure_args.size(); i++) {
-        if (!pure_args[i].empty()) {
-            Dim d = {pure_args[i], ForType::Serial, DeviceAPI::None, Dim::Type::PureVar};
+    for (const auto &pure_arg : pure_args) {
+        if (!pure_arg.empty()) {
+            Dim d = {pure_arg, ForType::Serial, DeviceAPI::None, DimType::PureVar};
             r.schedule().dims().push_back(d);
         }
     }
 
     // Then the dummy outermost dim
     {
-        Dim d = {Var::outermost().name(), ForType::Serial, DeviceAPI::None, Dim::Type::PureVar};
+        Dim d = {Var::outermost().name(), ForType::Serial, DeviceAPI::None, DimType::PureVar};
         r.schedule().dims().push_back(d);
     }
 
@@ -678,16 +697,14 @@ void Function::define_update(const vector<Expr> &_args, vector<Expr> values) {
     }
 
     contents->updates.push_back(r);
-
 }
 
 void Function::define_extern(const std::string &function_name,
                              const std::vector<ExternFuncArgument> &extern_args,
                              const std::vector<Type> &types,
-                             const std::vector<string> &args,
+                             const std::vector<Var> &args,
                              NameMangling mangling,
-                             DeviceAPI device_api,
-                             bool use_old_buffer_t) {
+                             DeviceAPI device_api) {
 
     user_assert(!has_pure_definition() && !has_update_definition())
         << "In extern definition for Func \"" << name() << "\":\n"
@@ -697,14 +714,21 @@ void Function::define_extern(const std::string &function_name,
         << "In extern definition for Func \"" << name() << "\":\n"
         << "Func already has an extern definition.\n";
 
-    contents->args = args;
+    std::vector<string> arg_names;
+    std::vector<Expr> arg_exprs;
+    for (size_t i = 0; i < args.size(); i++) {
+        arg_names.push_back(args[i].name());
+        arg_exprs.push_back(args[i]);
+    }
+    contents->args = arg_names;
     contents->extern_function_name = function_name;
     contents->extern_arguments = extern_args;
     contents->output_types = types;
     contents->extern_mangling = mangling;
     contents->extern_function_device_api = device_api;
-    contents->extern_uses_old_buffer_t = use_old_buffer_t;
 
+    std::vector<Expr> values;
+    contents->output_buffers.clear();
     for (size_t i = 0; i < types.size(); i++) {
         string buffer_name = name();
         if (types.size() > 1) {
@@ -712,21 +736,30 @@ void Function::define_extern(const std::string &function_name,
         }
         Parameter output(types[i], true, (int)args.size(), buffer_name);
         contents->output_buffers.push_back(output);
+
+        values.push_back(undef(types[i]));
     }
+
+    contents->init_def = Definition(arg_exprs, values, ReductionDomain(), true);
 
     // Reset the storage dims to match the pure args
     contents->func_schedule.storage_dims().clear();
+    contents->init_def.schedule().dims().clear();
     for (size_t i = 0; i < args.size(); i++) {
-        contents->func_schedule.storage_dims().push_back(StorageDim {args[i]});
+        contents->func_schedule.storage_dims().push_back(StorageDim{arg_names[i]});
+        contents->init_def.schedule().dims().push_back(
+            Dim{arg_names[i], ForType::Extern, DeviceAPI::None, DimType::PureVar});
     }
-
+    // Add the dummy outermost dim
+    contents->init_def.schedule().dims().push_back(
+        Dim{Var::outermost().name(), ForType::Serial, DeviceAPI::None, DimType::PureVar});
 }
 
 void Function::accept(IRVisitor *visitor) const {
     contents->accept(visitor);
 }
 
-void Function::mutate(IRMutator2 *mutator) {
+void Function::mutate(IRMutator *mutator) {
     contents->mutate(mutator);
 }
 
@@ -739,10 +772,12 @@ const std::string &Function::origin_name() const {
 }
 
 Definition &Function::definition() {
+    internal_assert(contents->init_def.defined());
     return contents->init_def;
 }
 
 const Definition &Function::definition() const {
+    internal_assert(contents->init_def.defined());
     return contents->init_def;
 }
 
@@ -829,9 +864,7 @@ Expr Function::make_call_to_extern_definition(const std::vector<Expr> &args,
     Call::CallType call_type = Call::Extern;
     switch (contents->extern_mangling) {
     case NameMangling::Default:
-        call_type = (target.has_feature(Target::CPlusPlusMangling) ?
-                     Call::ExternCPlusPlus :
-                     Call::Extern);
+        call_type = (target.has_feature(Target::CPlusPlusMangling) ? Call::ExternCPlusPlus : Call::Extern);
         break;
     case NameMangling::CPlusPlus:
         call_type = Call::ExternCPlusPlus;
@@ -841,10 +874,6 @@ Expr Function::make_call_to_extern_definition(const std::vector<Expr> &args,
         break;
     }
     return Call::make(Int(32), contents->extern_function_name, args, call_type, contents);
-}
-
-bool Function::extern_definition_uses_old_buffer_t() const {
-    return contents->extern_uses_old_buffer_t;
 }
 
 Expr Function::extern_definition_proxy_expr() const {
@@ -879,6 +908,10 @@ std::string &Function::debug_file() {
     return contents->debug_file;
 }
 
+Function::operator ExternFuncArgument() const {
+    return ExternFuncArgument(contents);
+}
+
 void Function::trace_loads() {
     contents->trace_loads = true;
 }
@@ -887,6 +920,22 @@ void Function::trace_stores() {
 }
 void Function::trace_realizations() {
     contents->trace_realizations = true;
+}
+void Function::add_trace_tag(const std::string &trace_tag) {
+    contents->trace_tags.push_back(trace_tag);
+}
+
+bool Function::is_tracing_loads() const {
+    return contents->trace_loads;
+}
+bool Function::is_tracing_stores() const {
+    return contents->trace_stores;
+}
+bool Function::is_tracing_realizations() const {
+    return contents->trace_realizations;
+}
+const std::vector<std::string> &Function::get_trace_tags() const {
+    return contents->trace_tags;
 }
 
 void Function::profile(int level, bool show_threads, bool enable) {
@@ -902,16 +951,6 @@ void Function::profile_in(Function &parent, int level, bool show_threads, bool e
     }
 
     papi_profiler_defs.push_back(std::make_tuple(contents->name, level, enable, parent.name()));
-}
-
-bool Function::is_tracing_loads() const {
-    return contents->trace_loads;
-}
-bool Function::is_tracing_stores() const {
-    return contents->trace_stores;
-}
-bool Function::is_tracing_realizations() const {
-    return contents->trace_realizations;
 }
 
 void Function::freeze() {
@@ -947,7 +986,7 @@ const map<string, FunctionPtr> &Function::wrappers() const {
 
 Function Function::new_function_in_same_group(const std::string &f) {
     int group_size = (int)(contents.group()->members.size());
-    contents.group()->members.resize(group_size+1);
+    contents.group()->members.resize(group_size + 1);
     contents.group()->members[group_size].name = f;
     FunctionPtr ptr;
     ptr.strong = contents.group();
@@ -994,21 +1033,23 @@ const Call *Function::is_wrapper() const {
 namespace {
 
 // Replace all calls to functions listed in 'substitutions' with their wrappers.
-class SubstituteCalls : public IRMutator2 {
-    using IRMutator2::visit;
+class SubstituteCalls : public IRMutator {
+    using IRMutator::visit;
 
-    map<FunctionPtr, FunctionPtr> substitutions;
+    const map<FunctionPtr, FunctionPtr> &substitutions;
 
     Expr visit(const Call *c) override {
-        Expr expr = IRMutator2::visit(c);
+        Expr expr = IRMutator::visit(c);
         c = expr.as<Call>();
         internal_assert(c);
 
         if ((c->call_type == Call::Halide) &&
             c->func.defined() &&
             substitutions.count(c->func)) {
-            FunctionPtr subs = substitutions[c->func];
-            internal_assert(subs.defined()) << "Function not in environment: " << subs->name << "\n";
+            auto it = substitutions.find(c->func);
+            internal_assert(it != substitutions.end())
+                << "Function not in environment: " << c->func->name << "\n";
+            FunctionPtr subs = it->second;
             debug(4) << "...Replace call to Func \"" << c->name << "\" with "
                      << "\"" << subs->name << "\"\n";
             expr = Call::make(c->type, subs->name, c->args, c->call_type,
@@ -1017,12 +1058,14 @@ class SubstituteCalls : public IRMutator2 {
         }
         return expr;
     }
+
 public:
     SubstituteCalls(const map<FunctionPtr, FunctionPtr> &substitutions)
-        : substitutions(substitutions) {}
+        : substitutions(substitutions) {
+    }
 };
 
-} // anonymous namespace
+}  // anonymous namespace
 
 Function &Function::substitute_calls(const map<FunctionPtr, FunctionPtr> &substitutions) {
     debug(4) << "Substituting calls in " << name() << "\n";
@@ -1047,7 +1090,7 @@ pair<vector<Function>, map<string, Function>> deep_copy(
     map<string, Function> copy_env;
 
     // Create empty deep-copies of all Functions in 'env'
-    DeepCopyMap copied_map; // Original Function -> Deep-copy
+    DeepCopyMap copied_map;  // Original Function -> Deep-copy
     IntrusivePtr<FunctionGroup> group(new FunctionGroup);
     group->members.resize(env.size());
     int i = 0;
@@ -1083,16 +1126,15 @@ pair<vector<Function>, map<string, Function>> deep_copy(
         if (iter != copied_map.end()) {
             FunctionPtr ptr = iter->second;
             debug(4) << "Adding deep-copied version to outputs: " << func.name() << "\n";
-            copy_outputs.push_back(Function(ptr));
+            copy_outputs.emplace_back(ptr);
         } else {
             debug(4) << "Adding original version to outputs: " << func.name() << "\n";
             copy_outputs.push_back(func);
         }
     }
 
-    return { copy_outputs, copy_env };
+    return {copy_outputs, copy_env};
 }
 
-
-}
-}
+}  // namespace Internal
+}  // namespace Halide

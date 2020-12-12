@@ -5,14 +5,12 @@
  * Defines the structure that describes a Halide target.
  */
 
-#include <stdint.h>
 #include <bitset>
+#include <cstdint>
 #include <string>
 
-#include "Error.h"
+#include "DeviceAPI.h"
 #include "Type.h"
-#include "Util.h"
-#include "Expr.h"
 #include "runtime/HalideRuntime.h"
 
 namespace Halide {
@@ -22,15 +20,35 @@ struct Target {
     /** The operating system used by the target. Determines which
      * system calls to generate.
      * Corresponds to os_name_map in Target.cpp. */
-    enum OS {OSUnknown = 0, Linux, Windows, OSX, Android, IOS, QuRT, NoOS} os;
+    enum OS {
+        OSUnknown = 0,
+        Linux,
+        Windows,
+        OSX,
+        Android,
+        IOS,
+        QuRT,
+        NoOS,
+        Fuchsia,
+        WebAssemblyRuntime
+    } os = OSUnknown;
 
     /** The architecture used by the target. Determines the
      * instruction set to use.
      * Corresponds to arch_name_map in Target.cpp. */
-    enum Arch {ArchUnknown = 0, X86, ARM, MIPS, Hexagon, POWERPC} arch;
+    enum Arch {
+        ArchUnknown = 0,
+        X86,
+        ARM,
+        MIPS,
+        Hexagon,
+        POWERPC,
+        WebAssembly,
+        RISCV
+    } arch = ArchUnknown;
 
     /** The bit-width of the target machine. Must be 0 for unknown, or 32 or 64. */
-    int bits;
+    int bits = 0;
 
     /** Optional features a target can have.
      * Corresponds to feature_name_map in Target.cpp.
@@ -57,22 +75,27 @@ struct Target {
         CUDACapability35 = halide_target_feature_cuda_capability35,
         CUDACapability50 = halide_target_feature_cuda_capability50,
         CUDACapability61 = halide_target_feature_cuda_capability61,
+        CUDACapability70 = halide_target_feature_cuda_capability70,
+        CUDACapability75 = halide_target_feature_cuda_capability75,
+        CUDACapability80 = halide_target_feature_cuda_capability80,
         OpenCL = halide_target_feature_opencl,
         CLDoubles = halide_target_feature_cl_doubles,
         CLHalf = halide_target_feature_cl_half,
+        CLAtomics64 = halide_target_feature_cl_atomic64,
         OpenGL = halide_target_feature_opengl,
         OpenGLCompute = halide_target_feature_openglcompute,
+        EGL = halide_target_feature_egl,
         UserContext = halide_target_feature_user_context,
         Matlab = halide_target_feature_matlab,
         PAPI = halide_target_feature_papi,
         Profile = halide_target_feature_profile,
         NoRuntime = halide_target_feature_no_runtime,
         Metal = halide_target_feature_metal,
-        MinGW = halide_target_feature_mingw,
         CPlusPlusMangling = halide_target_feature_c_plus_plus_mangling,
         LargeBuffers = halide_target_feature_large_buffers,
-        HVX_64 = halide_target_feature_hvx_64,
+        HexagonDma = halide_target_feature_hexagon_dma,
         HVX_128 = halide_target_feature_hvx_128,
+        HVX = HVX_128,
         HVX_v62 = halide_target_feature_hvx_v62,
         HVX_v65 = halide_target_feature_hvx_v65,
         HVX_v66 = halide_target_feature_hvx_v66,
@@ -87,13 +110,30 @@ struct Target {
         TraceLoads = halide_target_feature_trace_loads,
         TraceStores = halide_target_feature_trace_stores,
         TraceRealizations = halide_target_feature_trace_realizations,
+        TracePipeline = halide_target_feature_trace_pipeline,
+        D3D12Compute = halide_target_feature_d3d12compute,
+        StrictFloat = halide_target_feature_strict_float,
+        TSAN = halide_target_feature_tsan,
+        ASAN = halide_target_feature_asan,
+        CheckUnsafePromises = halide_target_feature_check_unsafe_promises,
+        EmbedBitcode = halide_target_feature_embed_bitcode,
+        EnableLLVMLoopOpt = halide_target_feature_enable_llvm_loop_opt,
+        DisableLLVMLoopOpt = halide_target_feature_disable_llvm_loop_opt,
+        WasmSimd128 = halide_target_feature_wasm_simd128,
+        WasmSignExt = halide_target_feature_wasm_signext,
+        WasmSatFloatToInt = halide_target_feature_wasm_sat_float_to_int,
+        WasmThreads = halide_target_feature_wasm_threads,
+        SVE = halide_target_feature_sve,
+        SVE2 = halide_target_feature_sve2,
+        ARMDotProd = halide_target_feature_arm_dot_prod,
+        LLVMLargeCodeModel = halide_llvm_large_code_model,
         FeatureEnd = halide_target_feature_end
     };
-    Target() : os(OSUnknown), arch(ArchUnknown), bits(0) {}
-    Target(OS o, Arch a, int b, std::vector<Feature> initial_features = std::vector<Feature>())
+    Target() = default;
+    Target(OS o, Arch a, int b, const std::vector<Feature> &initial_features = std::vector<Feature>())
         : os(o), arch(a), bits(b) {
-        for (size_t i = 0; i < initial_features.size(); i++) {
-            set_feature(initial_features[i]);
+        for (const auto &f : initial_features) {
+            set_feature(f);
         }
     }
 
@@ -115,71 +155,43 @@ struct Target {
     /** Check if a target string is valid. */
     static bool validate_target_string(const std::string &s);
 
-    void set_feature(Feature f, bool value = true) {
-        if (f == FeatureEnd) return;
-        user_assert(f < FeatureEnd) << "Invalid Target feature.\n";
-        features.set(f, value);
+    /** Return true if any of the arch/bits/os fields are "unknown"/0;
+        return false otherwise. */
+    bool has_unknowns() const;
+
+    void set_feature(Feature f, bool value = true);
+
+    void set_features(const std::vector<Feature> &features_to_set, bool value = true);
+
+    bool has_feature(Feature f) const;
+
+    inline bool has_feature(halide_target_feature_t f) const {
+        return has_feature((Feature)f);
     }
 
-    void set_features(std::vector<Feature> features_to_set, bool value = true) {
-        for (Feature f : features_to_set) {
-            set_feature(f, value);
-        }
-    }
+    bool features_any_of(const std::vector<Feature> &test_features) const;
 
-    bool has_feature(Feature f) const {
-        if (f == FeatureEnd) return true;
-        user_assert(f < FeatureEnd) << "Invalid Target feature.\n";
-        return features[f];
-    }
-
-    bool features_any_of(std::vector<Feature> test_features) const {
-        for (Feature f : test_features) {
-            if (has_feature(f)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    bool features_all_of(std::vector<Feature> test_features) const {
-        for (Feature f : test_features) {
-            if (!has_feature(f)) {
-                return false;
-            }
-        }
-        return true;
-    }
+    bool features_all_of(const std::vector<Feature> &test_features) const;
 
     /** Return a copy of the target with the given feature set.
      * This is convenient when enabling certain features (e.g. NoBoundsQuery)
      * in an initialization list, where the target to be mutated may be
      * a const reference. */
-    Target with_feature(Feature f) const {
-        Target copy = *this;
-        copy.set_feature(f);
-        return copy;
-    }
+    Target with_feature(Feature f) const;
 
     /** Return a copy of the target with the given feature cleared.
      * This is convenient when disabling certain features (e.g. NoBoundsQuery)
      * in an initialization list, where the target to be mutated may be
      * a const reference. */
-    Target without_feature(Feature f) const {
-        Target copy = *this;
-        copy.set_feature(f, false);
-        return copy;
-    }
+    Target without_feature(Feature f) const;
 
     /** Is a fully feature GPU compute runtime enabled? I.e. is
      * Func::gpu_tile and similar going to work? Currently includes
-     * CUDA, OpenCL, and Metal. We do not include OpenGL, because it
-     * is not capable of gpgpu, and is not scheduled via
+     * CUDA, OpenCL, Metal and D3D12Compute. We do not include OpenGL,
+     * because it is not capable of gpgpu, and is not scheduled via
      * Func::gpu_tile.
      * TODO: Should OpenGLCompute be included here? */
-    bool has_gpu_feature() const {
-        return has_feature(CUDA) || has_feature(OpenCL) || has_feature(Metal);
-    }
+    bool has_gpu_feature() const;
 
     /** Does this target allow using a certain type. Generally all
      * types except 64-bit float and int/uint should be supported by
@@ -187,17 +199,7 @@ struct Target {
      *
      * It is likely better to call the version below which takes a DeviceAPI.
      */
-    bool supports_type(const Type &t) const {
-        if (t.bits() == 64) {
-            if (t.is_float()) {
-                return !has_feature(Metal) &&
-                       (!has_feature(Target::OpenCL) || has_feature(Target::CLDoubles));
-            } else {
-                return !has_feature(Metal);
-            }
-        }
-        return true;
-    }
+    bool supports_type(const Type &t) const;
 
     /** Does this target allow using a certain type on a certain device.
      * This is the prefered version of this routine.
@@ -208,16 +210,33 @@ struct Target {
      * Target. */
     bool supports_device_api(DeviceAPI api) const;
 
+    /** If this Target (including all Features) requires a specific DeviceAPI,
+     * return it. If it doesn't, return DeviceAPI::None.  If the Target has
+     * features with multiple (different) DeviceAPI requirements, the result
+     * will be an arbitrary DeviceAPI. */
+    DeviceAPI get_required_device_api() const;
+
     bool operator==(const Target &other) const {
-      return os == other.os &&
-          arch == other.arch &&
-          bits == other.bits &&
-          features == other.features;
+        return os == other.os &&
+               arch == other.arch &&
+               bits == other.bits &&
+               features == other.features;
     }
 
     bool operator!=(const Target &other) const {
-      return !(*this == other);
+        return !(*this == other);
     }
+
+    /**
+     * Create a "greatest common denominator" runtime target that is compatible with
+     * both this target and \p other. Used by generators to conveniently select a suitable
+     * runtime when linking together multiple functions.
+     *
+     * @param other The other target from which we compute the gcd target.
+     * @param[out] result The gcd target if we return true, otherwise unmodified. Can be the same as *this.
+     * @return Whether it was possible to find a compatible target (true) or not.
+     */
+    bool get_runtime_compatible_target(const Target &other, Target &result);
 
     /** Convert the Target into a string form that can be reconstituted
      * by merge_string(), which will always be of the form
@@ -234,59 +253,11 @@ struct Target {
 
     /** Given a data type, return an estimate of the "natural" vector size
      * for that data type when compiling for this Target. */
-    int natural_vector_size(Halide::Type t) const {
-        user_assert(os != OSUnknown && arch != ArchUnknown && bits != 0)
-            << "natural_vector_size cannot be used on a Target with Unknown values.\n";
-
-        const bool is_integer = t.is_int() || t.is_uint();
-        const int data_size = t.bytes();
-
-        if (arch == Target::Hexagon) {
-            if (is_integer) {
-                // HVX is either 64 or 128 *byte* vector size.
-                if (has_feature(Halide::Target::HVX_128)) {
-                    return 128 / data_size;
-                } else if (has_feature(Halide::Target::HVX_64)) {
-                    return 64 / data_size;
-                } else {
-                    user_error << "Target uses hexagon arch without hvx_128 or hvx_64 set.\n";
-                    return 0;
-                }
-            } else {
-                // HVX does not have vector float instructions.
-                return 1;
-            }
-        } else if (arch == Target::X86) {
-            if (is_integer && (has_feature(Halide::Target::AVX512_Skylake) ||
-                               has_feature(Halide::Target::AVX512_Cannonlake))) {
-                // AVX512BW exists on Skylake and Cannonlake
-                return 64 / data_size;
-            } else if (t.is_float() && (has_feature(Halide::Target::AVX512) ||
-                                        has_feature(Halide::Target::AVX512_KNL) ||
-                                        has_feature(Halide::Target::AVX512_Skylake) ||
-                                        has_feature(Halide::Target::AVX512_Cannonlake))) {
-                // AVX512F is on all AVX512 architectures
-                return 64 / data_size;
-            } else if (has_feature(Halide::Target::AVX2)) {
-                // AVX2 uses 256-bit vectors for everything.
-                return 32 / data_size;
-            } else if (!is_integer && has_feature(Halide::Target::AVX)) {
-                // AVX 1 has 256-bit vectors for float, but not for
-                // integer instructions.
-                return 32 / data_size;
-            } else {
-                // SSE was all 128-bit. We ignore MMX.
-                return 16 / data_size;
-            }
-        } else {
-            // Assume 128-bit vectors on other targets.
-            return 16 / data_size;
-        }
-    }
+    int natural_vector_size(const Halide::Type &t) const;
 
     /** Given a data type, return an estimate of the "natural" vector size
      * for that data type when compiling for this Target. */
-    template <typename data_t>
+    template<typename data_t>
     int natural_vector_size() const {
         return natural_vector_size(type_of<data_t>());
     }
@@ -307,8 +278,29 @@ struct Target {
         }
     }
 
+    /** Get the minimum cuda capability found as an integer. Returns
+     * 20 (our minimum supported cuda compute capability) if no cuda
+     * features are set. */
+    int get_cuda_capability_lower_bound() const;
+
     /** Was libHalide compiled with support for this target? */
     bool supported() const;
+
+    /** Return a bitset of the Featuress set in this Target (set = 1).
+     * Note that while this happens to be the current internal representation,
+     * that might not always be the case. */
+    const std::bitset<FeatureEnd> &get_features_bitset() const {
+        return features;
+    }
+
+    /** Return the name corresponding to a given Feature, in the form
+     * used to construct Target strings (e.g., Feature::Debug is "debug" and not "Debug"). */
+    static std::string feature_to_name(Target::Feature feature);
+
+    /** Return the feature corresponding to a given name, in the form
+     * used to construct Target strings (e.g., Feature::Debug is "debug" and not "Debug").
+     * If the string is not a known feature name, return FeatureEnd. */
+    static Target::Feature feature_from_name(const std::string &name);
 
 private:
     /** A bitmask that stores the active features. */
@@ -337,9 +329,8 @@ Target::Feature target_feature_for_device_api(DeviceAPI api);
 namespace Internal {
 
 void target_test();
-
 }
 
-}
+}  // namespace Halide
 
 #endif

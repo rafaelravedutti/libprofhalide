@@ -1,8 +1,8 @@
 diff --git a/src/Func.h b/src/Func.h
-index 37b4a1d53..2e3d3f607 100644
+index f893f02e4..6c3e66b7f 100644
 --- a/src/Func.h
 +++ b/src/Func.h
-@@ -2243,6 +2243,12 @@ public:
+@@ -2397,6 +2397,12 @@ public:
       * halide_trace. */
      Func &trace_realizations();
  
@@ -12,6 +12,6 @@ index 37b4a1d53..2e3d3f607 100644
 +    /** Profile this function inside some parent. */
 +    Func &profile_in(Internal::Function &parent, int level = 1, bool show_threads = false, bool enable = true);
 +
-     /** Get a handle on the internal halide function that this Func
-      * represents. Useful if you want to do introspection on Halide
-      * functions */
+     /** Add a string of arbitrary text that will be passed thru to trace
+      * inspection code if the Func is realized in trace mode. (Funcs that are
+      * inlined won't have their tags emitted.) Ignored entirely if

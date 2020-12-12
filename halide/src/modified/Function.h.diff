@@ -1,14 +1,14 @@
 diff --git a/src/Function.h b/src/Function.h
-index d215510b4..46f6668f7 100644
+index ce8a76ef4..62b093414 100644
 --- a/src/Function.h
 +++ b/src/Function.h
-@@ -278,6 +278,9 @@ public:
-     void trace_loads();
-     void trace_stores();
-     void trace_realizations();
+@@ -247,6 +247,9 @@ public:
+     const std::vector<std::string> &get_trace_tags() const;
+     // @}
+ 
 +    void profile(int level = 1, bool show_threads = false, bool enable = true);
 +    void profile_in(Function &parent, int level = 1, bool show_threads = false, bool enable = true);
 +
-     bool is_tracing_loads() const;
-     bool is_tracing_stores() const;
-     bool is_tracing_realizations() const;
+     /** Replace this Function's LoopLevels with locked copies that
+      * cannot be mutated further. */
+     void lock_loop_levels();

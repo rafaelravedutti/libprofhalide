@@ -1,18 +1,16 @@
 diff --git a/src/runtime/HalideRuntime.h b/src/runtime/HalideRuntime.h
-index 9ecd978f2..51fc89c2a 100644
+index a3151ef5e..5bfe3031f 100644
 --- a/src/runtime/HalideRuntime.h
 +++ b/src/runtime/HalideRuntime.h
-@@ -1072,7 +1072,8 @@ typedef enum halide_target_feature_t {
-     halide_target_feature_hvx_v65 = 47, ///< Enable Hexagon v65 architecture.
-     halide_target_feature_hvx_v66 = 48, ///< Enable Hexagon v66 architecture.
-     halide_target_feature_cl_half = 49,  ///< Enable half support on OpenCL targets
--    halide_target_feature_end = 50, ///< A sentinel. Every target is considered to have this feature, and setting this feature does nothing.
-+    halide_target_feature_papi = 50, ///< Launch a profiler to instrument Halide applications
-+    halide_target_feature_end = 51, ///< A sentinel. Every target is considered to have this feature, and setting this feature does nothing.
+@@ -1325,6 +1325,7 @@ typedef enum halide_target_feature_t {
+     halide_target_feature_egl,                    ///< Force use of EGL support.
+     halide_target_feature_arm_dot_prod,           ///< Enable ARMv8.2-a dotprod extension (i.e. udot and sdot instructions)
+     halide_llvm_large_code_model,                 ///< Use the LLVM large code model to compile
++    halide_target_feature_papi = 50,              ///< Launch a profiler to instrument Halide applications
+     halide_target_feature_end                     ///< A sentinel. Every target is considered to have this feature, and setting this feature does nothing.
  } halide_target_feature_t;
  
- /** This function is called internally by Halide in some situations to determine
-@@ -1560,6 +1561,150 @@ extern float halide_float16_bits_to_float(uint16_t);
+@@ -1834,6 +1835,150 @@ extern float halide_float16_bits_to_float(uint16_t);
   *  the double that represents the same value */
  extern double halide_float16_bits_to_double(uint16_t);
  

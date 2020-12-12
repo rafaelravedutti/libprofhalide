@@ -1,15 +1,15 @@
 diff --git a/src/Function.cpp b/src/Function.cpp
-index 1a2569b9a..52af9b787 100644
+index 4b6a437a1..9546c51fe 100644
 --- a/src/Function.cpp
 +++ b/src/Function.cpp
-@@ -13,6 +13,7 @@
- #include "IREquality.h"
+@@ -12,6 +12,7 @@
+ #include "IRMutator.h"
  #include "IROperator.h"
  #include "IRPrinter.h"
 +#include "PAPIProfiling.h"
  #include "ParallelRVar.h"
- #include "Var.h"
- 
+ #include "Random.h"
+ #include "Scope.h"
 @@ -29,6 +30,8 @@ typedef map<FunctionPtr, FunctionPtr> DeepCopyMap;
  
  struct FunctionContents;
@@ -19,11 +19,10 @@ index 1a2569b9a..52af9b787 100644
  namespace {
  // Weaken all the references to a particular Function to break
  // reference cycles. Also count the number of references found.
-@@ -885,6 +888,22 @@ void Function::trace_stores() {
- void Function::trace_realizations() {
-     contents->trace_realizations = true;
+@@ -935,6 +938,21 @@ const std::vector<std::string> &Function::get_trace_tags() const {
+     return contents->trace_tags;
  }
-+
+ 
 +void Function::profile(int level, bool show_threads, bool enable) {
 +    if(show_threads) {
 +        level |= PROFILE_SHOW_THREADS;
@@ -39,6 +38,6 @@ index 1a2569b9a..52af9b787 100644
 +    papi_profiler_defs.push_back(std::make_tuple(contents->name, level, enable, parent.name()));
 +}
 +
- bool Function::is_tracing_loads() const {
-     return contents->trace_loads;
+ void Function::freeze() {
+     contents->frozen = true;
  }

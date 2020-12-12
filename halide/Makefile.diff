@@ -1,36 +1,47 @@
 diff --git a/Makefile b/Makefile
-index a715367ec..55da41a35 100644
+index ba9fcd3f9..90535ea8f 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -18,7 +18,7 @@ ifeq ($(OS), Windows_NT)
-     FPIC=
+@@ -20,7 +20,8 @@ ifeq ($(OS), Windows_NT)
+ 	$(error Halide no longer supports the MinGW environment.)
  else
      # let's assume "normal" UNIX such as linux
--    COMMON_LD_FLAGS=-ldl -lpthread -lz
-+    COMMON_LD_FLAGS=-ldl -lpthread -lz -lpapihalide -lpapi -L /home/rafael/hdd/repositories/libpapihalide -L /home/rafael/hdd/repositories/papi/src
+-    COMMON_LD_FLAGS=$(LDFLAGS) -ldl -lpthread -lz
++    # COMMON_LD_FLAGS=$(LDFLAGS) -ldl -lpthread -lz
++    COMMON_LD_FLAGS=$(LDFLAGS) -ldl -lpthread -lz -lpapihalide -lpapi -L /home/rafael/repositories/libpapihalide -L /home/rafael/repositories/papi/src
      FPIC=-fPIC
  ifeq ($(UNAME), Darwin)
      SHARED_EXT=dylib
-@@ -398,6 +398,7 @@ SOURCE_FILES = \
-   ParamMap.cpp \
+@@ -50,7 +51,8 @@ endif
+ SHELL = bash
+ CXX ?= g++
+ PREFIX ?= /usr/local
+-LLVM_CONFIG ?= llvm-config
++# LLVM_CONFIG ?= llvm-config
++LLVM_CONFIG=/home/rafael/repositories/clang+llvm-10.0.0-x86_64-linux-gnu-ubuntu-18.04/bin/llvm-config
+ LLVM_COMPONENTS= $(shell $(LLVM_CONFIG) --components)
+ LLVM_VERSION = $(shell $(LLVM_CONFIG) --version | sed 's/\([0-9][0-9]*\)\.\([0-9]\).*/\1.\2/')
+ 
+@@ -498,6 +500,7 @@ SOURCE_FILES = \
    Parameter.cpp \
+   ParamMap.cpp \
    PartitionLoops.cpp \
 +  PAPIProfiling.cpp \
    Pipeline.cpp \
    Prefetch.cpp \
    PrintLoopNest.cpp \
-@@ -545,6 +546,7 @@ HEADER_FILES = \
-   ParamMap.h \
+@@ -682,6 +685,7 @@ HEADER_FILES = \
    Parameter.h \
+   ParamMap.h \
    PartitionLoops.h \
 +  PAPIProfiling.h \
    Pipeline.h \
    Prefetch.h \
    Profiling.h \
-@@ -637,6 +639,8 @@ RUNTIME_CPP_COMPONENTS = \
-   osx_get_symbol \
+@@ -788,6 +792,8 @@ RUNTIME_CPP_COMPONENTS = \
    osx_host_cpu_count \
    osx_opengl_context \
+   osx_yield \
 +  papi_profiler \
 +  papi_profiler_inlined \
    posix_allocator \

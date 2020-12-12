@@ -1,8 +1,8 @@
 diff --git a/src/CodeGen_Internal.cpp b/src/CodeGen_Internal.cpp
-index 0164097d1..b82bf6a7d 100644
+index 8724784d2..7dc7939e1 100644
 --- a/src/CodeGen_Internal.cpp
 +++ b/src/CodeGen_Internal.cpp
-@@ -158,6 +158,8 @@ bool function_takes_user_context(const std::string &name) {
+@@ -207,6 +207,8 @@ bool function_takes_user_context(const std::string &name) {
          "halide_free",
          "halide_malloc",
          "halide_print",

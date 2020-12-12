@@ -1,8 +1,8 @@
 diff --git a/src/Pipeline.cpp b/src/Pipeline.cpp
-index d6a5083fb..e399b34e0 100644
+index b46b879b8..6d61b5b84 100644
 --- a/src/Pipeline.cpp
 +++ b/src/Pipeline.cpp
-@@ -932,6 +932,22 @@ void Pipeline::realize(Realization dst, const Target &t, const ParamMap &param_m
+@@ -1176,6 +1176,22 @@ void Pipeline::realize(RealizationArg outputs, const Target &t,
          }
      }
  
@@ -13,7 +13,7 @@ index d6a5083fb..e399b34e0 100644
 +        JITModule::Symbol reset_sym =
 +            contents->jit_module.find_symbol_by_name("halide_papi_reset");
 +        if (report_sym.address && reset_sym.address) {
-+            void *uc = jit_context.user_context_param.scalar<void *>();
++            void *uc = &jit_context.jit_context;
 +            void (*report_fn_ptr)(void *) = (void (*)(void *))(report_sym.address);
 +            report_fn_ptr(uc);
 +

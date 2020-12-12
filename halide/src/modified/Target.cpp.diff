@@ -1,9 +1,9 @@
 diff --git a/src/Target.cpp b/src/Target.cpp
-index b61612894..4fa7406bc 100644
+index a033220e1..7d506e8ac 100644
 --- a/src/Target.cpp
 +++ b/src/Target.cpp
-@@ -242,6 +242,7 @@ const std::map<std::string, Target::Feature> feature_name_map = {
-     {"openglcompute", Target::OpenGLCompute},
+@@ -319,6 +319,7 @@ const std::map<std::string, Target::Feature> feature_name_map = {
+     {"egl", Target::EGL},
      {"user_context", Target::UserContext},
      {"matlab", Target::Matlab},
 +    {"papi", Target::PAPI},
