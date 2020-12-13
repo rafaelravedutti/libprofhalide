@@ -42,7 +42,7 @@ namespace Internal {
 
 vector<tuple<string, int, bool, string>> papi_profiler_defs;
 
-class InjectPAPIProfiling : public IRMutator2 {
+class InjectPAPIProfiling : public IRMutator {
 public:
     map<string, int> indices;   // maps from func name -> index in buffer.
     map<string, int> loops;   // maps from loop name -> index in buffer.
@@ -65,7 +65,7 @@ public:
     map<int, uint64_t> func_stack_peak; // map from func id -> peak stack allocation
 
 private:
-    using IRMutator2::visit;
+    using IRMutator::visit;
 
     struct AllocSize {
         bool on_stack;
@@ -104,7 +104,7 @@ private:
         on_stack = true;
 
         Expr cond = simplify(condition);
-        if (is_zero(cond)) { // Condition always false
+        if (is_const_zero(cond)) { // Condition always false
             return make_zero(UInt(64));
         }
 
@@ -351,7 +351,9 @@ Stmt inject_papi_profiling(Stmt s, string pipeline_name) {
 
     Expr profiler_token = Variable::make(Int(32), "profiler_token");
 
-    Expr stop_profiler = Call::make(Int(32), Call::register_destructor,
+    //Expr stop_profiler = Call::make(Int(32), Call::register_destructor,
+    //                                {Expr("halide_papi_pipeline_end"), get_state}, Call::Intrinsic);
+    Expr stop_profiler = Call::make(Handle(), Call::register_destructor,
                                     {Expr("halide_papi_pipeline_end"), get_state}, Call::Intrinsic);
 
     Expr profiler_state = Variable::make(Handle(), "profiler_state");
@@ -374,23 +376,23 @@ Stmt inject_papi_profiling(Stmt s, string pipeline_name) {
     s = LetStmt::make("profiler_token", start_profiler, s);
 
     for (std::pair<string, int> p : profiling.indices) {
-        s = Block::make(Store::make("profiling_func_names", p.first, p.second, Parameter(), const_true()), s);
+        s = Block::make(Store::make("profiling_func_names", p.first, p.second, Parameter(), const_true(), ModulusRemainder()), s);
     }
 
     for (std::pair<string, int> p : profiling.loops) {
-        s = Block::make(Store::make("profiling_loop_names", p.first, p.second, Parameter(), const_true()), s);
+        s = Block::make(Store::make("profiling_loop_names", p.first, p.second, Parameter(), const_true(), ModulusRemainder()), s);
     }
 
     for (std::pair<int, int> p : profiling.show_threads_prod) {
-        s = Block::make(Store::make("profiling_func_threads_prod", p.second, p.first, Parameter(), const_true()), s);
+        s = Block::make(Store::make("profiling_func_threads_prod", p.second, p.first, Parameter(), const_true(), ModulusRemainder()), s);
     }
 
     for (std::pair<int, int> p : profiling.show_threads_cons) {
-        s = Block::make(Store::make("profiling_func_threads_cons", p.second, p.first, Parameter(), const_true()), s);
+        s = Block::make(Store::make("profiling_func_threads_cons", p.second, p.first, Parameter(), const_true(), ModulusRemainder()), s);
     }
 
     for (std::pair<int, int> p : profiling.show_threads_loop) {
-        s = Block::make(Store::make("profiling_loop_threads", p.second, p.first, Parameter(), const_true()), s);
+        s = Block::make(Store::make("profiling_loop_threads", p.second, p.first, Parameter(), const_true(), ModulusRemainder()), s);
     }
 
     s = Block::make(s, Free::make("profiling_func_threads_prod"));

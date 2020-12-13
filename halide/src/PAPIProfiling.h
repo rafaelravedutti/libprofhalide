@@ -24,8 +24,10 @@
  *   argmin:      0.027715ms (46%)   stack: 20
  */
 
+#include "Func.h"
 #include "IR.h"
 #include "RDom.h"
+#include "Schedule.h"
 #include "Var.h"
 
 #define PROFILE_PRODUCTION      1

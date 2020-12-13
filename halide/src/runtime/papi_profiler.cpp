@@ -7,6 +7,10 @@
 
 extern "C" {
 
+#ifndef NULL
+#define NULL 0
+#endif
+
 namespace Halide { namespace Runtime { namespace Internal {
 
 static halide_papi_pipeline_stats *current_pipeline_stats = NULL;
