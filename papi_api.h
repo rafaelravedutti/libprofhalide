@@ -1,6 +1,6 @@
-#include "papi_halide.h"
+#include "perfctr_halide.h"
 
-#define PAPI_HALIDE_CONFIG_FILE   "papi_halide_events.conf"
+#define PAPI_HALIDE_CONFIG_FILE   "perfctr_halide_events.conf"
 #define MAX_CONFIG_LINE           1024
 
 #define VALUE_TYPE_INTEGER        0

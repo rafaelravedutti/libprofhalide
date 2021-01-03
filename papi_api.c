@@ -10,7 +10,7 @@
 #include <sys/time.h>
 //---
 #include "papi_api.h"
-#include "papi_halide.h"
+#include "perfctr_halide.h"
 #include "transform.h"
 
 static struct papi_api_config *global_config = NULL;
@@ -27,7 +27,7 @@ struct threadInfo {
 
 static struct threadInfo threadsInfo[MAX_PAPI_THREADS];
 
-int papi_halide_get_thread_index() {
+int perfctr_halide_get_thread_index() {
   int thid = pthread_self();
 
   for(int i = 0; i < MAX_PAPI_THREADS; ++i) {
@@ -127,7 +127,7 @@ struct papi_api_config *get_papi_api_config() {
   ssize_t read;
 
   if((fp = fopen(PAPI_HALIDE_CONFIG_FILE, "r")) == NULL) {
-    fprintf(stderr, "Configuration file for papi_halide not found: \"%s\"\n", PAPI_HALIDE_CONFIG_FILE);
+    fprintf(stderr, "Configuration file for perfctr_halide not found: \"%s\"\n", PAPI_HALIDE_CONFIG_FILE);
     return NULL;
   }
 
@@ -225,7 +225,7 @@ void print_event_values(const char *func_name, long long int *values, struct pap
   fprintf(stdout, " (time = %.8g)\n", time);
 }
 
-int papi_halide_initialize() {
+int perfctr_halide_initialize() {
   int ret;
 
   if(pthread_mutex_init(&lock, NULL) != 0) {
@@ -260,11 +260,11 @@ int papi_halide_initialize() {
   return 0;
 }
 
-int papi_halide_number_of_events() {
+int perfctr_halide_number_of_events() {
   return global_state->num_events;
 }
 
-int papi_halide_start_thread() {
+int perfctr_halide_start_thread() {
   int thread_idx = find_or_insert_thread();
   int ret;
 
@@ -293,13 +293,13 @@ int papi_halide_start_thread() {
   return 0;
 }
 
-int papi_halide_stop_thread() {
+int perfctr_halide_stop_thread() {
   long long int dummyvalues[MAX_PAPI_EVENTS];
-  int thread_idx = papi_halide_get_thread_index();
+  int thread_idx = perfctr_halide_get_thread_index();
   int ret;
 
   if(thread_idx == -1) {
-    fprintf(stderr, "papi_halide_stop_thread(): Thread not found!\n");
+    fprintf(stderr, "perfctr_halide_stop_thread(): Thread not found!\n");
     return -1;
   }
 
@@ -328,32 +328,32 @@ int papi_halide_stop_thread() {
   return 0;
 }
 
-int papi_halide_enter_parallel_region() {
+int perfctr_halide_enter_parallel_region() {
   global_state->parallel_level++;
   return 0;
 }
 
-int papi_halide_leave_parallel_region() {
+int perfctr_halide_leave_parallel_region() {
   global_state->parallel_level--;
   remove_threads();
   return 0;
 }
 
-int papi_halide_marker_start() {
-  int thread_idx = papi_halide_get_thread_index();
+int perfctr_halide_marker_start() {
+  int thread_idx = perfctr_halide_get_thread_index();
 
   PAPI_reset(threadsInfo[thread_idx].event_set);
   return 0;
 }
 
-int papi_halide_marker_stop(long long int *values, int accum) {
-  int thread_idx = papi_halide_get_thread_index();
+int perfctr_halide_marker_stop(long long int *values, int accum) {
+  int thread_idx = perfctr_halide_get_thread_index();
 
   PAPI_accum(threadsInfo[thread_idx].event_set, values);
   return 0;
 }
 
-void papi_halide_shutdown() {
+void perfctr_halide_shutdown() {
   struct papi_api_event *event, *previous;
 
   event = NULL;

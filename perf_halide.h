@@ -24,12 +24,12 @@ extern int get_perf_descriptor(int marker);
 extern int perf_descriptor_start(int marker);
 extern int perf_descriptor_stop(int marker);
 
-extern int papi_halide_initialize();
-extern int papi_halide_marker_start(int func);
-extern int papi_halide_marker_stop(int func);
-extern int papi_halide_marker_start_child(int func);
-extern int papi_halide_marker_stop_child(int func);
-extern void papi_halide_shutdown();
+extern int perfctr_halide_initialize();
+extern int perfctr_halide_marker_start(int func);
+extern int perfctr_halide_marker_stop(int func);
+extern int perfctr_halide_marker_start_child(int func);
+extern int perfctr_halide_marker_stop_child(int func);
+extern void perfctr_halide_shutdown();
 
 //}
 

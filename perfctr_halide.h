@@ -22,18 +22,18 @@
 //extern "C" {
 
 /* Initialization and markers */
-extern int papi_halide_initialize();
-extern int papi_halide_marker_start();
-extern int papi_halide_marker_stop(long long int *values, int accum);
-extern int papi_halide_number_of_events();
-extern void papi_halide_shutdown();
+extern int perfctr_halide_initialize();
+extern int perfctr_halide_marker_start();
+extern int perfctr_halide_marker_stop(long long int *values, int accum);
+extern int perfctr_halide_number_of_events();
+extern void perfctr_halide_shutdown();
 
 /* Thread functions */
-extern int papi_halide_enter_parallel_region();
-extern int papi_halide_leave_parallel_region();
-extern int papi_halide_start_thread();
-extern int papi_halide_stop_thread();
-extern int papi_halide_get_thread_index();
+extern int perfctr_halide_enter_parallel_region();
+extern int perfctr_halide_leave_parallel_region();
+extern int perfctr_halide_start_thread();
+extern int perfctr_halide_stop_thread();
+extern int perfctr_halide_get_thread_index();
 
 //}
 
