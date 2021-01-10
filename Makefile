@@ -17,6 +17,9 @@ HALIDE_FLAGS=-I ${HALIDE_RUNTIME_DIR}
 PAPI_DIR=/home/hpc/iwia/iwia021h/papi
 PAPI_SOURCE_DIR=${PAPI_DIR}/src
 
+# Likwid directory
+LIKWID_DIR=/mnt/opt/likwid-5.1.0
+
 # Halide files to synchronize
 HALIDE_SYNC_FILES = \
 	src/CodeGen_Internal.cpp \
@@ -33,10 +36,13 @@ HALIDE_SYNC_FILES = \
 	src/runtime/runtime_api.cpp \
 	src/runtime/runtime_internal.h
 
-all: libpapihalide.so
+all: libpapihalide.so liblikwidhalide.so
 
 transform.o: transform.c
 	${CC} -c -fPIC $^ -o $@ ${CFLAGS}
+
+likwid_api.o: likwid_api.c
+	${CC} -c -fPIC $^ -o $@ ${CFLAGS} -I ${LIKWID_DIR}/include -DLIKWID_PERFMON
 
 papi_api.o: papi_api.c
 	${CC} -c -fPIC $^ -o $@ ${CFLAGS}
@@ -47,14 +53,17 @@ perf_api.o: perf_api.c
 libpapihalide.so: papi_api.o perf_api.o transform.o
 	${CC} -shared -fPIC $^ -lc -o $@
 
+liblikwidhalide.so: likwid_api.o
+	${CC} -shared -fPIC $^ -lc -o $@
+
 install:
-	cp -p libpapihalide.so /usr/lib
+	cp -p libpapihalide.so liblikwidhalide.so /usr/lib
 
 test: test.c libpapihalide.so
 	${CC} $^ -L. -lpapihalide -lpapi -o $@
 
 clean:
-	rm -f libpapihalide.so *.o test
+	rm -f libpapihalide.so liblikwidhalide.so *.o test
 
 sync_halide:
 	cp -p ${HALIDE_DIR}/Makefile halide/Makefile

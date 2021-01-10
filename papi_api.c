@@ -339,16 +339,14 @@ int perfctr_halide_leave_parallel_region() {
   return 0;
 }
 
-int perfctr_halide_marker_start() {
+int perfctr_halide_marker_start(const char *marker) {
   int thread_idx = perfctr_halide_get_thread_index();
-
   PAPI_reset(threadsInfo[thread_idx].event_set);
   return 0;
 }
 
-int perfctr_halide_marker_stop(long long int *values, int accum) {
+int perfctr_halide_marker_stop(const char *marker, long long int *values, int accum) {
   int thread_idx = perfctr_halide_get_thread_index();
-
   PAPI_accum(threadsInfo[thread_idx].event_set, values);
   return 0;
 }

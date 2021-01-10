@@ -22,13 +22,15 @@ ifdef VECTORIZE
 endif
 
 # Halide path
-HALIDE_PATH=/home/ppginf/rrlmachado/nobackup/repositories/Halide
+HALIDE_PATH=/home/vault/iwia/iwia021h/Halide
 
 # Use Halide static library?
 USE_HALIDE_STATIC_LIB=false
 
 # Halide flags
-HALIDE_FLAGS=-I ${HALIDE_PATH}/include -I ${HALIDE_PATH}/tools -L ${HALIDE_PATH}/bin -L ${PAPI_HALIDE_PATH} -lpapihalide -lpthread -ljpeg -lz `libpng-config --cflags --ldflags` -ldl -std=c++11
+HALIDE_FLAGS=-I ${HALIDE_PATH}/include -I ${HALIDE_PATH}/tools -L ${HALIDE_PATH}/bin -L ${PAPI_HALIDE_PATH} -llikwidhalide -lpthread -lz -ldl -std=c++11
+#HALIDE_FLAGS=-I ${HALIDE_PATH}/include -I ${HALIDE_PATH}/tools -L ${HALIDE_PATH}/bin -L ${PAPI_HALIDE_PATH} -lpapihalide -lpthread -lz -ldl -std=c++11
+#HALIDE_FLAGS=-I ${HALIDE_PATH}/include -I ${HALIDE_PATH}/tools -L ${HALIDE_PATH}/bin -L ${PAPI_HALIDE_PATH} -lpapihalide -lpthread -ljpeg -lz `libpng-config --cflags --ldflags` -ldl -std=c++11
 
 ifeq (${USE_HALIDE_STATIC_LIB}, true)
 	HALIDE_FLAGS+=${HALIDE_PATH}/lib/libHalide.a 
@@ -37,7 +39,7 @@ else
 endif
 
 # PAPI path
-PAPI_PATH=/home/ppginf/rrlmachado/nobackup/repositories/papi
+PAPI_PATH=/home/hpc/iwia/iwia021h/papi
 PAPI_SRC=${PAPI_PATH}/src
 
 # PAPI flags
@@ -47,26 +49,28 @@ PAPI_FLAGS=-L ${PAPI_SRC} -lpapi
 LIBPFM_PATH=${PAPI_SRC}/libpfm4/lib/
 
 # PAPI Halide path
-PAPI_HALIDE_PATH=/home/ppginf/rrlmachado/nobackup/repositories/libpapihalide
+PAPI_HALIDE_PATH=/home/hpc/iwia/iwia021h/libpapihalide
 
 # Likwid path
-LIKWID_PATH=$(dirname $(which likwid-perfctr))
+#LIKWID_PATH=$(dirname $(which likwid-perfctr))
+LIKWID_PATH=/mnt/opt/likwid-5.1.0/bin
 LIKWID_LIB=${LIKWID_PATH}/../lib
 LIKWID_INCLUDE=${LIKWID_PATH}/../include
 
 all: blur_jit blur_aot
 
 blur_jit: blur.cpp
-	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} ${PAPI_FLAGS} -DSCHEDULE=${SCHEDULE} -o $@
+	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} -L ${LIKWID_LIB} -llikwid -DSCHEDULE=${SCHEDULE} -o $@
 
 blur_gen_aot: blur.cpp
-	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} ${PAPI_FLAGS} -DSCHEDULE=${SCHEDULE} -DCOMPILE_AOT -o $@
+	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} -L ${LIKWID_LIB} -llikwid -DSCHEDULE=${SCHEDULE} -DCOMPILE_AOT -o $@
+	#${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} ${PAPI_FLAGS} -DSCHEDULE=${SCHEDULE} -DCOMPILE_AOT -o $@
 
 blur_aot.cpp: blur_gen_aot
 	./$^
 
 blur_aot: blur_aot.cpp blur_aot.h blur_aot.a
-	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} ${PAPI_FLAGS} -L ${LIBPFM_PATH} -lpfm -o $@
+	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} -L ${LIKWID_LIB} -llikwid ${PAPI_FLAGS} -L ${LIBPFM_PATH} -lpfm -o $@
 
 likwid_test: likwid_test.c
 	${CC} -fopenmp -DLIKWID_PERFMON -L ${LIKWID_LIB} -I ${LIKWID_INCLUDE} $^ -o $@ -llikwid

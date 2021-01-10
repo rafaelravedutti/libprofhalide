@@ -1,12 +1,12 @@
 /* Halide library */
 #include "Halide.h"
-#include "halide_image_io.h"
+//#include "halide_image_io.h"
 /* ... */
 #include <iostream>
 #include <string>
 
 using namespace Halide;
-using namespace Halide::Tools;
+//using namespace Halide::Tools;
 
 using std::vector;
 using std::string;
@@ -29,7 +29,7 @@ int main(int argc, const char **argv) {
   blur_y(x, y, c) = (blur_x(x, y - 1, c) + blur_x(x, y, c) + blur_x(x, y + 1, c)) / 3.0f;
 
 #ifndef PROFILE
-    set_profiler_status(false);
+    //set_profiler_status(false);
 #endif
 
 #if SCHEDULE == 1
