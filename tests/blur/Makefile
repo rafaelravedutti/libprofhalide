@@ -27,10 +27,13 @@ HALIDE_PATH=/home/vault/iwia/iwia021h/Halide
 # Use Halide static library?
 USE_HALIDE_STATIC_LIB=false
 
+# PAPI Halide path
+PROF_HALIDE_PATH=/home/hpc/iwia/iwia021h/libprofhalide
+
 # Halide flags
-HALIDE_FLAGS=-I ${HALIDE_PATH}/include -I ${HALIDE_PATH}/tools -L ${HALIDE_PATH}/bin -L ${PAPI_HALIDE_PATH} -llikwidhalide -lpthread -lz -ldl -std=c++11
-#HALIDE_FLAGS=-I ${HALIDE_PATH}/include -I ${HALIDE_PATH}/tools -L ${HALIDE_PATH}/bin -L ${PAPI_HALIDE_PATH} -lpapihalide -lpthread -lz -ldl -std=c++11
-#HALIDE_FLAGS=-I ${HALIDE_PATH}/include -I ${HALIDE_PATH}/tools -L ${HALIDE_PATH}/bin -L ${PAPI_HALIDE_PATH} -lpapihalide -lpthread -ljpeg -lz `libpng-config --cflags --ldflags` -ldl -std=c++11
+HALIDE_FLAGS=-I ${HALIDE_PATH}/include -I ${HALIDE_PATH}/tools -L ${HALIDE_PATH}/bin -L ${PROF_HALIDE_PATH} -llikwidhalide -lpthread -lz -ldl -std=c++11
+#HALIDE_FLAGS=-I ${HALIDE_PATH}/include -I ${HALIDE_PATH}/tools -L ${HALIDE_PATH}/bin -L ${PROF_HALIDE_PATH} -lpapihalide -lpthread -lz -ldl -std=c++11
+#HALIDE_FLAGS=-I ${HALIDE_PATH}/include -I ${HALIDE_PATH}/tools -L ${HALIDE_PATH}/bin -L ${PROF_HALIDE_PATH} -lpapihalide -lpthread -ljpeg -lz `libpng-config --cflags --ldflags` -ldl -std=c++11
 
 ifeq (${USE_HALIDE_STATIC_LIB}, true)
 	HALIDE_FLAGS+=${HALIDE_PATH}/lib/libHalide.a 
@@ -47,9 +50,6 @@ PAPI_FLAGS=-L ${PAPI_SRC} -lpapi
 
 # PFM path
 LIBPFM_PATH=${PAPI_SRC}/libpfm4/lib/
-
-# PAPI Halide path
-PAPI_HALIDE_PATH=/home/hpc/iwia/iwia021h/libpapihalide
 
 # Likwid path
 #LIKWID_PATH=$(dirname $(which likwid-perfctr))
