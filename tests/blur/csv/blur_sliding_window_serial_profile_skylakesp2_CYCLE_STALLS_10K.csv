@@ -1,0 +1,129 @@
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6148 CPU @ 2.40GHz
+CPU type:	Intel Skylake SP processor
+CPU clock:	2.40 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y.s0.c, Group 1: CYCLE_STALLS
++-------------------+------------+
+|    Region Info    | HWThread 3 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.105101 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------------------+---------+------------+
+|               Event               | Counter | HWThread 3 |
++-----------------------------------+---------+------------+
+|         INSTR_RETIRED_ANY         |  FIXC0  |  663603900 |
+|       CPU_CLK_UNHALTED_CORE       |  FIXC1  |  231960400 |
+|        CPU_CLK_UNHALTED_REF       |  FIXC2  |  154405000 |
+|  CYCLE_ACTIVITY_STALLS_L2_PENDING |   PMC0  |     188234 |
+| CYCLE_ACTIVITY_STALLS_LDM_PENDING |   PMC1  |    2911505 |
+| CYCLE_ACTIVITY_STALLS_L1D_PENDING |   PMC2  |    1958010 |
+|    CYCLE_ACTIVITY_STALLS_TOTAL    |   PMC3  |      -     |
++-----------------------------------+---------+------------+
+
++----------------------------------------+------------+
+|                 Metric                 | HWThread 3 |
++----------------------------------------+------------+
+|           Runtime (RDTSC) [s]          |     0.1051 |
+|          Runtime unhalted [s]          |     0.0966 |
+|               Clock [MHz]              |  3605.5110 |
+|                   CPI                  |     0.3495 |
+|         Total execution stalls         |          0 |
+|     Stalls caused by L1D misses [%]    |     inf    |
+|     Stalls caused by L2 misses [%]     |     inf    |
+|    Stalls caused by memory loads [%]   |     inf    |
+|        Execution stall rate [%]        |          0 |
+|  Stalls caused by L1D misses rate [%]  |     0.8441 |
+|   Stalls caused by L2 misses rate [%]  |     0.0811 |
+| Stalls caused by memory loads rate [%] |     1.2552 |
++----------------------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6148 CPU @ 2.40GHz
+CPU type:	Intel Skylake SP processor
+CPU clock:	2.40 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y.s0.c, Group 1: CYCLE_STALLS
++-------------------+------------+
+|    Region Info    | HWThread 3 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.106362 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------------------+---------+------------+
+|               Event               | Counter | HWThread 3 |
++-----------------------------------+---------+------------+
+|         INSTR_RETIRED_ANY         |  FIXC0  |  663603900 |
+|       CPU_CLK_UNHALTED_CORE       |  FIXC1  |  231395500 |
+|        CPU_CLK_UNHALTED_REF       |  FIXC2  |  158987100 |
+|  CYCLE_ACTIVITY_STALLS_L2_PENDING |   PMC0  |     159239 |
+| CYCLE_ACTIVITY_STALLS_LDM_PENDING |   PMC1  |    2754841 |
+| CYCLE_ACTIVITY_STALLS_L1D_PENDING |   PMC2  |    1821494 |
+|    CYCLE_ACTIVITY_STALLS_TOTAL    |   PMC3  |      -     |
++-----------------------------------+---------+------------+
+
++----------------------------------------+------------+
+|                 Metric                 | HWThread 3 |
++----------------------------------------+------------+
+|           Runtime (RDTSC) [s]          |     0.1064 |
+|          Runtime unhalted [s]          |     0.0964 |
+|               Clock [MHz]              |  3493.0598 |
+|                   CPI                  |     0.3487 |
+|         Total execution stalls         |          0 |
+|     Stalls caused by L1D misses [%]    |     inf    |
+|     Stalls caused by L2 misses [%]     |     inf    |
+|    Stalls caused by memory loads [%]   |     inf    |
+|        Execution stall rate [%]        |          0 |
+|  Stalls caused by L1D misses rate [%]  |     0.7872 |
+|   Stalls caused by L2 misses rate [%]  |     0.0688 |
+| Stalls caused by memory loads rate [%] |     1.1905 |
++----------------------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6148 CPU @ 2.40GHz
+CPU type:	Intel Skylake SP processor
+CPU clock:	2.40 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y.s0.c, Group 1: CYCLE_STALLS
++-------------------+------------+
+|    Region Info    | HWThread 3 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.103395 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------------------+---------+------------+
+|               Event               | Counter | HWThread 3 |
++-----------------------------------+---------+------------+
+|         INSTR_RETIRED_ANY         |  FIXC0  |  663603400 |
+|       CPU_CLK_UNHALTED_CORE       |  FIXC1  |  232512300 |
+|        CPU_CLK_UNHALTED_REF       |  FIXC2  |  152307900 |
+|  CYCLE_ACTIVITY_STALLS_L2_PENDING |   PMC0  |     201656 |
+| CYCLE_ACTIVITY_STALLS_LDM_PENDING |   PMC1  |    3064866 |
+| CYCLE_ACTIVITY_STALLS_L1D_PENDING |   PMC2  |    2059285 |
+|    CYCLE_ACTIVITY_STALLS_TOTAL    |   PMC3  |      -     |
++-----------------------------------+---------+------------+
+
++----------------------------------------+------------+
+|                 Metric                 | HWThread 3 |
++----------------------------------------+------------+
+|           Runtime (RDTSC) [s]          |     0.1034 |
+|          Runtime unhalted [s]          |     0.0969 |
+|               Clock [MHz]              |  3663.8435 |
+|                   CPI                  |     0.3504 |
+|         Total execution stalls         |          0 |
+|     Stalls caused by L1D misses [%]    |     inf    |
+|     Stalls caused by L2 misses [%]     |     inf    |
+|    Stalls caused by memory loads [%]   |     inf    |
+|        Execution stall rate [%]        |          0 |
+|  Stalls caused by L1D misses rate [%]  |     0.8857 |
+|   Stalls caused by L2 misses rate [%]  |     0.0867 |
+| Stalls caused by memory loads rate [%] |     1.3182 |
++----------------------------------------+------------+
+

@@ -1,0 +1,381 @@
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6148 CPU @ 2.40GHz
+CPU type:	Intel Skylake SP processor
+CPU clock:	2.40 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y_prod, Group 1: CACHES
++-------------------+------------+
+|    Region Info    | HWThread 3 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.071633 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------+----------+------------+
+|         Event         |  Counter | HWThread 3 |
++-----------------------+----------+------------+
+|   INSTR_RETIRED_ANY   |   FIXC0  |   80684950 |
+| CPU_CLK_UNHALTED_CORE |   FIXC1  |   98263710 |
+|  CPU_CLK_UNHALTED_REF |   FIXC2  |   70111200 |
+|    L1D_REPLACEMENT    |   PMC0   |   11431780 |
+|      L1D_M_EVICT      |   PMC1   |    2766698 |
+|    L2_LINES_IN_ALL    |   PMC2   |    5460955 |
+|     L2_TRANS_L2_WB    |   PMC3   |      -     |
+|  LLC_VICTIMS_M_STATE  |  CBOX0C1 |         10 |
+|  LLC_VICTIMS_M_STATE  |  CBOX1C1 |          8 |
+|  LLC_VICTIMS_M_STATE  |  CBOX2C1 |          3 |
+|  LLC_VICTIMS_M_STATE  |  CBOX3C1 |          5 |
+|  LLC_VICTIMS_M_STATE  |  CBOX4C1 |          8 |
+|  LLC_VICTIMS_M_STATE  |  CBOX5C1 |          5 |
+|  LLC_VICTIMS_M_STATE  |  CBOX6C1 |          4 |
+|  LLC_VICTIMS_M_STATE  |  CBOX7C1 |          6 |
+|  LLC_VICTIMS_M_STATE  |  CBOX8C1 |         10 |
+|  LLC_VICTIMS_M_STATE  |  CBOX9C1 |          7 |
+|  LLC_VICTIMS_M_STATE  | CBOX10C1 |     279746 |
+|  LLC_VICTIMS_M_STATE  | CBOX11C1 |     279844 |
+|  LLC_VICTIMS_M_STATE  | CBOX12C1 |     279625 |
+|  LLC_VICTIMS_M_STATE  | CBOX13C1 |     279851 |
+|  LLC_VICTIMS_M_STATE  | CBOX14C1 |     279650 |
+|  LLC_VICTIMS_M_STATE  | CBOX15C1 |     279568 |
+|  LLC_VICTIMS_M_STATE  | CBOX16C1 |     279917 |
+|  LLC_VICTIMS_M_STATE  | CBOX17C1 |     279973 |
+|  LLC_VICTIMS_M_STATE  | CBOX18C1 |     258735 |
+|  LLC_VICTIMS_M_STATE  | CBOX19C1 |     258720 |
+|  LLC_VICTIMS_M_STATE  | CBOX20C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX21C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX22C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX23C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX24C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX25C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX26C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX27C1 |          0 |
+|  LLC_LOOKUP_DATA_READ |  CBOX0C0 |       2589 |
+|  LLC_LOOKUP_DATA_READ |  CBOX1C0 |       1606 |
+|  LLC_LOOKUP_DATA_READ |  CBOX2C0 |       1663 |
+|  LLC_LOOKUP_DATA_READ |  CBOX3C0 |       1456 |
+|  LLC_LOOKUP_DATA_READ |  CBOX4C0 |       2020 |
+|  LLC_LOOKUP_DATA_READ |  CBOX5C0 |       1461 |
+|  LLC_LOOKUP_DATA_READ |  CBOX6C0 |       1311 |
+|  LLC_LOOKUP_DATA_READ |  CBOX7C0 |       1521 |
+|  LLC_LOOKUP_DATA_READ |  CBOX8C0 |       1332 |
+|  LLC_LOOKUP_DATA_READ |  CBOX9C0 |       1656 |
+|  LLC_LOOKUP_DATA_READ | CBOX10C0 |     288671 |
+|  LLC_LOOKUP_DATA_READ | CBOX11C0 |     289468 |
+|  LLC_LOOKUP_DATA_READ | CBOX12C0 |     289192 |
+|  LLC_LOOKUP_DATA_READ | CBOX13C0 |     288671 |
+|  LLC_LOOKUP_DATA_READ | CBOX14C0 |     289067 |
+|  LLC_LOOKUP_DATA_READ | CBOX15C0 |     289208 |
+|  LLC_LOOKUP_DATA_READ | CBOX16C0 |     290663 |
+|  LLC_LOOKUP_DATA_READ | CBOX17C0 |     288451 |
+|  LLC_LOOKUP_DATA_READ | CBOX18C0 |     266631 |
+|  LLC_LOOKUP_DATA_READ | CBOX19C0 |     266466 |
+|  LLC_LOOKUP_DATA_READ | CBOX20C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX21C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX22C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX23C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX24C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX25C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX26C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX27C0 |          0 |
+|      CAS_COUNT_RD     |  MBOX0C0 |        215 |
+|      CAS_COUNT_WR     |  MBOX0C1 |        211 |
+|      CAS_COUNT_RD     |  MBOX1C0 |        225 |
+|      CAS_COUNT_WR     |  MBOX1C1 |        228 |
+|      CAS_COUNT_RD     |  MBOX2C0 |        229 |
+|      CAS_COUNT_WR     |  MBOX2C1 |        225 |
+|      CAS_COUNT_RD     |  MBOX3C0 |    1040043 |
+|      CAS_COUNT_WR     |  MBOX3C1 |     974758 |
+|      CAS_COUNT_RD     |  MBOX4C0 |    1039707 |
+|      CAS_COUNT_WR     |  MBOX4C1 |     974491 |
+|      CAS_COUNT_RD     |  MBOX5C0 |    1040141 |
+|      CAS_COUNT_WR     |  MBOX5C1 |     974842 |
++-----------------------+----------+------------+
+
++----------------------------------------+------------+
+|                 Metric                 | HWThread 3 |
++----------------------------------------+------------+
+|           Runtime (RDTSC) [s]          |     0.0716 |
+|          Runtime unhalted [s]          |     0.0409 |
+|               Clock [MHz]              |  3363.7165 |
+|                   CPI                  |     1.2179 |
+|   L2 to L1 load bandwidth [MBytes/s]   | 10213.6477 |
+|   L2 to L1 load data volume [GBytes]   |     0.7316 |
+|   L1 to L2 evict bandwidth [MBytes/s]  |  2471.8879 |
+|   L1 to L2 evict data volume [GBytes]  |     0.1771 |
+|   L1 to/from L2 bandwidth [MBytes/s]   | 12685.5356 |
+|   L1 to/from L2 data volume [GBytes]   |     0.9087 |
+|   L3 to L2 load bandwidth [MBytes/s]   |  4879.0539 |
+|   L3 to L2 load data volume [GBytes]   |     0.3495 |
+|   L2 to L3 evict bandwidth [MBytes/s]  |          0 |
+|   L2 to L3 evict data volume [GBytes]  |          0 |
+|   L2 to/from L3 bandwidth [MBytes/s]   |  4879.0539 |
+|   L2 to/from L3 data volume [GBytes]   |     0.3495 |
+|    System to L3 bandwidth [MBytes/s]   |  2558.0203 |
+|    System to L3 data volume [GBytes]   |     0.1832 |
+|    L3 to system bandwidth [MBytes/s]   |  2462.0573 |
+|    L3 to system data volume [GBytes]   |     0.1764 |
+| L3 to/from system bandwidth [MBytes/s] |  5020.0777 |
+| L3 to/from system data volume [GBytes] |     0.3596 |
+|    Memory read bandwidth [MBytes/s]    |  2788.0436 |
+|    Memory read data volume [GBytes]    |     0.1997 |
+|    Memory write bandwidth [MBytes/s]   |  2613.1029 |
+|    Memory write data volume [GBytes]   |     0.1872 |
+|       Memory bandwidth [MBytes/s]      |  5401.1464 |
+|       Memory data volume [GBytes]      |     0.3869 |
++----------------------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6148 CPU @ 2.40GHz
+CPU type:	Intel Skylake SP processor
+CPU clock:	2.40 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y_prod, Group 1: CACHES
++-------------------+------------+
+|    Region Info    | HWThread 3 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.071652 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------+----------+------------+
+|         Event         |  Counter | HWThread 3 |
++-----------------------+----------+------------+
+|   INSTR_RETIRED_ANY   |   FIXC0  |   80684950 |
+| CPU_CLK_UNHALTED_CORE |   FIXC1  |   99178690 |
+|  CPU_CLK_UNHALTED_REF |   FIXC2  |   70305500 |
+|    L1D_REPLACEMENT    |   PMC0   |   11432540 |
+|      L1D_M_EVICT      |   PMC1   |    2764840 |
+|    L2_LINES_IN_ALL    |   PMC2   |    5461615 |
+|     L2_TRANS_L2_WB    |   PMC3   |      -     |
+|  LLC_VICTIMS_M_STATE  |  CBOX0C1 |          2 |
+|  LLC_VICTIMS_M_STATE  |  CBOX1C1 |          1 |
+|  LLC_VICTIMS_M_STATE  |  CBOX2C1 |          2 |
+|  LLC_VICTIMS_M_STATE  |  CBOX3C1 |          4 |
+|  LLC_VICTIMS_M_STATE  |  CBOX4C1 |          4 |
+|  LLC_VICTIMS_M_STATE  |  CBOX5C1 |          1 |
+|  LLC_VICTIMS_M_STATE  |  CBOX6C1 |          1 |
+|  LLC_VICTIMS_M_STATE  |  CBOX7C1 |          0 |
+|  LLC_VICTIMS_M_STATE  |  CBOX8C1 |          1 |
+|  LLC_VICTIMS_M_STATE  |  CBOX9C1 |          1 |
+|  LLC_VICTIMS_M_STATE  | CBOX10C1 |     277561 |
+|  LLC_VICTIMS_M_STATE  | CBOX11C1 |     277734 |
+|  LLC_VICTIMS_M_STATE  | CBOX12C1 |     277613 |
+|  LLC_VICTIMS_M_STATE  | CBOX13C1 |     277643 |
+|  LLC_VICTIMS_M_STATE  | CBOX14C1 |     277444 |
+|  LLC_VICTIMS_M_STATE  | CBOX15C1 |     277789 |
+|  LLC_VICTIMS_M_STATE  | CBOX16C1 |     277581 |
+|  LLC_VICTIMS_M_STATE  | CBOX17C1 |     277779 |
+|  LLC_VICTIMS_M_STATE  | CBOX18C1 |     257058 |
+|  LLC_VICTIMS_M_STATE  | CBOX19C1 |     256913 |
+|  LLC_VICTIMS_M_STATE  | CBOX20C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX21C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX22C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX23C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX24C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX25C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX26C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX27C1 |          0 |
+|  LLC_LOOKUP_DATA_READ |  CBOX0C0 |       1809 |
+|  LLC_LOOKUP_DATA_READ |  CBOX1C0 |       1052 |
+|  LLC_LOOKUP_DATA_READ |  CBOX2C0 |       1082 |
+|  LLC_LOOKUP_DATA_READ |  CBOX3C0 |        871 |
+|  LLC_LOOKUP_DATA_READ |  CBOX4C0 |       1109 |
+|  LLC_LOOKUP_DATA_READ |  CBOX5C0 |        892 |
+|  LLC_LOOKUP_DATA_READ |  CBOX6C0 |        788 |
+|  LLC_LOOKUP_DATA_READ |  CBOX7C0 |        932 |
+|  LLC_LOOKUP_DATA_READ |  CBOX8C0 |        906 |
+|  LLC_LOOKUP_DATA_READ |  CBOX9C0 |       1017 |
+|  LLC_LOOKUP_DATA_READ | CBOX10C0 |     288682 |
+|  LLC_LOOKUP_DATA_READ | CBOX11C0 |     288987 |
+|  LLC_LOOKUP_DATA_READ | CBOX12C0 |     288596 |
+|  LLC_LOOKUP_DATA_READ | CBOX13C0 |     288395 |
+|  LLC_LOOKUP_DATA_READ | CBOX14C0 |     288412 |
+|  LLC_LOOKUP_DATA_READ | CBOX15C0 |     288872 |
+|  LLC_LOOKUP_DATA_READ | CBOX16C0 |     288426 |
+|  LLC_LOOKUP_DATA_READ | CBOX17C0 |     288380 |
+|  LLC_LOOKUP_DATA_READ | CBOX18C0 |     266197 |
+|  LLC_LOOKUP_DATA_READ | CBOX19C0 |     266069 |
+|  LLC_LOOKUP_DATA_READ | CBOX20C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX21C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX22C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX23C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX24C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX25C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX26C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX27C0 |          0 |
+|      CAS_COUNT_RD     |  MBOX0C0 |        415 |
+|      CAS_COUNT_WR     |  MBOX0C1 |        363 |
+|      CAS_COUNT_RD     |  MBOX1C0 |        494 |
+|      CAS_COUNT_WR     |  MBOX1C1 |        424 |
+|      CAS_COUNT_RD     |  MBOX2C0 |        437 |
+|      CAS_COUNT_WR     |  MBOX2C1 |        384 |
+|      CAS_COUNT_RD     |  MBOX3C0 |    1040511 |
+|      CAS_COUNT_WR     |  MBOX3C1 |     968263 |
+|      CAS_COUNT_RD     |  MBOX4C0 |    1040067 |
+|      CAS_COUNT_WR     |  MBOX4C1 |     967931 |
+|      CAS_COUNT_RD     |  MBOX5C0 |    1040224 |
+|      CAS_COUNT_WR     |  MBOX5C1 |     968298 |
++-----------------------+----------+------------+
+
++----------------------------------------+------------+
+|                 Metric                 | HWThread 3 |
++----------------------------------------+------------+
+|           Runtime (RDTSC) [s]          |     0.0717 |
+|          Runtime unhalted [s]          |     0.0413 |
+|               Clock [MHz]              |  3385.6262 |
+|                   CPI                  |     1.2292 |
+|   L2 to L1 load bandwidth [MBytes/s]   | 10211.5740 |
+|   L2 to L1 load data volume [GBytes]   |     0.7317 |
+|   L1 to L2 evict bandwidth [MBytes/s]  |  2469.5622 |
+|   L1 to L2 evict data volume [GBytes]  |     0.1769 |
+|   L1 to/from L2 bandwidth [MBytes/s]   | 12681.1362 |
+|   L1 to/from L2 data volume [GBytes]   |     0.9086 |
+|   L3 to L2 load bandwidth [MBytes/s]   |  4878.3285 |
+|   L3 to L2 load data volume [GBytes]   |     0.3495 |
+|   L2 to L3 evict bandwidth [MBytes/s]  |          0 |
+|   L2 to L3 evict data volume [GBytes]  |          0 |
+|   L2 to/from L3 bandwidth [MBytes/s]   |  4878.3285 |
+|   L2 to/from L3 data volume [GBytes]   |     0.3495 |
+|    System to L3 bandwidth [MBytes/s]   |  2546.9439 |
+|    System to L3 data volume [GBytes]   |     0.1825 |
+|    L3 to system bandwidth [MBytes/s]   |  2443.0269 |
+|    L3 to system data volume [GBytes]   |     0.1750 |
+| L3 to/from system bandwidth [MBytes/s] |  4989.9708 |
+| L3 to/from system data volume [GBytes] |     0.3575 |
+|    Memory read bandwidth [MBytes/s]    |  2788.7106 |
+|    Memory read data volume [GBytes]    |     0.1998 |
+|    Memory write bandwidth [MBytes/s]   |  2595.3456 |
+|    Memory write data volume [GBytes]   |     0.1860 |
+|       Memory bandwidth [MBytes/s]      |  5384.0562 |
+|       Memory data volume [GBytes]      |     0.3858 |
++----------------------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6148 CPU @ 2.40GHz
+CPU type:	Intel Skylake SP processor
+CPU clock:	2.40 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y_prod, Group 1: CACHES
++-------------------+------------+
+|    Region Info    | HWThread 3 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.071298 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------+----------+------------+
+|         Event         |  Counter | HWThread 3 |
++-----------------------+----------+------------+
+|   INSTR_RETIRED_ANY   |   FIXC0  |   80684950 |
+| CPU_CLK_UNHALTED_CORE |   FIXC1  |  100427400 |
+|  CPU_CLK_UNHALTED_REF |   FIXC2  |   68614560 |
+|    L1D_REPLACEMENT    |   PMC0   |   11411420 |
+|      L1D_M_EVICT      |   PMC1   |    2765518 |
+|    L2_LINES_IN_ALL    |   PMC2   |    5459271 |
+|     L2_TRANS_L2_WB    |   PMC3   |      -     |
+|  LLC_VICTIMS_M_STATE  |  CBOX0C1 |          1 |
+|  LLC_VICTIMS_M_STATE  |  CBOX1C1 |          4 |
+|  LLC_VICTIMS_M_STATE  |  CBOX2C1 |          2 |
+|  LLC_VICTIMS_M_STATE  |  CBOX3C1 |          2 |
+|  LLC_VICTIMS_M_STATE  |  CBOX4C1 |          4 |
+|  LLC_VICTIMS_M_STATE  |  CBOX5C1 |          2 |
+|  LLC_VICTIMS_M_STATE  |  CBOX6C1 |          1 |
+|  LLC_VICTIMS_M_STATE  |  CBOX7C1 |          1 |
+|  LLC_VICTIMS_M_STATE  |  CBOX8C1 |          2 |
+|  LLC_VICTIMS_M_STATE  |  CBOX9C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX10C1 |     277547 |
+|  LLC_VICTIMS_M_STATE  | CBOX11C1 |     277575 |
+|  LLC_VICTIMS_M_STATE  | CBOX12C1 |     277453 |
+|  LLC_VICTIMS_M_STATE  | CBOX13C1 |     277587 |
+|  LLC_VICTIMS_M_STATE  | CBOX14C1 |     277434 |
+|  LLC_VICTIMS_M_STATE  | CBOX15C1 |     277513 |
+|  LLC_VICTIMS_M_STATE  | CBOX16C1 |     277608 |
+|  LLC_VICTIMS_M_STATE  | CBOX17C1 |     277653 |
+|  LLC_VICTIMS_M_STATE  | CBOX18C1 |     256684 |
+|  LLC_VICTIMS_M_STATE  | CBOX19C1 |     256548 |
+|  LLC_VICTIMS_M_STATE  | CBOX20C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX21C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX22C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX23C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX24C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX25C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX26C1 |          0 |
+|  LLC_VICTIMS_M_STATE  | CBOX27C1 |          0 |
+|  LLC_LOOKUP_DATA_READ |  CBOX0C0 |       1172 |
+|  LLC_LOOKUP_DATA_READ |  CBOX1C0 |       1107 |
+|  LLC_LOOKUP_DATA_READ |  CBOX2C0 |        991 |
+|  LLC_LOOKUP_DATA_READ |  CBOX3C0 |       1067 |
+|  LLC_LOOKUP_DATA_READ |  CBOX4C0 |       1273 |
+|  LLC_LOOKUP_DATA_READ |  CBOX5C0 |        954 |
+|  LLC_LOOKUP_DATA_READ |  CBOX6C0 |        798 |
+|  LLC_LOOKUP_DATA_READ |  CBOX7C0 |        840 |
+|  LLC_LOOKUP_DATA_READ |  CBOX8C0 |        954 |
+|  LLC_LOOKUP_DATA_READ |  CBOX9C0 |       1321 |
+|  LLC_LOOKUP_DATA_READ | CBOX10C0 |     288678 |
+|  LLC_LOOKUP_DATA_READ | CBOX11C0 |     288706 |
+|  LLC_LOOKUP_DATA_READ | CBOX12C0 |     287961 |
+|  LLC_LOOKUP_DATA_READ | CBOX13C0 |     288399 |
+|  LLC_LOOKUP_DATA_READ | CBOX14C0 |     288344 |
+|  LLC_LOOKUP_DATA_READ | CBOX15C0 |     288990 |
+|  LLC_LOOKUP_DATA_READ | CBOX16C0 |     288814 |
+|  LLC_LOOKUP_DATA_READ | CBOX17C0 |     287749 |
+|  LLC_LOOKUP_DATA_READ | CBOX18C0 |     266453 |
+|  LLC_LOOKUP_DATA_READ | CBOX19C0 |     266409 |
+|  LLC_LOOKUP_DATA_READ | CBOX20C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX21C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX22C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX23C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX24C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX25C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX26C0 |          0 |
+|  LLC_LOOKUP_DATA_READ | CBOX27C0 |          0 |
+|      CAS_COUNT_RD     |  MBOX0C0 |        277 |
+|      CAS_COUNT_WR     |  MBOX0C1 |        298 |
+|      CAS_COUNT_RD     |  MBOX1C0 |        279 |
+|      CAS_COUNT_WR     |  MBOX1C1 |        309 |
+|      CAS_COUNT_RD     |  MBOX2C0 |        273 |
+|      CAS_COUNT_WR     |  MBOX2C1 |        298 |
+|      CAS_COUNT_RD     |  MBOX3C0 |    1040853 |
+|      CAS_COUNT_WR     |  MBOX3C1 |     968223 |
+|      CAS_COUNT_RD     |  MBOX4C0 |    1040685 |
+|      CAS_COUNT_WR     |  MBOX4C1 |     967706 |
+|      CAS_COUNT_RD     |  MBOX5C0 |    1040713 |
+|      CAS_COUNT_WR     |  MBOX5C1 |     967980 |
++-----------------------+----------+------------+
+
++----------------------------------------+------------+
+|                 Metric                 | HWThread 3 |
++----------------------------------------+------------+
+|           Runtime (RDTSC) [s]          |     0.0713 |
+|          Runtime unhalted [s]          |     0.0418 |
+|               Clock [MHz]              |  3512.7682 |
+|                   CPI                  |     1.2447 |
+|   L2 to L1 load bandwidth [MBytes/s]   | 10243.3974 |
+|   L2 to L1 load data volume [GBytes]   |     0.7303 |
+|   L1 to L2 evict bandwidth [MBytes/s]  |  2482.4518 |
+|   L1 to L2 evict data volume [GBytes]  |     0.1770 |
+|   L1 to/from L2 bandwidth [MBytes/s]   | 12725.8492 |
+|   L1 to/from L2 data volume [GBytes]   |     0.9073 |
+|   L3 to L2 load bandwidth [MBytes/s]   |  4900.4841 |
+|   L3 to L2 load data volume [GBytes]   |     0.3494 |
+|   L2 to L3 evict bandwidth [MBytes/s]  |          0 |
+|   L2 to L3 evict data volume [GBytes]  |          0 |
+|   L2 to/from L3 bandwidth [MBytes/s]   |  4900.4841 |
+|   L2 to/from L3 data volume [GBytes]   |     0.3494 |
+|    System to L3 bandwidth [MBytes/s]   |  2559.1663 |
+|    System to L3 data volume [GBytes]   |     0.1825 |
+|    L3 to system bandwidth [MBytes/s]   |  2453.8196 |
+|    L3 to system data volume [GBytes]   |     0.1750 |
+| L3 to/from system bandwidth [MBytes/s] |  5012.9859 |
+| L3 to/from system data volume [GBytes] |     0.3574 |
+|    Memory read bandwidth [MBytes/s]    |  2803.4153 |
+|    Memory read data volume [GBytes]    |     0.1999 |
+|    Memory write bandwidth [MBytes/s]   |  2607.4901 |
+|    Memory write data volume [GBytes]   |     0.1859 |
+|       Memory bandwidth [MBytes/s]      |  5410.9054 |
+|       Memory data volume [GBytes]      |     0.3858 |
++----------------------------------------+------------+
+

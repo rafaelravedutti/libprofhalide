@@ -16,8 +16,8 @@ using std::string;
 #endif
 
 int main(int argc, const char **argv) {
-  Buffer<float> input(3840, 2160, 1);
-  //Buffer<float> input(10240, 4320, 1);
+  //Buffer<float> input(3840, 2160, 1);
+  Buffer<float> input(10240, 4320, 1);
   //Buffer<float> input(10112, 10112, 1);
   //Buffer<float> input = Tools::load_and_convert_image("input.png");
   Buffer<float> output(input.width() - 2, input.height() - 2, input.channels());
