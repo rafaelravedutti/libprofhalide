@@ -15,7 +15,7 @@ int main(int argc, const char **argv) {
   Halide::Runtime::Buffer<float> output(input.width() - 2, input.height() - 2, input.channels());
   int error;
 
-  halide_set_num_threads(4);
+  //halide_set_num_threads(4);
 
   output.set_min(1, 1);
 
