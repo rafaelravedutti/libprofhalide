@@ -7,6 +7,9 @@ SCHEDULES="breadth_first full_fusion sliding_window tile_32x32"
 ARCH="host"
 #ARCH="host-x86-64" # no vectorization
 
+# Number of threads on parallel schedules
+NTHREADS=4
+
 # Group (Likwid)
 GROUP=CACHES
 
@@ -20,6 +23,9 @@ FILENAME_SUFFIX="${GROUP}_10K"
 # Run serial and/or parallel schedules
 RUN_SERIAL=0
 RUN_PARALLEL=1
+
+# Retrieve library paths
+source source.me
 
 # Profiler tests
 sched_id=1
@@ -54,16 +60,17 @@ for sched in ${SCHEDULES}; do
 done
 
 # Profiler tests
-sched_id=4
+sched_id=1
 for sched in ${SCHEDULES}; do
     if [ "${RUN_PARALLEL}" -ne "0" -a "$sched_id" -ne "3" ]; then
         export HL_TARGET="${ARCH}-perfctr"
         export HL_JIT_TARGET="${ARCH}-perfctr"
+        export HL_NUM_THREADS=${NTHREADS}
         export OMP_NUM_THREADS="${HL_NUM_THREADS}"
         make clean && make SCHEDULE=${sched_id} PARALLEL=y PROFILE=y ${EXTRA_FLAGS}
         echo "Running profiler tests for parallel ${sched} schedule..."
         for i in $(seq 1 3); do
-            likwid-perfctr -C 0-3 -g ${GROUP} -m ./blur_aot | tee -a csv/blur_${sched}_parallel_profile_$(hostname)_${FILENAME_SUFFIX}.csv ;
+            likwid-perfctr -C "0-3" -g ${GROUP} -m ./blur_aot | tee -a csv/blur_${sched}_parallel_profile_$(hostname)_${FILENAME_SUFFIX}.csv ;
         done
     fi
 
@@ -76,6 +83,8 @@ for sched in ${SCHEDULES}; do
     if [ "${RUN_PARALLEL}" -ne "0" -a "$sched_id" -ne "3" ]; then
         export HL_TARGET="host-profile"
         export HL_JIT_TARGET="host-profile"
+        export HL_NUM_THREADS=${NTHREADS}
+        export OMP_NUM_THREADS="${HL_NUM_THREADS}"
         make clean && make SCHEDULE=${sched_id} PARALLEL=y ${EXTRA_FLAGS}
         echo "Running time tests for parallel ${sched} schedule..."
         for i in $(seq 1 3); do

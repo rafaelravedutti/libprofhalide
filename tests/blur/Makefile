@@ -28,7 +28,8 @@ HALIDE_PATH=/home/vault/iwia/iwia021h/Halide
 USE_HALIDE_STATIC_LIB=false
 
 # PAPI Halide path
-PROF_HALIDE_PATH=/home/hpc/iwia/iwia021h/libprofhalide
+PROF_HALIDE_PATH=../..
+#PROF_HALIDE_PATH=/home/hpc/iwia/iwia021h/libprofhalide
 
 # Halide flags
 HALIDE_FLAGS=-I ${HALIDE_PATH}/include -I ${HALIDE_PATH}/tools -L ${HALIDE_PATH}/bin -L ${PROF_HALIDE_PATH} -llikwidhalide -lpthread -lz -ldl -std=c++11

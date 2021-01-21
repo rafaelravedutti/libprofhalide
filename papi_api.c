@@ -11,7 +11,6 @@
 //---
 #include "papi_api.h"
 #include "perfctr_halide.h"
-#include "transform.h"
 
 static struct papi_api_config *global_config = NULL;
 static struct papi_api_state *global_state = NULL;
@@ -26,6 +25,10 @@ struct threadInfo {
 };
 
 static struct threadInfo threadsInfo[MAX_PAPI_THREADS];
+
+long long int transform_skip(long long int value) {
+  return value;
+}
 
 int perfctr_halide_get_thread_index() {
   int thid = pthread_self();
