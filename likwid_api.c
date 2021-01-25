@@ -20,6 +20,11 @@ int perfctr_halide_number_of_events() { return 0; }
 int perfctr_halide_enter_parallel_region() { return 0; }
 int perfctr_halide_leave_parallel_region() { return 0; }
 
+int perfctr_halide_marker_register(const char *marker) {
+    LIKWID_MARKER_REGISTER(marker);
+    return 0;
+}
+
 int perfctr_halide_marker_start(const char *marker) {
     LIKWID_MARKER_START(marker);
     return 0;
