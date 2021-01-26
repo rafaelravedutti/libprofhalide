@@ -21,7 +21,7 @@ EXTRA_FLAGS=""
 FILENAME_SUFFIX="${GROUP}_10K"
 
 # Run serial and/or parallel schedules
-RUN_SERIAL=0
+RUN_SERIAL=1
 RUN_PARALLEL=1
 
 # Retrieve library paths
