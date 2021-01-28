@@ -13,10 +13,8 @@ using namespace Halide;
 
 int main(int argc, const char **argv) {
     Halide::Runtime::Buffer<float> input(IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_CHANNELS);
-    Halide::Runtime::Buffer<float> output(input.width() - 2, input.height() - 2, input.channels());
+    Halide::Runtime::Buffer<float> output(input.width(), input.height(), input.channels());
     int error;
-
-    output.set_min(1, 1);
 
     for(int c = 0; c < input.channels(); ++c) {
         for(int y = 0; y < input.height(); ++y) {
@@ -26,7 +24,7 @@ int main(int argc, const char **argv) {
         }
     }
 
-    if((error = blur_y(input, output)) != 0) {
+    if((error = blur_x(input, output)) != 0) {
         fprintf(stderr, "Halide returned an error: %d\n", error);
     }
 

@@ -6,6 +6,15 @@ CXX=g++
 CCFLAGS=
 CXXFLAGS=-g
 
+# Image sizes 3840x2160 (4K), 10240x4320 (10K), 10112x10112
+# Channels are usually 1 or 3
+IMAGE_WIDTH=10240
+IMAGE_HEIGHT=4320
+IMAGE_CHANNELS=3
+
+# Include image settings in flags
+CXXFLAGS+=-DSCHEDULE=${SCHEDULE} -DIMAGE_WIDTH=${IMAGE_WIDTH} -DIMAGE_HEIGHT=${IMAGE_HEIGHT} -DIMAGE_CHANNELS=${IMAGE_CHANNELS}
+
 # Must profile code?
 ifdef PROFILE
 	CXXFLAGS+=-DPROFILE
@@ -61,11 +70,11 @@ LIKWID_INCLUDE=${LIKWID_PATH}/../include
 all: blur_jit blur_aot
 
 blur_jit: blur.cpp
-	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} -L ${LIKWID_LIB} -llikwid -DSCHEDULE=${SCHEDULE} -o $@
+	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} -L ${LIKWID_LIB} -llikwid -o $@
 
 blur_gen_aot: blur.cpp
-	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} -L ${LIKWID_LIB} -llikwid -DSCHEDULE=${SCHEDULE} -DCOMPILE_AOT -o $@
-	#${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} ${PAPI_FLAGS} -DSCHEDULE=${SCHEDULE} -DCOMPILE_AOT -o $@
+	${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} -L ${LIKWID_LIB} -llikwid -DCOMPILE_AOT -o $@
+	#${CXX} $^ ${CXXFLAGS} ${HALIDE_FLAGS} ${PAPI_FLAGS} -DCOMPILE_AOT -o $@
 
 blur_aot.cpp: blur_gen_aot
 	./$^
