@@ -43,12 +43,8 @@ int main(int argc, const char **argv) {
 #if SCHEDULE == 1
     /* Breadth-first */
     schedule = "breadth_first";
-    blur_y.compute_root();
-
-    #ifdef VECTORIZE
     blur_x.vectorize(x, 8);
-    blur_y.vectorize(x, 8);
-    #endif
+    blur_y.compute_root().vectorize(x, 8);
 
     #ifdef PARALLEL
     blur_x.parallel(y);
@@ -63,10 +59,7 @@ int main(int argc, const char **argv) {
 #elif SCHEDULE == 2
     /* Full-fusion */
     schedule = "full_fusion";
-
-    #ifdef VECTORIZE
     blur_x.vectorize(x, 8);
-    #endif
 
     #ifdef PARALLEL
     blur_x.parallel(y);
@@ -80,12 +73,8 @@ int main(int argc, const char **argv) {
 #elif SCHEDULE == 3
     /* Sliding window */
     schedule = "sliding_window";
-    blur_y.store_at(blur_x, c).compute_at(blur_x, x);
-
-    #ifdef VECTORIZE
     blur_x.vectorize(x, 8);
-    blur_y.vectorize(x, 8);
-    #endif
+    blur_y.store_at(blur_x, c).compute_at(blur_x, x).vectorize(x, 8);
 
     #ifdef PARALLEL
     blur_x.parallel(y);
@@ -98,13 +87,8 @@ int main(int argc, const char **argv) {
 #elif SCHEDULE == 4
     /* Tile (block dimension = 32x32) */
     schedule = "tile_32x32";
-    blur_x.tile(x, y, xi, yi, 32, 32);
-    blur_y.compute_at(blur_x, x);
-
-    #ifdef VECTORIZE
-    blur_x.vectorize(xi, 8);
-    blur_y.vectorize(x, 8);
-    #endif
+    blur_x.tile(x, y, xi, yi, 32, 32).vectorize(xi, 8);
+    blur_y.compute_at(blur_x, x).vectorize(x, 8);
 
     #ifdef PARALLEL
     blur_x.parallel(y);

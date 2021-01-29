@@ -1,0 +1,45 @@
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 0
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->1  [0m[1;34m1->2  [0m[1;34m2->3  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 22667691960064 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 22667689858816 -> hwthread 2 - OK[0m[1;34m
+[0m[1;34m	threadid 22667687757568 -> hwthread 3 - OK[0m[1;34m
+[0m[1;34mRoundrobin placement triggered
+	threadid 22667685656320 -> hwthread 0 - OK[0m[1;34m
+[0mblur_y
+ total time: 155.653625 ms  samples: 148  runs: 1  time/run: 155.653625 ms
+ average threads used: 2.695946
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                105.881ms (68%)   threads: 2.267 
+  blur_x:                49.772ms  (31%)   threads: 3.617  stack: 4352
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 0
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->1  [0m[1;34m1->2  [0m[1;34m2->3  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 22795745597184 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 22795743495936 -> hwthread 2 - OK[0m[1;34m
+[0m[1;34m	threadid 22795741394688 -> hwthread 3 - OK[0m[1;34m
+[0m[1;34mRoundrobin placement triggered
+	threadid 22795739293440 -> hwthread 0 - OK[0m[1;34m
+[0mblur_y
+ total time: 162.012131 ms  samples: 154  runs: 1  time/run: 162.012131 ms
+ average threads used: 2.603896
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                102.731ms (63%)   threads: 2.000 
+  blur_x:                59.280ms  (36%)   threads: 3.660  stack: 4352
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 0
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->1  [0m[1;34m1->2  [0m[1;34m2->3  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 23262548903680 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 23262546802432 -> hwthread 2 - OK[0m[1;34m
+[0m[1;34m	threadid 23262544701184 -> hwthread 3 - OK[0m[1;34m
+[0m[1;34mRoundrobin placement triggered
+	threadid 23262542599936 -> hwthread 0 - OK[0m[1;34m
+[0mblur_y
+ total time: 158.838516 ms  samples: 151  runs: 1  time/run: 158.838516 ms
+ average threads used: 2.662252
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                105.897ms (66%)   threads: 2.247 
+  blur_x:                52.941ms  (33%)   threads: 3.500  stack: 4352
