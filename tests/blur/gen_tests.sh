@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Algorithm
+ALGORITHM="blur"
+
 # Schedules
 SCHEDULES="breadth_first full_fusion sliding_window tile_32x32"
 
@@ -7,29 +10,31 @@ SCHEDULES="breadth_first full_fusion sliding_window tile_32x32"
 ARCH="host"
 #ARCH="host-x86-64" # no vectorization
 
-# Number of threads on parallel schedules
+# Number of threads and pinning string on parallel schedules
 NTHREADS=4
+PIN_STRING="S0:0-5"
 
 # Group (Likwid)
-GROUP=CACHES
-
-# Extra flags
-EXTRA_FLAGS=""
-#EXTRA_FLAGS="VECTORIZE=y"
+GROUP=FLOPS_SP
 
 # Image size
-FILENAME_SUFFIX="${GROUP}_10K"
+IMAGE_SIZE="10K"
 
 # Run serial and/or parallel schedules
 RUN_SERIAL=1
 RUN_PARALLEL=1
 
 # Measure events and/or time
-MEASURE_EVENTS=0
-MEASURE_TIME=1
+MEASURE_EVENTS=1
+MEASURE_TIME=0
 
 # Retrieve library paths
 source source.me
+
+# Define and create directory structure for results
+DIR_PREFIX="results/$(hostname)/${ALGORITHM}/${IMAGE_SIZE}"
+mkdir -p ${DIR_PREFIX}/${GROUP}
+mkdir -p ${DIR_PREFIX}/TIME
 
 # Profiler tests
 if [ "${MEASURE_EVENTS}" -ne "0" ]; then
@@ -39,10 +44,10 @@ if [ "${MEASURE_EVENTS}" -ne "0" ]; then
         if [ "${RUN_SERIAL}" -ne "0" ]; then
             export HL_TARGET="${ARCH}-perfctr"
             export HL_JIT_TARGET="${ARCH}-perfctr"
-            make clean && make SCHEDULE=${sched_id} PROFILE=y ${EXTRA_FLAGS}
+            make clean && make SCHEDULE=${sched_id} PROFILE=y
             echo "Running profiler tests for serial ${sched} schedule..."
             for i in $(seq 1 3); do
-                likwid-perfctr -C 3 -g ${GROUP} -m ./blur_aot | tee -a csv/blur_${sched}_serial_profile_$(hostname)_${FILENAME_SUFFIX}.csv ;
+                likwid-perfctr -C 0 -g ${GROUP} -m ./blur_aot | tee -a ${DIR_PREFIX}/${GROUP}/${sched}_serial.txt ;
             done
         fi
 
@@ -58,10 +63,10 @@ if [ "${MEASURE_EVENTS}" -ne "0" ]; then
             export HL_JIT_TARGET="${ARCH}-perfctr"
             export HL_NUM_THREADS=${NTHREADS}
             export OMP_NUM_THREADS="${HL_NUM_THREADS}"
-            make clean && make SCHEDULE=${sched_id} PARALLEL=y PROFILE=y ${EXTRA_FLAGS}
+            make clean && make SCHEDULE=${sched_id} PARALLEL=y PROFILE=y
             echo "Running profiler tests for parallel ${sched} schedule..."
             for i in $(seq 1 3); do
-                likwid-perfctr -C "0-3" -g ${GROUP} -m ./blur_aot | tee -a csv/blur_${sched}_parallel_profile_$(hostname)_${FILENAME_SUFFIX}.csv ;
+                likwid-perfctr -C ${PIN_STRING} -g ${GROUP} -m ./blur_aot | tee -a ${DIR_PREFIX}/${GROUP}/${sched}_parallel.txt ;
             done
         fi
 
@@ -77,10 +82,10 @@ if [ "${MEASURE_TIME}" -ne "0" ]; then
         if [ "${RUN_SERIAL}" -ne "0" ]; then
             export HL_TARGET="${ARCH}-profile"
             export HL_JIT_TARGET="${ARCH}-profile"
-            make clean && make SCHEDULE=${sched_id} ${EXTRA_FLAGS}
+            make clean && make SCHEDULE=${sched_id}
             echo "Running time tests for serial ${sched} schedule..."
             for i in $(seq 1 3); do
-                likwid-pin -c 3 ./blur_aot | grep -v likwid-pin | tee -a csv/blur_${sched}_serial_time_$(hostname)_${FILENAME_SUFFIX}.csv ;
+                likwid-pin -c 0 ./blur_aot | grep -v likwid-pin | tee -a ${DIR_PREFIX}/TIME/${sched}_serial.txt ;
             done
         fi
 
@@ -95,10 +100,10 @@ if [ "${MEASURE_TIME}" -ne "0" ]; then
             export HL_JIT_TARGET="host-profile"
             export HL_NUM_THREADS=${NTHREADS}
             export OMP_NUM_THREADS="${HL_NUM_THREADS}"
-            make clean && make SCHEDULE=${sched_id} PARALLEL=y ${EXTRA_FLAGS}
+            make clean && make SCHEDULE=${sched_id} PARALLEL=y
             echo "Running time tests for parallel ${sched} schedule..."
             for i in $(seq 1 3); do
-                likwid-pin -c 0-3 ./blur_aot | grep -v likwid-pin | tee -a csv/blur_${sched}_parallel_time_$(hostname)_${FILENAME_SUFFIX}.csv ;
+                likwid-pin -c ${PIN_STRING} ./blur_aot | grep -v likwid-pin | tee -a ${DIR_PREFIX}/TIME/${sched}_parallel.txt ;
             done
         fi
 
