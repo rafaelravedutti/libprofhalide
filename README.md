@@ -23,7 +23,7 @@ make -j4 # number of jobs to compile in parallel
 
 ## Using the blur example as a test
 
-To use the blur examples presented in our paper, just cd into **tests/blur** in this repository, and in the **Makefile** set the proper paths for Halide (**HALIDE\_PATH**), Likwid (**LIKWID\_PATH**) and PAPI (**PAPI\_PATH**) --- do not run **make** here, the test script runs it. Include the proper Halide bin path and libprofhalide path in the **source.me** file, and configure the **gen\_tests.sh** script, to finnaly run it:
+To use the blur examples presented in our paper, just cd into **tests/blur** in this repository, and in the **Makefile** set the proper paths for Halide (**HALIDE\_PATH**), Likwid (**LIKWID\_PATH**) and PAPI (**PAPI\_PATH**) --- do not run **make** here, the test script runs it. Include the proper Halide bin path and libprofhalide path in the **source.me** file, and configure the **gen\_tests.sh** script, to finally run it:
 ```bash
 cd tests/blur
 # Set proper paths for Halide, Likwid and PAPI in Makefile
