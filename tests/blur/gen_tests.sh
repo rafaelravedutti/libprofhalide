@@ -28,11 +28,14 @@ RUN_PARALLEL=1
 MEASURE_EVENTS=1
 MEASURE_TIME=0
 
+# Treated hostname (specific to RRZE test and woody clusters)
+TREATED_HOST=$(hostname | sed -E "s/tg09[0-4]/rome/" | sed "s/medusa/cascadelake/")
+
 # Retrieve library paths
 source source.me
 
 # Define and create directory structure for results
-DIR_PREFIX="results/$(hostname)/${ALGORITHM}/${IMAGE_SIZE}"
+DIR_PREFIX="results/${TREATED_HOST}/${ALGORITHM}/${IMAGE_SIZE}"
 mkdir -p ${DIR_PREFIX}/${GROUP}
 mkdir -p ${DIR_PREFIX}/TIME
 

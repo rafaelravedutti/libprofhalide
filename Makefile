@@ -2,7 +2,8 @@
 PAPI_PATH=/home/hpc/iwia/iwia021h/papi
 
 # Likwid directory
-LIKWID_PATH=/mnt/opt/likwid-5.1.0
+#LIKWID_PATH=/mnt/opt/likwid-5.1.0
+LIKWID_PATH=/apps/likwid/5.1.0a-msr
 
 # C compiler and flags
 CC=gcc

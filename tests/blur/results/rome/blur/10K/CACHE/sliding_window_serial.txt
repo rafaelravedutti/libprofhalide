@@ -1,0 +1,117 @@
+--------------------------------------------------------------------------------
+CPU name:	AMD EPYC 7662 64-Core Processor                
+CPU type:	AMD K17 (Zen2) architecture
+CPU clock:	2.00 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y.s0.c, Group 1: CACHE
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.196685 |
+|     call count    |          1 |
++-------------------+------------+
+
++------------------------+---------+------------+
+|          Event         | Counter | HWThread 0 |
++------------------------+---------+------------+
+|    ACTUAL_CPU_CLOCK    |  FIXC1  |  649526600 |
+|      MAX_CPU_CLOCK     |  FIXC2  |  393714200 |
+|  RETIRED_INSTRUCTIONS  |   PMC0  |  747227500 |
+|   CPU_CLOCKS_UNHALTED  |   PMC1  |  371325400 |
+|   DATA_CACHE_ACCESSES  |   PMC2  |  367030000 |
+| DATA_CACHE_REFILLS_ALL |   PMC3  |    2172738 |
++------------------------+---------+------------+
+
++-------------------------+------------+
+|          Metric         | HWThread 0 |
++-------------------------+------------+
+|   Runtime (RDTSC) [s]   |     0.1967 |
+|   Runtime unhalted [s]  |     0.3248 |
+|       Clock [MHz]       |  3299.4705 |
+|           CPI           |     0.4969 |
+|   data cache requests   |  367030000 |
+| data cache request rate |     0.4912 |
+|    data cache misses    |    2172738 |
+|   data cache miss rate  |     0.0029 |
+|  data cache miss ratio  |     0.0059 |
++-------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	AMD EPYC 7662 64-Core Processor                
+CPU type:	AMD K17 (Zen2) architecture
+CPU clock:	2.00 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y.s0.c, Group 1: CACHE
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.198310 |
+|     call count    |          1 |
++-------------------+------------+
+
++------------------------+---------+------------+
+|          Event         | Counter | HWThread 0 |
++------------------------+---------+------------+
+|    ACTUAL_CPU_CLOCK    |  FIXC1  |  654685000 |
+|      MAX_CPU_CLOCK     |  FIXC2  |  396853900 |
+|  RETIRED_INSTRUCTIONS  |   PMC0  |  747227500 |
+|   CPU_CLOCKS_UNHALTED  |   PMC1  |  375908600 |
+|   DATA_CACHE_ACCESSES  |   PMC2  |  368116200 |
+| DATA_CACHE_REFILLS_ALL |   PMC3  |    2219003 |
++------------------------+---------+------------+
+
++-------------------------+------------+
+|          Metric         | HWThread 0 |
++-------------------------+------------+
+|   Runtime (RDTSC) [s]   |     0.1983 |
+|   Runtime unhalted [s]  |     0.3274 |
+|       Clock [MHz]       |  3298.4113 |
+|           CPI           |     0.5031 |
+|   data cache requests   |  368116200 |
+| data cache request rate |     0.4926 |
+|    data cache misses    |    2219003 |
+|   data cache miss rate  |     0.0030 |
+|  data cache miss ratio  |     0.0060 |
++-------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	AMD EPYC 7662 64-Core Processor                
+CPU type:	AMD K17 (Zen2) architecture
+CPU clock:	2.00 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y.s0.c, Group 1: CACHE
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.198528 |
+|     call count    |          1 |
++-------------------+------------+
+
++------------------------+---------+------------+
+|          Event         | Counter | HWThread 0 |
++------------------------+---------+------------+
+|    ACTUAL_CPU_CLOCK    |  FIXC1  |  655290900 |
+|      MAX_CPU_CLOCK     |  FIXC2  |  397385200 |
+|  RETIRED_INSTRUCTIONS  |   PMC0  |  747227500 |
+|   CPU_CLOCKS_UNHALTED  |   PMC1  |  375779700 |
+|   DATA_CACHE_ACCESSES  |   PMC2  |  368878400 |
+| DATA_CACHE_REFILLS_ALL |   PMC3  |    2266836 |
++------------------------+---------+------------+
+
++-------------------------+------------+
+|          Metric         | HWThread 0 |
++-------------------------+------------+
+|   Runtime (RDTSC) [s]   |     0.1985 |
+|   Runtime unhalted [s]  |     0.3276 |
+|       Clock [MHz]       |  3298.0243 |
+|           CPI           |     0.5029 |
+|   data cache requests   |  368878400 |
+| data cache request rate |     0.4937 |
+|    data cache misses    |    2266836 |
+|   data cache miss rate  |     0.0030 |
+|  data cache miss ratio  |     0.0061 |
++-------------------------+------------+
+
