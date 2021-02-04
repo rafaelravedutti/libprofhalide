@@ -12,16 +12,18 @@ ARCH="host"
 
 # Number of threads and pinning string on parallel schedules
 NTHREADS=4
-PIN_STRING="S0:0-5"
+#PIN_STRING="S0:0-5"
+PIN_STRING="M0:0-3"
+#PIN_STRING="M0"
 
 # Group (Likwid)
-GROUP=FLOPS_SP
+GROUP=CACHES
 
 # Image size
 IMAGE_SIZE="10K"
 
 # Run serial and/or parallel schedules
-RUN_SERIAL=1
+RUN_SERIAL=0
 RUN_PARALLEL=1
 
 # Measure events and/or time
@@ -65,7 +67,7 @@ if [ "${MEASURE_EVENTS}" -ne "0" ]; then
             export HL_TARGET="${ARCH}-perfctr"
             export HL_JIT_TARGET="${ARCH}-perfctr"
             export HL_NUM_THREADS=${NTHREADS}
-            export OMP_NUM_THREADS="${HL_NUM_THREADS}"
+            #export OMP_NUM_THREADS="${HL_NUM_THREADS}"
             make clean && make SCHEDULE=${sched_id} PARALLEL=y PROFILE=y
             echo "Running profiler tests for parallel ${sched} schedule..."
             for i in $(seq 1 3); do
@@ -102,7 +104,7 @@ if [ "${MEASURE_TIME}" -ne "0" ]; then
             export HL_TARGET="host-profile"
             export HL_JIT_TARGET="host-profile"
             export HL_NUM_THREADS=${NTHREADS}
-            export OMP_NUM_THREADS="${HL_NUM_THREADS}"
+            #export OMP_NUM_THREADS="${HL_NUM_THREADS}"
             make clean && make SCHEDULE=${sched_id} PARALLEL=y
             echo "Running time tests for parallel ${sched} schedule..."
             for i in $(seq 1 3); do
