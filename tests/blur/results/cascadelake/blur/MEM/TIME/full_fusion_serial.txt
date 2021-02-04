@@ -1,0 +1,12 @@
+blur_y
+ total time: 514.314087 ms  samples: 489  runs: 1  time/run: 514.314087 ms
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                514.314ms (100%)  
+blur_y
+ total time: 518.947571 ms  samples: 483  runs: 1  time/run: 518.947571 ms
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                518.947ms (100%)  
+blur_y
+ total time: 510.313995 ms  samples: 485  runs: 1  time/run: 510.313995 ms
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                510.313ms (100%)  
