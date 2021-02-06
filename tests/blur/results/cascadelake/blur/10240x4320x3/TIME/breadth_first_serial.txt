@@ -1,0 +1,15 @@
+blur_y
+ total time: 418.709106 ms  samples: 396  runs: 1  time/run: 418.709106 ms
+ heap allocations: 1  peak heap usage: 530737920 bytes
+  blur_x:                192.144ms (45%)    peak: 530737920 num: 1        avg: 530737920
+  blur_y:                226.565ms (54%)   
+blur_y
+ total time: 415.450562 ms  samples: 393  runs: 1  time/run: 415.450562 ms
+ heap allocations: 1  peak heap usage: 530737920 bytes
+  blur_x:                188.926ms (45%)    peak: 530737920 num: 1        avg: 530737920
+  blur_y:                226.524ms (54%)   
+blur_y
+ total time: 419.737823 ms  samples: 397  runs: 1  time/run: 419.737823 ms
+ heap allocations: 1  peak heap usage: 530737920 bytes
+  blur_x:                193.205ms (46%)    peak: 530737920 num: 1        avg: 530737920
+  blur_y:                226.531ms (53%)   

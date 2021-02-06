@@ -1,22 +1,23 @@
 module name=blur_y, target=x86-64-linux-avx-avx2-avx512-avx512_skylake-f16c-fma-perfctr-sse41
 external_plus_metadata func blur_y (input, blur_y) {
 (void *)register_destructor("halide_perfctr_pipeline_end", (void *)halide_perfctr_get_state())
-allocate profiling_loop_threads[(void *) * 0]
+allocate profiling_loop_threads[(void *) * 1]
 allocate profiling_func_threads_cons[(void *) * 3]
 allocate profiling_func_threads_prod[(void *) * 3]
-allocate profiling_loop_names[(void *) * 0]
+allocate profiling_loop_names[(void *) * 1]
 allocate profiling_func_names[(void *) * 3]
-profiling_func_threads_cons[2] = 1
-profiling_func_threads_prod[2] = 1
-profiling_func_threads_prod[1] = 1
+profiling_loop_threads[0] = 1
+profiling_func_threads_cons[2] = 0
+profiling_func_threads_prod[2] = 0
+profiling_func_threads_prod[1] = 0
+profiling_loop_names[0] = "blur_y.s0.c"
 profiling_func_names[0] = "overhead"
 profiling_func_names[1] = "blur_y"
 profiling_func_names[2] = "blur_x"
-let profiler_token = halide_perfctr_pipeline_start("blur_y", 3, 0, profiling_func_names, profiling_loop_names, profiling_func_threads_prod, profiling_func_threads_cons, profiling_loop_threads)
+let profiler_token = halide_perfctr_pipeline_start("blur_y", 3, 1, profiling_func_names, profiling_loop_names, profiling_func_threads_prod, profiling_func_threads_cons, profiling_loop_threads)
 assert(0 <= profiler_token, profiler_token)
 let profiler_state = (void *)halide_perfctr_get_state()
-halide_perfctr_register_func(profiler_state, profiler_token, 2, (uint1)0)
-halide_perfctr_register_func(profiler_state, profiler_token, 2, (uint1)1)
+halide_perfctr_register_loop(profiler_state, profiler_token, 0)
 assert((uint64)reinterpret((halide_buffer_t *)input.buffer) != (uint64)0, halide_error_buffer_argument_is_null("input"))
 assert((uint64)reinterpret((halide_buffer_t *)blur_y.buffer) != (uint64)0, halide_error_buffer_argument_is_null("blur_y"))
 let blur_y = (void *)_halide_buffer_get_host((halide_buffer_t *)blur_y.buffer)
@@ -93,6 +94,7 @@ if (!((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)blur_y.buffer) ||
  assert((void *)reinterpret((uint64)0) != blur_y, halide_error_host_is_null("Output buffer blur_y"))
  assert((void *)reinterpret((uint64)0) != input, halide_error_host_is_null("Input buffer input"))
  produce blur_y {
+  halide_perfctr_enter_loop(profiler_state, profiler_token, 0)
   let t52 = (blur_y.extent.1 + 31)/32
   let t53 = (blur_y.extent.0 + 31)/32
   let t54 = ((blur_y.min.0 - (blur_y.min.2*blur_y.stride.2)) - (blur_y.min.1*blur_y.stride.1)) - blur_y.min.0
@@ -106,7 +108,6 @@ if (!((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)blur_y.buffer) ||
      let blur_y.s0.x.xi.base.s = min(blur_y.s0.x.x*32, blur_y.extent.0 + -32)
      allocate blur_x[float32 * 32 * 34 * 1]
      produce blur_x {
-      halide_perfctr_enter_func(profiler_state, profiler_token, 2, (uint1)1)
       let t58 = blur_y.min.0 + blur_y.s0.x.xi.base.s
       for (blur_x.s0.y, t57 + -1, 34) {
        let t60 = (blur_x.s0.y - t57)*4
@@ -117,10 +118,8 @@ if (!((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)blur_y.buffer) ||
         blur_x[ramp(((blur_x.s0.x.x + t60)*8) + 32, 1, 8) aligned(8, 0)] = (input[ramp(t43 + 1, 1, 8)] + (input[ramp(t43 + -1, 1, 8)] + input[ramp(t43, 1, 8)]))*x8(0.333333f)
        }
       }
-      halide_perfctr_leave_func(profiler_state, profiler_token, 2, (uint1)1)
      }
      consume blur_x {
-      halide_perfctr_enter_func(profiler_state, profiler_token, 2, (uint1)0)
       let t61 = blur_y.s0.x.xi.base.s + t56
       for (blur_y.s0.y.yi, 0, 32) {
        let t62 = blur_y.s0.y.yi*4
@@ -130,12 +129,12 @@ if (!((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)blur_y.buffer) ||
         blur_y[ramp((blur_y.s0.x.xi.xi*8) + t63, 1, 8)] = (blur_x[ramp((t51*8) + 64, 1, 8) aligned(8, 0)] + (blur_x[ramp(t51*8, 1, 8) aligned(8, 0)] + blur_x[ramp((t51*8) + 32, 1, 8) aligned(8, 0)]))*x8(0.333333f)
        }
       }
-      halide_perfctr_leave_func(profiler_state, profiler_token, 2, (uint1)0)
      }
      free blur_x
     }
    }
   }
+  halide_perfctr_leave_loop(profiler_state, profiler_token, 0)
  }
 }
 free profiling_func_threads_prod

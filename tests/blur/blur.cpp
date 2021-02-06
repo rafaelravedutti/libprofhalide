@@ -84,8 +84,9 @@ int main(int argc, const char **argv) {
     #endif
 
     #ifdef PROFILE
-    blur_x.profile(PROFILE_PRODUCTION, true, true);
-    blur_y.profile(PROFILE_PRODUCTION, true, true);
+    //blur_x.profile(PROFILE_PRODUCTION, true, true);
+    //blur_y.profile(PROFILE_PRODUCTION, true, true);
+    profile_at(blur_y, c, true);
     #endif
 
 #else
