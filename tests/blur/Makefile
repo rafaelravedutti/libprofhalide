@@ -6,12 +6,6 @@ CXX=g++
 CCFLAGS=
 CXXFLAGS=-g
 
-# Image sizes 3840x2160 (4K), 10240x4320 (10K), 10112x10112
-# Channels are usually 1 or 3
-IMAGE_WIDTH=10240
-IMAGE_HEIGHT=4320
-IMAGE_CHANNELS=3
-
 # Include image settings in flags
 CXXFLAGS+=-DSCHEDULE=${SCHEDULE} -DIMAGE_WIDTH=${IMAGE_WIDTH} -DIMAGE_HEIGHT=${IMAGE_HEIGHT} -DIMAGE_CHANNELS=${IMAGE_CHANNELS}
 
@@ -58,8 +52,8 @@ LIBPFM_PATH=${PAPI_SRC}/libpfm4/lib/
 
 # Likwid path
 #LIKWID_PATH=$(dirname $(which likwid-perfctr))
-#LIKWID_PATH=/mnt/opt/likwid-5.1.0/bin
-LIKWID_PATH=/apps/likwid/5.1.0a-msr/bin
+LIKWID_PATH=/mnt/opt/likwid-5.1.0/bin
+#LIKWID_PATH=/apps/likwid/5.1.0a-msr/bin
 LIKWID_LIB=${LIKWID_PATH}/../lib
 LIKWID_INCLUDE=${LIKWID_PATH}/../include
 
