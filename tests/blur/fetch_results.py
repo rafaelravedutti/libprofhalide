@@ -25,10 +25,13 @@ events=[
 ]
 
 path_prefix="results/cascadelake/blur/10240x4320x3"
-path_suffix="_serial.txt"
 region_pattern = re.compile("^Region")
+stat_pattern = re.compile("STAT")
 results = {}
 event_id = 0
+
+nthreads = [4, 12, 24]
+path_suffixes = ["_serial.txt"] + ["_parallel_" + str(t) + "t.txt" for t in nthreads]
 
 for event in events:
     group = event[0]
@@ -37,10 +40,11 @@ for event in events:
     policy_fn = event[4]
     pattern = re.compile(regex)
     path = path_prefix + "/" + group
-    files = [f for f in listdir(path) if isfile(join(path, f)) and f.endswith(path_suffix)]
+    files = [f for f in listdir(path) if isfile(join(path, f)) and any([f.endswith(suffix) for suffix in path_suffixes])]
 
     for f in files:
         filename = path + "/" + f
+        is_serial = "parallel" not in filename
         schedule, _ = f.split('.')
         if schedule not in results:
             results[schedule] = {}
@@ -52,7 +56,7 @@ for event in events:
                 if region_pattern.search(line):
                     region, _ = line[7:].split(',')
 
-                if pattern.search(line):
+                if pattern.search(line) and (is_serial or stat_pattern.search(line)):
                     value = num(line.split('|')[column].strip())
 
                     if region not in schedule_results:
@@ -66,6 +70,11 @@ for event in events:
 
     event_id += 1
 
+header = "Cascade Lake,Region"
+for event in events:
+    header += ',' + event[1]
+
+print(header)
 for schedule in results:
     schedule_results = results[schedule]
     reduced_events = {}
