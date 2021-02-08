@@ -8,7 +8,7 @@ Region blur_y_prod, Group 1: L2
 +-------------------+------------+
 |    Region Info    | HWThread 0 |
 +-------------------+------------+
-| RDTSC Runtime [s] |   0.245979 |
+| RDTSC Runtime [s] |   0.247812 |
 |     call count    |          1 |
 +-------------------+------------+
 
@@ -16,26 +16,26 @@ Region blur_y_prod, Group 1: L2
 |         Event         | Counter | HWThread 0 |
 +-----------------------+---------+------------+
 |   INSTR_RETIRED_ANY   |  FIXC0  |  298879100 |
-| CPU_CLK_UNHALTED_CORE |  FIXC1  |  355331000 |
-|  CPU_CLK_UNHALTED_REF |  FIXC2  |  294763400 |
-|    L1D_REPLACEMENT    |   PMC0  |   29540720 |
-|      L1D_M_EVICT      |   PMC1  |    5290174 |
-| ICACHE_64B_IFTAG_MISS |   PMC2  |       1904 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |  365091600 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |  302854500 |
+|    L1D_REPLACEMENT    |   PMC0  |   30347430 |
+|      L1D_M_EVICT      |   PMC1  |    5139874 |
+| ICACHE_64B_IFTAG_MISS |   PMC2  |       1472 |
 +-----------------------+---------+------------+
 
 +--------------------------------+------------+
 |             Metric             | HWThread 0 |
 +--------------------------------+------------+
-|       Runtime (RDTSC) [s]      |     0.2460 |
-|      Runtime unhalted [s]      |     0.1077 |
-|           Clock [MHz]          |  3978.1003 |
-|               CPI              |     1.1889 |
-|  L2D load bandwidth [MBytes/s] |  7686.0404 |
-|  L2D load data volume [GBytes] |     1.8906 |
-| L2D evict bandwidth [MBytes/s] |  1376.4218 |
-| L2D evict data volume [GBytes] |     0.3386 |
-|     L2 bandwidth [MBytes/s]    |  9062.9576 |
-|     L2 data volume [GBytes]    |     2.2293 |
+|       Runtime (RDTSC) [s]      |     0.2478 |
+|      Runtime unhalted [s]      |     0.1106 |
+|           Clock [MHz]          |  3978.0683 |
+|               CPI              |     1.2215 |
+|  L2D load bandwidth [MBytes/s] |  7837.5457 |
+|  L2D load data volume [GBytes] |     1.9422 |
+| L2D evict bandwidth [MBytes/s] |  1327.4270 |
+| L2D evict data volume [GBytes] |     0.3290 |
+|     L2 bandwidth [MBytes/s]    |  9165.3528 |
+|     L2 data volume [GBytes]    |     2.2713 |
 +--------------------------------+------------+
 
 --------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ Region blur_y_prod, Group 1: L2
 +-------------------+------------+
 |    Region Info    | HWThread 0 |
 +-------------------+------------+
-| RDTSC Runtime [s] |   0.247486 |
+| RDTSC Runtime [s] |   0.248230 |
 |     call count    |          1 |
 +-------------------+------------+
 
@@ -56,26 +56,26 @@ Region blur_y_prod, Group 1: L2
 |         Event         | Counter | HWThread 0 |
 +-----------------------+---------+------------+
 |   INSTR_RETIRED_ANY   |  FIXC0  |  298879100 |
-| CPU_CLK_UNHALTED_CORE |  FIXC1  |  361875700 |
-|  CPU_CLK_UNHALTED_REF |  FIXC2  |  300318600 |
-|    L1D_REPLACEMENT    |   PMC0  |   30028100 |
-|      L1D_M_EVICT      |   PMC1  |    5279791 |
-| ICACHE_64B_IFTAG_MISS |   PMC2  |       2009 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |  368013800 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |  305251700 |
+|    L1D_REPLACEMENT    |   PMC0  |   30391120 |
+|      L1D_M_EVICT      |   PMC1  |    5206118 |
+| ICACHE_64B_IFTAG_MISS |   PMC2  |       1570 |
 +-----------------------+---------+------------+
 
 +--------------------------------+------------+
 |             Metric             | HWThread 0 |
 +--------------------------------+------------+
-|       Runtime (RDTSC) [s]      |     0.2475 |
-|      Runtime unhalted [s]      |     0.1097 |
-|           Clock [MHz]          |  3976.4513 |
-|               CPI              |     1.2108 |
-|  L2D load bandwidth [MBytes/s] |  7765.2656 |
-|  L2D load data volume [GBytes] |     1.9218 |
-| L2D evict bandwidth [MBytes/s] |  1365.3538 |
-| L2D evict data volume [GBytes] |     0.3379 |
-|     L2 bandwidth [MBytes/s]    |  9131.1389 |
-|     L2 data volume [GBytes]    |     2.2598 |
+|       Runtime (RDTSC) [s]      |     0.2482 |
+|      Runtime unhalted [s]      |     0.1115 |
+|           Clock [MHz]          |  3978.5268 |
+|               CPI              |     1.2313 |
+|  L2D load bandwidth [MBytes/s] |  7835.6123 |
+|  L2D load data volume [GBytes] |     1.9450 |
+| L2D evict bandwidth [MBytes/s] |  1342.2711 |
+| L2D evict data volume [GBytes] |     0.3332 |
+|     L2 bandwidth [MBytes/s]    |  9178.2881 |
+|     L2 data volume [GBytes]    |     2.2783 |
 +--------------------------------+------------+
 
 --------------------------------------------------------------------------------
@@ -88,7 +88,7 @@ Region blur_y_prod, Group 1: L2
 +-------------------+------------+
 |    Region Info    | HWThread 0 |
 +-------------------+------------+
-| RDTSC Runtime [s] |   0.246923 |
+| RDTSC Runtime [s] |   0.248430 |
 |     call count    |          1 |
 +-------------------+------------+
 
@@ -96,25 +96,25 @@ Region blur_y_prod, Group 1: L2
 |         Event         | Counter | HWThread 0 |
 +-----------------------+---------+------------+
 |   INSTR_RETIRED_ANY   |  FIXC0  |  298879100 |
-| CPU_CLK_UNHALTED_CORE |  FIXC1  |  359531100 |
-|  CPU_CLK_UNHALTED_REF |  FIXC2  |  299721300 |
-|    L1D_REPLACEMENT    |   PMC0  |   29823400 |
-|      L1D_M_EVICT      |   PMC1  |    5454611 |
-| ICACHE_64B_IFTAG_MISS |   PMC2  |       1748 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |  358677400 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |  302259500 |
+|    L1D_REPLACEMENT    |   PMC0  |   29878880 |
+|      L1D_M_EVICT      |   PMC1  |    5095576 |
+| ICACHE_64B_IFTAG_MISS |   PMC2  |       1500 |
 +-----------------------+---------+------------+
 
 +--------------------------------+------------+
 |             Metric             | HWThread 0 |
 +--------------------------------+------------+
-|       Runtime (RDTSC) [s]      |     0.2469 |
-|      Runtime unhalted [s]      |     0.1089 |
-|           Clock [MHz]          |  3958.5580 |
-|               CPI              |     1.2029 |
-|  L2D load bandwidth [MBytes/s] |  7729.9335 |
-|  L2D load data volume [GBytes] |     1.9087 |
-| L2D evict bandwidth [MBytes/s] |  1413.7818 |
-| L2D evict data volume [GBytes] |     0.3491 |
-|     L2 bandwidth [MBytes/s]    |  9144.1684 |
-|     L2 data volume [GBytes]    |     2.2579 |
+|       Runtime (RDTSC) [s]      |     0.2484 |
+|      Runtime unhalted [s]      |     0.1087 |
+|           Clock [MHz]          |  3915.9466 |
+|               CPI              |     1.2001 |
+|  L2D load bandwidth [MBytes/s] |  7697.3356 |
+|  L2D load data volume [GBytes] |     1.9122 |
+| L2D evict bandwidth [MBytes/s] |  1312.7118 |
+| L2D evict data volume [GBytes] |     0.3261 |
+|     L2 bandwidth [MBytes/s]    |  9010.4339 |
+|     L2 data volume [GBytes]    |     2.2385 |
 +--------------------------------+------------+
 

@@ -8,7 +8,7 @@ Region blur_x_cons, Group 1: L2
 +-------------------+------------+
 |    Region Info    | HWThread 0 |
 +-------------------+------------+
-| RDTSC Runtime [s] |   0.215977 |
+| RDTSC Runtime [s] |   0.216370 |
 |     call count    |          1 |
 +-------------------+------------+
 
@@ -16,107 +16,181 @@ Region blur_x_cons, Group 1: L2
 |         Event         | Counter | HWThread 0 |
 +-----------------------+---------+------------+
 |   INSTR_RETIRED_ANY   |  FIXC0  |  199573000 |
-| CPU_CLK_UNHALTED_CORE |  FIXC1  |  280821000 |
-|  CPU_CLK_UNHALTED_REF |  FIXC2  |  231697100 |
-|    L1D_REPLACEMENT    |   PMC0  |   27211930 |
-|      L1D_M_EVICT      |   PMC1  |    5134293 |
-| ICACHE_64B_IFTAG_MISS |   PMC2  |       1175 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |  280752400 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |  231648400 |
+|    L1D_REPLACEMENT    |   PMC0  |   27247880 |
+|      L1D_M_EVICT      |   PMC1  |    4762499 |
+| ICACHE_64B_IFTAG_MISS |   PMC2  |       1292 |
++-----------------------+---------+------------+
+
++--------------------------------+------------+
+|             Metric             | HWThread 0 |
++--------------------------------+------------+
+|       Runtime (RDTSC) [s]      |     0.2164 |
+|      Runtime unhalted [s]      |     0.0851 |
+|           Clock [MHz]          |  3999.5608 |
+|               CPI              |     1.4068 |
+|  L2D load bandwidth [MBytes/s] |  8059.6252 |
+|  L2D load data volume [GBytes] |     1.7439 |
+| L2D evict bandwidth [MBytes/s] |  1408.6952 |
+| L2D evict data volume [GBytes] |     0.3048 |
+|     L2 bandwidth [MBytes/s]    |  9468.7025 |
+|     L2 data volume [GBytes]    |     2.0487 |
++--------------------------------+------------+
+
+Region blur_x_prod, Group 1: L2
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.226906 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------+---------+------------+
+|         Event         | Counter | HWThread 0 |
++-----------------------+---------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |  149873900 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |  266844200 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |  225437700 |
+|    L1D_REPLACEMENT    |   PMC0  |    9097402 |
+|      L1D_M_EVICT      |   PMC1  |    1389995 |
+| ICACHE_64B_IFTAG_MISS |   PMC2  |       2431 |
++-----------------------+---------+------------+
+
++--------------------------------+------------+
+|             Metric             | HWThread 0 |
++--------------------------------+------------+
+|       Runtime (RDTSC) [s]      |     0.2269 |
+|      Runtime unhalted [s]      |     0.0809 |
+|           Clock [MHz]          |  3906.1539 |
+|               CPI              |     1.7805 |
+|  L2D load bandwidth [MBytes/s] |  2565.9722 |
+|  L2D load data volume [GBytes] |     0.5822 |
+| L2D evict bandwidth [MBytes/s] |   392.0557 |
+| L2D evict data volume [GBytes] |     0.0890 |
+|     L2 bandwidth [MBytes/s]    |  2958.7137 |
+|     L2 data volume [GBytes]    |     0.6713 |
++--------------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6246 CPU @ 3.30GHz
+CPU type:	Intel Cascadelake SP processor
+CPU clock:	3.30 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_x_cons, Group 1: L2
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.216124 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------+---------+------------+
+|         Event         | Counter | HWThread 0 |
++-----------------------+---------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |  199573000 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |  281603500 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |  232395200 |
+|    L1D_REPLACEMENT    |   PMC0  |   27261010 |
+|      L1D_M_EVICT      |   PMC1  |    4985545 |
+| ICACHE_64B_IFTAG_MISS |   PMC2  |       1330 |
++-----------------------+---------+------------+
+
++--------------------------------+------------+
+|             Metric             | HWThread 0 |
++--------------------------------+------------+
+|       Runtime (RDTSC) [s]      |     0.2161 |
+|      Runtime unhalted [s]      |     0.0853 |
+|           Clock [MHz]          |  3998.7952 |
+|               CPI              |     1.4110 |
+|  L2D load bandwidth [MBytes/s] |  8072.7020 |
+|  L2D load data volume [GBytes] |     1.7447 |
+| L2D evict bandwidth [MBytes/s] |  1476.3510 |
+| L2D evict data volume [GBytes] |     0.3191 |
+|     L2 bandwidth [MBytes/s]    |  9549.4468 |
+|     L2 data volume [GBytes]    |     2.0639 |
++--------------------------------+------------+
+
+Region blur_x_prod, Group 1: L2
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.226524 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------+---------+------------+
+|         Event         | Counter | HWThread 0 |
++-----------------------+---------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |  149873900 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |  267605300 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |  226422100 |
+|    L1D_REPLACEMENT    |   PMC0  |    9090475 |
+|      L1D_M_EVICT      |   PMC1  |    1585410 |
+| ICACHE_64B_IFTAG_MISS |   PMC2  |       1725 |
++-----------------------+---------+------------+
+
++--------------------------------+------------+
+|             Metric             | HWThread 0 |
++--------------------------------+------------+
+|       Runtime (RDTSC) [s]      |     0.2265 |
+|      Runtime unhalted [s]      |     0.0811 |
+|           Clock [MHz]          |  3900.2655 |
+|               CPI              |     1.7855 |
+|  L2D load bandwidth [MBytes/s] |  2568.3366 |
+|  L2D load data volume [GBytes] |     0.5818 |
+| L2D evict bandwidth [MBytes/s] |   447.9267 |
+| L2D evict data volume [GBytes] |     0.1015 |
+|     L2 bandwidth [MBytes/s]    |  3016.7507 |
+|     L2 data volume [GBytes]    |     0.6834 |
++--------------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6246 CPU @ 3.30GHz
+CPU type:	Intel Cascadelake SP processor
+CPU clock:	3.30 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_x_cons, Group 1: L2
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.216009 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------+---------+------------+
+|         Event         | Counter | HWThread 0 |
++-----------------------+---------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |  199573000 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |  282378800 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |  233039000 |
+|    L1D_REPLACEMENT    |   PMC0  |   27237610 |
+|      L1D_M_EVICT      |   PMC1  |    5195486 |
+| ICACHE_64B_IFTAG_MISS |   PMC2  |       1221 |
 +-----------------------+---------+------------+
 
 +--------------------------------+------------+
 |             Metric             | HWThread 0 |
 +--------------------------------+------------+
 |       Runtime (RDTSC) [s]      |     0.2160 |
-|      Runtime unhalted [s]      |     0.0851 |
-|           Clock [MHz]          |  3999.6993 |
-|               CPI              |     1.4071 |
-|  L2D load bandwidth [MBytes/s] |  8063.6602 |
-|  L2D load data volume [GBytes] |     1.7416 |
-| L2D evict bandwidth [MBytes/s] |  1521.4354 |
-| L2D evict data volume [GBytes] |     0.3286 |
-|     L2 bandwidth [MBytes/s]    |  9585.4438 |
-|     L2 data volume [GBytes]    |     2.0702 |
-+--------------------------------+------------+
-
-Region blur_x_prod, Group 1: L2
-+-------------------+------------+
-|    Region Info    | HWThread 0 |
-+-------------------+------------+
-| RDTSC Runtime [s] |   0.225949 |
-|     call count    |          1 |
-+-------------------+------------+
-
-+-----------------------+---------+------------+
-|         Event         | Counter | HWThread 0 |
-+-----------------------+---------+------------+
-|   INSTR_RETIRED_ANY   |  FIXC0  |  149873900 |
-| CPU_CLK_UNHALTED_CORE |  FIXC1  |  265447100 |
-|  CPU_CLK_UNHALTED_REF |  FIXC2  |  223985700 |
-|    L1D_REPLACEMENT    |   PMC0  |    9038754 |
-|      L1D_M_EVICT      |   PMC1  |    1391302 |
-| ICACHE_64B_IFTAG_MISS |   PMC2  |       1764 |
-+-----------------------+---------+------------+
-
-+--------------------------------+------------+
-|             Metric             | HWThread 0 |
-+--------------------------------+------------+
-|       Runtime (RDTSC) [s]      |     0.2259 |
-|      Runtime unhalted [s]      |     0.0804 |
-|           Clock [MHz]          |  3910.8940 |
-|               CPI              |     1.7711 |
-|  L2D load bandwidth [MBytes/s] |  2560.2192 |
-|  L2D load data volume [GBytes] |     0.5785 |
-| L2D evict bandwidth [MBytes/s] |   394.0851 |
-| L2D evict data volume [GBytes] |     0.0890 |
-|     L2 bandwidth [MBytes/s]    |  2954.8040 |
-|     L2 data volume [GBytes]    |     0.6676 |
-+--------------------------------+------------+
-
---------------------------------------------------------------------------------
-CPU name:	Intel(R) Xeon(R) Gold 6246 CPU @ 3.30GHz
-CPU type:	Intel Cascadelake SP processor
-CPU clock:	3.30 GHz
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
-Region blur_x_cons, Group 1: L2
-+-------------------+------------+
-|    Region Info    | HWThread 0 |
-+-------------------+------------+
-| RDTSC Runtime [s] |   0.216255 |
-|     call count    |          1 |
-+-------------------+------------+
-
-+-----------------------+---------+------------+
-|         Event         | Counter | HWThread 0 |
-+-----------------------+---------+------------+
-|   INSTR_RETIRED_ANY   |  FIXC0  |  199573000 |
-| CPU_CLK_UNHALTED_CORE |  FIXC1  |  282591300 |
-|  CPU_CLK_UNHALTED_REF |  FIXC2  |  233259800 |
-|    L1D_REPLACEMENT    |   PMC0  |   27048950 |
-|      L1D_M_EVICT      |   PMC1  |    4907018 |
-| ICACHE_64B_IFTAG_MISS |   PMC2  |       1127 |
-+-----------------------+---------+------------+
-
-+--------------------------------+------------+
-|             Metric             | HWThread 0 |
-+--------------------------------+------------+
-|       Runtime (RDTSC) [s]      |     0.2163 |
 |      Runtime unhalted [s]      |     0.0856 |
-|           Clock [MHz]          |  3997.9419 |
-|               CPI              |     1.4160 |
-|  L2D load bandwidth [MBytes/s] |  8005.0385 |
-|  L2D load data volume [GBytes] |     1.7311 |
-| L2D evict bandwidth [MBytes/s] |  1452.2142 |
-| L2D evict data volume [GBytes] |     0.3140 |
-|     L2 bandwidth [MBytes/s]    |  9457.5862 |
-|     L2 data volume [GBytes]    |     2.0453 |
+|           Clock [MHz]          |  3998.3811 |
+|               CPI              |     1.4149 |
+|  L2D load bandwidth [MBytes/s] |  8070.0779 |
+|  L2D load data volume [GBytes] |     1.7432 |
+| L2D evict bandwidth [MBytes/s] |  1539.3413 |
+| L2D evict data volume [GBytes] |     0.3325 |
+|     L2 bandwidth [MBytes/s]    |  9609.7809 |
+|     L2 data volume [GBytes]    |     2.0758 |
 +--------------------------------+------------+
 
 Region blur_x_prod, Group 1: L2
 +-------------------+------------+
 |    Region Info    | HWThread 0 |
 +-------------------+------------+
-| RDTSC Runtime [s] |   0.225520 |
+| RDTSC Runtime [s] |   0.225262 |
 |     call count    |          1 |
 +-------------------+------------+
 
@@ -124,99 +198,25 @@ Region blur_x_prod, Group 1: L2
 |         Event         | Counter | HWThread 0 |
 +-----------------------+---------+------------+
 |   INSTR_RETIRED_ANY   |  FIXC0  |  149873900 |
-| CPU_CLK_UNHALTED_CORE |  FIXC1  |  267540200 |
-|  CPU_CLK_UNHALTED_REF |  FIXC2  |  224329400 |
-|    L1D_REPLACEMENT    |   PMC0  |    9032791 |
-|      L1D_M_EVICT      |   PMC1  |    1474490 |
-| ICACHE_64B_IFTAG_MISS |   PMC2  |       1670 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |  268890000 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |  224215700 |
+|    L1D_REPLACEMENT    |   PMC0  |    9062287 |
+|      L1D_M_EVICT      |   PMC1  |    1449450 |
+| ICACHE_64B_IFTAG_MISS |   PMC2  |       1871 |
 +-----------------------+---------+------------+
 
 +--------------------------------+------------+
 |             Metric             | HWThread 0 |
 +--------------------------------+------------+
-|       Runtime (RDTSC) [s]      |     0.2255 |
-|      Runtime unhalted [s]      |     0.0811 |
-|           Clock [MHz]          |  3935.6860 |
-|               CPI              |     1.7851 |
-|  L2D load bandwidth [MBytes/s] |  2563.4006 |
-|  L2D load data volume [GBytes] |     0.5781 |
-| L2D evict bandwidth [MBytes/s] |   418.4430 |
-| L2D evict data volume [GBytes] |     0.0944 |
-|     L2 bandwidth [MBytes/s]    |  2982.3176 |
-|     L2 data volume [GBytes]    |     0.6726 |
-+--------------------------------+------------+
-
---------------------------------------------------------------------------------
-CPU name:	Intel(R) Xeon(R) Gold 6246 CPU @ 3.30GHz
-CPU type:	Intel Cascadelake SP processor
-CPU clock:	3.30 GHz
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
-Region blur_x_cons, Group 1: L2
-+-------------------+------------+
-|    Region Info    | HWThread 0 |
-+-------------------+------------+
-| RDTSC Runtime [s] |   0.215813 |
-|     call count    |          1 |
-+-------------------+------------+
-
-+-----------------------+---------+------------+
-|         Event         | Counter | HWThread 0 |
-+-----------------------+---------+------------+
-|   INSTR_RETIRED_ANY   |  FIXC0  |  199573000 |
-| CPU_CLK_UNHALTED_CORE |  FIXC1  |  280704100 |
-|  CPU_CLK_UNHALTED_REF |  FIXC2  |  231640900 |
-|    L1D_REPLACEMENT    |   PMC0  |   27064280 |
-|      L1D_M_EVICT      |   PMC1  |    4918852 |
-| ICACHE_64B_IFTAG_MISS |   PMC2  |       1699 |
-+-----------------------+---------+------------+
-
-+--------------------------------+------------+
-|             Metric             | HWThread 0 |
-+--------------------------------+------------+
-|       Runtime (RDTSC) [s]      |     0.2158 |
-|      Runtime unhalted [s]      |     0.0851 |
-|           Clock [MHz]          |  3998.9693 |
-|               CPI              |     1.4065 |
-|  L2D load bandwidth [MBytes/s] |  8026.0055 |
-|  L2D load data volume [GBytes] |     1.7321 |
-| L2D evict bandwidth [MBytes/s] |  1458.7025 |
-| L2D evict data volume [GBytes] |     0.3148 |
-|     L2 bandwidth [MBytes/s]    |  9485.2119 |
-|     L2 data volume [GBytes]    |     2.0470 |
-+--------------------------------+------------+
-
-Region blur_x_prod, Group 1: L2
-+-------------------+------------+
-|    Region Info    | HWThread 0 |
-+-------------------+------------+
-| RDTSC Runtime [s] |   0.224727 |
-|     call count    |          1 |
-+-------------------+------------+
-
-+-----------------------+---------+------------+
-|         Event         | Counter | HWThread 0 |
-+-----------------------+---------+------------+
-|   INSTR_RETIRED_ANY   |  FIXC0  |  149873900 |
-| CPU_CLK_UNHALTED_CORE |  FIXC1  |  268043200 |
-|  CPU_CLK_UNHALTED_REF |  FIXC2  |  223415700 |
-|    L1D_REPLACEMENT    |   PMC0  |    9018247 |
-|      L1D_M_EVICT      |   PMC1  |    1377451 |
-| ICACHE_64B_IFTAG_MISS |   PMC2  |       1824 |
-+-----------------------+---------+------------+
-
-+--------------------------------+------------+
-|             Metric             | HWThread 0 |
-+--------------------------------+------------+
-|       Runtime (RDTSC) [s]      |     0.2247 |
-|      Runtime unhalted [s]      |     0.0812 |
-|           Clock [MHz]          |  3959.1838 |
-|               CPI              |     1.7885 |
-|  L2D load bandwidth [MBytes/s] |  2568.3008 |
-|  L2D load data volume [GBytes] |     0.5772 |
-| L2D evict bandwidth [MBytes/s] |   392.2834 |
-| L2D evict data volume [GBytes] |     0.0882 |
-|     L2 bandwidth [MBytes/s]    |  2961.1036 |
-|     L2 data volume [GBytes]    |     0.6654 |
+|       Runtime (RDTSC) [s]      |     0.2253 |
+|      Runtime unhalted [s]      |     0.0815 |
+|           Clock [MHz]          |  3957.2122 |
+|               CPI              |     1.7941 |
+|  L2D load bandwidth [MBytes/s] |  2574.7156 |
+|  L2D load data volume [GBytes] |     0.5800 |
+| L2D evict bandwidth [MBytes/s] |   411.8079 |
+| L2D evict data volume [GBytes] |     0.0928 |
+|     L2 bandwidth [MBytes/s]    |  2987.0551 |
+|     L2 data volume [GBytes]    |     0.6729 |
 +--------------------------------+------------+
 

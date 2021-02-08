@@ -11,14 +11,14 @@ ARCH="host"
 #ARCH="host-x86-64" # no vectorization
 
 # Number of threads and pinning string on parallel schedules
-NTHREADS=24
+NTHREADS=4
 #PIN_STRING="S0:0-5"
 #PIN_STRING="M0:0-5"
-PIN_STRING="M0:23,0-22"
+PIN_STRING="M0:4,0-3"
 #PIN_STRING="M0"
 
 # Group (Likwid)
-GROUP=MEM
+GROUP=FLOPS_SP
 
 # Image sizes 3840x2160 (4K), 10240x4320 (10K), 10112x10112
 # Channels are usually 1 or 3
@@ -78,12 +78,12 @@ if [ "${MEASURE_EVENTS}" -ne "0" ]; then
             export HL_NUM_THREADS=${NTHREADS}
             #export OMP_NUM_THREADS="${HL_NUM_THREADS}"
             make clean && make SCHEDULE=${sched_id} PARALLEL=y PROFILE=y ${IMAGE_SIZE_PARAMS}
-            rm -f ${DIR_PREFIX}/${GROUP}/${sched}_parallel.txt
-            echo "Num threads: ${NTHREADS}" | tee -a ${DIR_PREFIX}/${GROUP}/${sched}_parallel.txt
-            echo "Pin string: ${PIN_STRING}" | tee -a ${DIR_PREFIX}/${GROUP}/${sched}_parallel.txt
+            rm -f ${DIR_PREFIX}/${GROUP}/${sched}_parallel_${NTHREADS}t.txt
+            echo "Num threads: ${NTHREADS}" | tee -a ${DIR_PREFIX}/${GROUP}/${sched}_parallel_${NTHREADS}t.txt
+            echo "Pin string: ${PIN_STRING}" | tee -a ${DIR_PREFIX}/${GROUP}/${sched}_parallel_${NTHREADS}t.txt
             echo "Running profiler tests for parallel ${sched} schedule..."
             for i in $(seq 1 3); do
-                likwid-perfctr -C ${PIN_STRING} -g ${GROUP} -m ./blur_aot | tee -a ${DIR_PREFIX}/${GROUP}/${sched}_parallel.txt ;
+                likwid-perfctr -C ${PIN_STRING} -g ${GROUP} -m ./blur_aot | tee -a ${DIR_PREFIX}/${GROUP}/${sched}_parallel_${NTHREADS}t.txt ;
             done
         fi
 
@@ -119,12 +119,12 @@ if [ "${MEASURE_TIME}" -ne "0" ]; then
             export HL_NUM_THREADS=${NTHREADS}
             #export OMP_NUM_THREADS="${HL_NUM_THREADS}"
             make clean && make SCHEDULE=${sched_id} PARALLEL=y ${IMAGE_SIZE_PARAMS}
-            rm -f ${DIR_PREFIX}/TIME/${sched}_parallel.txt
-            echo "Num threads: ${NTHREADS}" | tee -a ${DIR_PREFIX}/TIME/${sched}_parallel.txt
-            echo "Pin string: ${PIN_STRING}" | tee -a ${DIR_PREFIX}/TIME/${sched}_parallel.txt
+            rm -f ${DIR_PREFIX}/TIME/${sched}_parallel_${NTHREADS}t.txt
+            echo "Num threads: ${NTHREADS}" | tee -a ${DIR_PREFIX}/TIME/${sched}_parallel_${NTHREADS}t.txt
+            echo "Pin string: ${PIN_STRING}" | tee -a ${DIR_PREFIX}/TIME/${sched}_parallel_${NTHREADS}t.txt
             echo "Running time tests for parallel ${sched} schedule..."
             for i in $(seq 1 3); do
-                likwid-pin -c ${PIN_STRING} ./blur_aot | grep -v likwid-pin | tee -a ${DIR_PREFIX}/TIME/${sched}_parallel.txt ;
+                likwid-pin -c ${PIN_STRING} ./blur_aot | grep -v likwid-pin | tee -a ${DIR_PREFIX}/TIME/${sched}_parallel_${NTHREADS}t.txt ;
             done
         fi
 
