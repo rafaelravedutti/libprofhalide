@@ -11,14 +11,15 @@ ARCH="host"
 #ARCH="host-x86-64" # no vectorization
 
 # Number of threads and pinning string on parallel schedules
-NTHREADS=4
-#PIN_STRING="S0:0-5"
-#PIN_STRING="M0:0-5"
-PIN_STRING="M0:4,0-3"
-#PIN_STRING="M0"
+NTHREADS=2
+#PIN_FLAGS="S0:0-5"
+#PIN_FLAGS="M0:0-5"
+PIN_FLAGS="-C M0:2,0-1"
+#PIN_FLAGS="M0"
 
 # Group (Likwid)
-GROUP=FLOPS_SP
+GROUP=MEM
+GROUP_DIR=${GROUP%%:*}
 
 # Image sizes 3840x2160 (4K), 10240x4320 (10K), 10112x10112
 # Channels are usually 1 or 3
@@ -46,8 +47,11 @@ source source.me
 
 # Define and create directory structure for results
 DIR_PREFIX="results/${TREATED_HOST}/${ALGORITHM}/${IMAGE_SIZE}"
-mkdir -p ${DIR_PREFIX}/${GROUP}
+mkdir -p ${DIR_PREFIX}/${GROUP_DIR}
 mkdir -p ${DIR_PREFIX}/TIME
+
+# Print topology
+likwid-topology -g > "results/${TREATED_HOST}/topology.txt"
 
 # Profiler tests
 if [ "${MEASURE_EVENTS}" -ne "0" ]; then
@@ -55,13 +59,14 @@ if [ "${MEASURE_EVENTS}" -ne "0" ]; then
     sched_id=1
     for sched in ${SCHEDULES}; do
         if [ "${RUN_SERIAL}" -ne "0" ]; then
+            FILENAME=${DIR_PREFIX}/${GROUP_DIR}/${sched}_serial.txt
             export HL_TARGET="${ARCH}-perfctr"
             export HL_JIT_TARGET="${ARCH}-perfctr"
             make clean && make SCHEDULE=${sched_id} PROFILE=y ${IMAGE_SIZE_PARAMS}
-            rm -f ${DIR_PREFIX}/${GROUP}/${sched}_serial.txt
+            rm -f ${FILENAME}
             echo "Running profiler tests for serial ${sched} schedule..."
             for i in $(seq 1 3); do
-                likwid-perfctr -C 0 -g ${GROUP} -m ./blur_aot | tee -a ${DIR_PREFIX}/${GROUP}/${sched}_serial.txt ;
+                likwid-perfctr -C 0 -g ${GROUP} -m ./blur_aot | tee -a ${FILENAME} ;
             done
         fi
 
@@ -73,17 +78,18 @@ if [ "${MEASURE_EVENTS}" -ne "0" ]; then
     sched_id=1
     for sched in ${SCHEDULES}; do
         if [ "${RUN_PARALLEL}" -ne "0" -a "$sched_id" -ne "3" ]; then
+            FILENAME=${DIR_PREFIX}/${GROUP_DIR}/${sched}_parallel_${NTHREADS}t.txt
             export HL_TARGET="${ARCH}-perfctr"
             export HL_JIT_TARGET="${ARCH}-perfctr"
             export HL_NUM_THREADS=${NTHREADS}
             #export OMP_NUM_THREADS="${HL_NUM_THREADS}"
             make clean && make SCHEDULE=${sched_id} PARALLEL=y PROFILE=y ${IMAGE_SIZE_PARAMS}
-            rm -f ${DIR_PREFIX}/${GROUP}/${sched}_parallel_${NTHREADS}t.txt
-            echo "Num threads: ${NTHREADS}" | tee -a ${DIR_PREFIX}/${GROUP}/${sched}_parallel_${NTHREADS}t.txt
-            echo "Pin string: ${PIN_STRING}" | tee -a ${DIR_PREFIX}/${GROUP}/${sched}_parallel_${NTHREADS}t.txt
+            rm -f ${FILENAME}
+            echo "Num threads: ${NTHREADS}" | tee -a ${FILENAME}
+            echo "Pin flags: ${PIN_FLAGS}" | tee -a ${FILENAME}
             echo "Running profiler tests for parallel ${sched} schedule..."
             for i in $(seq 1 3); do
-                likwid-perfctr -C ${PIN_STRING} -g ${GROUP} -m ./blur_aot | tee -a ${DIR_PREFIX}/${GROUP}/${sched}_parallel_${NTHREADS}t.txt ;
+                likwid-perfctr ${PIN_FLAGS} -g ${GROUP} -m ./blur_aot | tee -a ${FILENAME} ;
             done
         fi
 
@@ -97,13 +103,14 @@ if [ "${MEASURE_TIME}" -ne "0" ]; then
     sched_id=1
     for sched in ${SCHEDULES}; do
         if [ "${RUN_SERIAL}" -ne "0" ]; then
+            FILENAME=${DIR_PREFIX}/TIME/${sched}_serial.txt
             export HL_TARGET="${ARCH}-profile"
             export HL_JIT_TARGET="${ARCH}-profile"
             make clean && make SCHEDULE=${sched_id} ${IMAGE_SIZE_PARAMS}
-            rm -f ${DIR_PREFIX}/TIME/${sched}_serial.txt
+            rm -f ${FILENAME}
             echo "Running time tests for serial ${sched} schedule..."
             for i in $(seq 1 3); do
-                likwid-pin -c 0 ./blur_aot | grep -v likwid-pin | tee -a ${DIR_PREFIX}/TIME/${sched}_serial.txt ;
+                likwid-pin -c 0 ./blur_aot | grep -v likwid-pin | tee -a ${FILENAME} ;
             done
         fi
 
@@ -114,17 +121,18 @@ if [ "${MEASURE_TIME}" -ne "0" ]; then
     sched_id=1
     for sched in ${SCHEDULES}; do
         if [ "${RUN_PARALLEL}" -ne "0" -a "$sched_id" -ne "3" ]; then
+            FILENAME=${DIR_PREFIX}/TIME/${sched}_parallel_${NTHREADS}t.txt
             export HL_TARGET="host-profile"
             export HL_JIT_TARGET="host-profile"
             export HL_NUM_THREADS=${NTHREADS}
             #export OMP_NUM_THREADS="${HL_NUM_THREADS}"
             make clean && make SCHEDULE=${sched_id} PARALLEL=y ${IMAGE_SIZE_PARAMS}
-            rm -f ${DIR_PREFIX}/TIME/${sched}_parallel_${NTHREADS}t.txt
-            echo "Num threads: ${NTHREADS}" | tee -a ${DIR_PREFIX}/TIME/${sched}_parallel_${NTHREADS}t.txt
-            echo "Pin string: ${PIN_STRING}" | tee -a ${DIR_PREFIX}/TIME/${sched}_parallel_${NTHREADS}t.txt
+            rm -f ${FILENAME}
+            echo "Num threads: ${NTHREADS}" | tee -a ${FILENAME}
+            echo "Pin string: ${PIN_FLAGS}" | tee -a ${FILENAME}
             echo "Running time tests for parallel ${sched} schedule..."
             for i in $(seq 1 3); do
-                likwid-pin -c ${PIN_STRING} ./blur_aot | grep -v likwid-pin | tee -a ${DIR_PREFIX}/TIME/${sched}_parallel_${NTHREADS}t.txt ;
+                likwid-pin ${PIN_FLAGS} ./blur_aot | grep -v likwid-pin | tee -a ${FILENAME} ;
             done
         fi
 
