@@ -32,16 +32,19 @@ events=[
     ("CACHES",   "L1D_REPLACEMENT",                          3, sum, min),
     ("FLOPS_SP", "AVX SP",                                   2, sum, first),
     ("FLOPS_SP", "FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE", 3, sum, min)
+    #("L1D_REPLACEMENT",   "L1D_REPLACEMENT",                 3, sum, min)
 ]
 
-path_prefix="results/cascadelake/blur/10240x4320x3"
+path_prefix="results/casclakesp2/blur/10240x4320x3"
 region_pattern = re.compile("^Region")
+pin_pattern = re.compile("^Pin flags: ")
 time_pattern = re.compile("blur_x:|blur_y:")
 stat_pattern = re.compile("STAT")
 results = {}
+pinning = {}
 event_id = 0
 
-nthreads = [4, 12, 24]
+nthreads = [2, 4, 10, 20]
 path_suffixes = ["_serial.txt"] + ["_parallel_" + str(t) + "t.txt" for t in nthreads]
 
 for event in events:
@@ -84,6 +87,9 @@ for event in events:
                     if region_pattern.search(line):
                         region, _ = line[7:].split(',')
 
+                    if pin_pattern.search(line) and schedule not in pinning:
+                        pinning[schedule] = line[11:].strip()
+
                     if pattern.search(line) and (is_serial or stat_pattern.search(line)):
                         value = num(line.split('|')[column].strip())
 
@@ -98,17 +104,24 @@ for event in events:
 
     event_id += 1
 
-header = "Cascade Lake,Region"
+sorted_schedules = []
+for suffix in path_suffixes:
+    for schedule in results:
+        if schedule.endswith(suffix[:-4]):
+            sorted_schedules.append(schedule)
+
+header = "Cascade Lake,Pin String,Region"
 for event in events:
     header += ',' + event[1]
 
 print(header)
-for schedule in results:
+for schedule in sorted_schedules:
     schedule_results = results[schedule]
+    pin_string = pinning[schedule] if schedule in pinning else ""
     reduced_events = {}
     for region in schedule_results:
         region_results = schedule_results[region]
-        output = schedule + "," + region
+        output = schedule + ",\"" + pin_string + "\"," + region
 
         for event_id in region_results:
             value = region_results[event_id]
@@ -122,7 +135,7 @@ for schedule in results:
         print(output)
 
     if len(schedule_results) > 1:
-        output = schedule + ",all"
+        output = schedule + ",\"" + pin_string + "\",all"
         for event_id in reduced_events:
             reduce_fn = events[event_id][3]
             value = reduce_fn(reduced_events[event_id])
