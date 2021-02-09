@@ -14,8 +14,18 @@ def num(s):
     except ValueError:
         return float(s)
 
+def func2region(schedule, func_name):
+    if 'breadth_first' in schedule:
+        return 'blur_x_prod' if func_name == 'blur_x' else 'blur_x_cons'
+
+    if 'full_fusion' in schedule:
+        return 'blur_y_prod'
+
+    return 'blur_y.s0.c'
+
 # Group, Regex, Column, Reduce and Policy functions
 events=[
+    ("TIME",     "TIME",                                     0, sum, min),
     ("MEM",      "Memory bandwidth",                         2, avg, first),
     ("CACHES",   "L1 to L2 evict data volume",               2, sum, first),
     ("CACHES",   "L2 to L1 load data volume",                2, sum, first),
@@ -26,6 +36,7 @@ events=[
 
 path_prefix="results/cascadelake/blur/10240x4320x3"
 region_pattern = re.compile("^Region")
+time_pattern = re.compile("blur_x:|blur_y:")
 stat_pattern = re.compile("STAT")
 results = {}
 event_id = 0
@@ -53,20 +64,37 @@ for event in events:
         with open(filename, 'r') as fp:
             region = None
             for line in fp.readlines():
-                if region_pattern.search(line):
-                    region, _ = line[7:].split(',')
+                if event_id == 0:
+                    if time_pattern.search(line):
+                        splitted_text = re.sub(' +', ' ', line.strip()).split(' ')
+                        func = splitted_text[0][:-1]
+                        value = num(splitted_text[1][:-2])
+                        region = func2region(schedule, func)
 
-                if pattern.search(line) and (is_serial or stat_pattern.search(line)):
-                    value = num(line.split('|')[column].strip())
+                        if region not in schedule_results:
+                            schedule_results[region] = {}
 
-                    if region not in schedule_results:
-                        schedule_results[region] = {}
+                        region_results = schedule_results[region]
+                        if event_id not in region_results:
+                            region_results[event_id] = value
+                        else:
+                            region_results[event_id] = policy_fn([region_results[event_id], value])
 
-                    region_results = schedule_results[region]
-                    if event_id not in region_results:
-                        region_results[event_id] = value
-                    else:
-                        region_results[event_id] = policy_fn([region_results[event_id], value])
+                else:
+                    if region_pattern.search(line):
+                        region, _ = line[7:].split(',')
+
+                    if pattern.search(line) and (is_serial or stat_pattern.search(line)):
+                        value = num(line.split('|')[column].strip())
+
+                        if region not in schedule_results:
+                            schedule_results[region] = {}
+
+                        region_results = schedule_results[region]
+                        if event_id not in region_results:
+                            region_results[event_id] = value
+                        else:
+                            region_results[event_id] = policy_fn([region_results[event_id], value])
 
     event_id += 1
 
