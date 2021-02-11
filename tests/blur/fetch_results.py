@@ -21,17 +21,20 @@ def func2region(schedule, func_name):
     if 'full_fusion' in schedule:
         return 'blur_y_prod'
 
+    #if 'tile_32x32' in schedule:
+    #    return 'blur_x_prod' if func_name == 'blur_x' else 'blur_x_cons'
+
     return 'blur_y.s0.c'
 
 # Group, Regex, Column, Reduce and Policy functions
 events=[
-    ("TIME",     "TIME",                                     0, sum, min),
-    ("MEM",      "Memory bandwidth",                         2, avg, first),
-    ("CACHES",   "L1 to L2 evict data volume",               2, sum, first),
-    ("CACHES",   "L2 to L1 load data volume",                2, sum, first),
-    ("CACHES",   "L1D_REPLACEMENT",                          3, sum, min),
-    ("FLOPS_SP", "AVX SP",                                   2, sum, first),
-    ("FLOPS_SP", "FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE", 3, sum, min)
+    ("TIME",         "TIME",                                     0, sum, min),
+    ("MEM",          "Memory bandwidth",                         2, avg, first),
+    ("CACHES_MOD",   "L1 to L2 evict data volume",               2, sum, first),
+    ("CACHES_MOD",   "L2 to L1 load data volume",                2, sum, first),
+    ("CACHES_MOD",   "L1D_REPLACEMENT",                          3, sum, min),
+    ("FLOPS_SP",     "AVX SP",                                   2, sum, first),
+    ("FLOPS_SP",     "FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE", 3, sum, min)
     #("L1D_REPLACEMENT",   "L1D_REPLACEMENT",                 3, sum, min)
 ]
 
