@@ -11,12 +11,12 @@ ARCH="host"
 #ARCH="host-x86-64" # no vectorization
 
 # Number of threads and pinning string on parallel schedules
-NTHREADS=(2 4 10 20)
-PIN_FLAGS=("-C M0:2,0-1" "-C M0:4,0-3" "-C M0:10,0-9" "-C M0:20,0-19")
+NTHREADS=(2 4 8 16)
+PIN_FLAGS=("-C M0:2,0-1" "-C M0:4,0-3" "-C M0:8,0-7" "-C M0:16,0-15")
 
 # Performance groups (Likwid)
 #PERF_GROUPS="FLOPS_SP CACHES_MOD MEM"
-PERF_GROUPS="CACHES_MOD"
+PERF_GROUPS="FLOPS_SP CACHE L2 MEM"
 
 # Image sizes 3840x2160 (4K), 10240x4320 (10K), 10112x10112
 # Channels are usually 1 or 3
@@ -30,11 +30,11 @@ IMAGE_SIZE_PARAMS="IMAGE_WIDTH=${IMAGE_WIDTH} IMAGE_HEIGHT=${IMAGE_HEIGHT} IMAGE
 
 # Run serial and/or parallel schedules
 RUN_SERIAL=1
-RUN_PARALLEL=0
+RUN_PARALLEL=1
 
 # Measure events and/or time
 MEASURE_EVENTS=1
-MEASURE_TIME=0
+MEASURE_TIME=1
 
 # Treated hostname (specific to RRZE test and woody clusters)
 TREATED_HOST=$(hostname | sed -E "s/tg09[0-4]/rome/" | sed "s/medusa/cascadelake/")

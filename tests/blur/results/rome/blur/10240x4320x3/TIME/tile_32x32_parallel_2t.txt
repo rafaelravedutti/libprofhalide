@@ -1,0 +1,41 @@
+Num threads: 2
+Pin string: -C M0:2,0-1
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 140580917233408 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 140580908840704 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 108.448349 ms  samples: 104  runs: 1  time/run: 108.448349 ms
+ average threads used: 1.855769
+ heap allocations: 0  peak heap usage: 0 bytes
+  overhead:              0.000ms   (0%)    threads: 1.000 
+  blur_y:                53.700ms  (49%)   threads: 1.725 
+  blur_x:                54.747ms  (50%)   threads: 2.000  stack: 4352
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 140350398093056 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 140350389700352 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 109.521454 ms  samples: 105  runs: 1  time/run: 109.521454 ms
+ average threads used: 1.847619
+ heap allocations: 0  peak heap usage: 0 bytes
+  overhead:              0.000ms   (0%)    threads: 1.000 
+  blur_y:                58.983ms  (53%)   threads: 1.732 
+  blur_x:                50.537ms  (46%)   threads: 2.000  stack: 4352
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 139885307766528 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 139885299373824 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 108.519028 ms  samples: 104  runs: 1  time/run: 108.519028 ms
+ average threads used: 1.846154
+ heap allocations: 0  peak heap usage: 0 bytes
+  overhead:              0.000ms   (0%)    threads: 1.000 
+  blur_y:                53.732ms  (49%)   threads: 1.705 
+  blur_x:                54.786ms  (50%)   threads: 2.000  stack: 4352

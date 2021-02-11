@@ -1,0 +1,120 @@
+--------------------------------------------------------------------------------
+CPU name:	AMD EPYC 7662 64-Core Processor                
+CPU type:	AMD K17 (Zen2) architecture
+CPU clock:	2.00 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y.s0.c, Group 1: MEM
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.200446 |
+|     call count    |          1 |
++-------------------+------------+
+
++------------------------------+---------+------------+
+|             Event            | Counter | HWThread 0 |
++------------------------------+---------+------------+
+|       ACTUAL_CPU_CLOCK       |  FIXC1  |  661656300 |
+|         MAX_CPU_CLOCK        |  FIXC2  |  401228400 |
+|     RETIRED_INSTRUCTIONS     |   PMC0  |  747227500 |
+|      CPU_CLOCKS_UNHALTED     |   PMC1  |  375720500 |
+| DATA_FROM_LOCAL_DRAM_CHANNEL |   DFC0  |   12703230 |
+|  DATA_TO_LOCAL_DRAM_CHANNEL  |   DFC1  |   12703040 |
++------------------------------+---------+------------+
+
++-----------------------------------+------------+
+|               Metric              | HWThread 0 |
++-----------------------------------+------------+
+|        Runtime (RDTSC) [s]        |     0.2004 |
+|        Runtime unhalted [s]       |     0.3308 |
+|            Clock [MHz]            |  3298.2104 |
+|                CPI                |     0.5028 |
+|  Memory read bandwidth [MBytes/s] |  4055.9887 |
+|  Memory read data volume [GBytes] |     0.8130 |
+| Memory write bandwidth [MBytes/s] |  4055.9281 |
+| Memory write data volume [GBytes] |     0.8130 |
+|    Memory bandwidth [MBytes/s]    |  8111.9168 |
+|    Memory data volume [GBytes]    |     1.6260 |
++-----------------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	AMD EPYC 7662 64-Core Processor                
+CPU type:	AMD K17 (Zen2) architecture
+CPU clock:	2.00 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y.s0.c, Group 1: MEM
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.200075 |
+|     call count    |          1 |
++-------------------+------------+
+
++------------------------------+---------+------------+
+|             Event            | Counter | HWThread 0 |
++------------------------------+---------+------------+
+|       ACTUAL_CPU_CLOCK       |  FIXC1  |  658969500 |
+|         MAX_CPU_CLOCK        |  FIXC2  |  400487000 |
+|     RETIRED_INSTRUCTIONS     |   PMC0  |  747227500 |
+|      CPU_CLOCKS_UNHALTED     |   PMC1  |  373394400 |
+| DATA_FROM_LOCAL_DRAM_CHANNEL |   DFC0  |   12705690 |
+|  DATA_TO_LOCAL_DRAM_CHANNEL  |   DFC1  |   12706050 |
++------------------------------+---------+------------+
+
++-----------------------------------+------------+
+|               Metric              | HWThread 0 |
++-----------------------------------+------------+
+|        Runtime (RDTSC) [s]        |     0.2001 |
+|        Runtime unhalted [s]       |     0.3295 |
+|            Clock [MHz]            |  3290.3250 |
+|                CPI                |     0.4997 |
+|  Memory read bandwidth [MBytes/s] |  4064.2987 |
+|  Memory read data volume [GBytes] |     0.8132 |
+| Memory write bandwidth [MBytes/s] |  4064.4139 |
+| Memory write data volume [GBytes] |     0.8132 |
+|    Memory bandwidth [MBytes/s]    |  8128.7126 |
+|    Memory data volume [GBytes]    |     1.6264 |
++-----------------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	AMD EPYC 7662 64-Core Processor                
+CPU type:	AMD K17 (Zen2) architecture
+CPU clock:	2.00 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y.s0.c, Group 1: MEM
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.198662 |
+|     call count    |          1 |
++-------------------+------------+
+
++------------------------------+---------+------------+
+|             Event            | Counter | HWThread 0 |
++------------------------------+---------+------------+
+|       ACTUAL_CPU_CLOCK       |  FIXC1  |  654853200 |
+|         MAX_CPU_CLOCK        |  FIXC2  |  397650400 |
+|     RETIRED_INSTRUCTIONS     |   PMC0  |  747227600 |
+|      CPU_CLOCKS_UNHALTED     |   PMC1  |  370058200 |
+| DATA_FROM_LOCAL_DRAM_CHANNEL |   DFC0  |   12700310 |
+|  DATA_TO_LOCAL_DRAM_CHANNEL  |   DFC1  |   12700920 |
++------------------------------+---------+------------+
+
++-----------------------------------+------------+
+|               Metric              | HWThread 0 |
++-----------------------------------+------------+
+|        Runtime (RDTSC) [s]        |     0.1987 |
+|        Runtime unhalted [s]       |     0.3274 |
+|            Clock [MHz]            |  3293.6694 |
+|                CPI                |     0.4952 |
+|  Memory read bandwidth [MBytes/s] |  4091.4732 |
+|  Memory read data volume [GBytes] |     0.8128 |
+| Memory write bandwidth [MBytes/s] |  4091.6697 |
+| Memory write data volume [GBytes] |     0.8129 |
+|    Memory bandwidth [MBytes/s]    |  8183.1429 |
+|    Memory data volume [GBytes]    |     1.6257 |
++-----------------------------------+------------+
+

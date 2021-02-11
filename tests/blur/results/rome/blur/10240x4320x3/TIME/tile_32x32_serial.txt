@@ -1,15 +1,15 @@
 blur_y
- total time: 166.146164 ms  samples: 148  runs: 1  time/run: 166.146164 ms
+ total time: 166.949585 ms  samples: 149  runs: 1  time/run: 166.949585 ms
  heap allocations: 0  peak heap usage: 0 bytes
-  blur_y:                114.305ms (68%)   
-  blur_x:                51.841ms  (31%)    stack: 4352
+  blur_y:                94.861ms  (56%)   
+  blur_x:                72.088ms  (43%)    stack: 4352
 blur_y
- total time: 162.379715 ms  samples: 155  runs: 1  time/run: 162.379715 ms
+ total time: 167.967850 ms  samples: 150  runs: 1  time/run: 167.967850 ms
  heap allocations: 0  peak heap usage: 0 bytes
-  blur_y:                94.888ms  (58%)   
-  blur_x:                67.491ms  (41%)    stack: 4352
+  blur_y:                117.431ms (69%)   
+  blur_x:                50.536ms  (30%)    stack: 4352
 blur_y
- total time: 162.287872 ms  samples: 155  runs: 1  time/run: 162.287872 ms
+ total time: 169.024521 ms  samples: 151  runs: 1  time/run: 169.024521 ms
  heap allocations: 0  peak heap usage: 0 bytes
-  blur_y:                115.894ms (71%)   
-  blur_x:                46.393ms  (28%)    stack: 4352
+  blur_y:                118.450ms (70%)   
+  blur_x:                50.574ms  (29%)    stack: 4352
