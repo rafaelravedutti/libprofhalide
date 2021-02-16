@@ -1,35 +1,17 @@
 Num threads: 2
 Pin string: -C M0:2,0-1
-[1;34m[pthread wrapper] 
-[0m[1;34m[pthread wrapper] MAIN -> 2
-[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
-[pthread wrapper] SKIP MASK: 0x0
-[0m[1;34m	threadid 23239649150720 -> hwthread 0 - OK[0m[1;34m
-[0m[1;34m	threadid 23239647049472 -> hwthread 1 - OK[0m[1;34m
-[0mblur_y
- total time: 141.331497 ms  samples: 135  runs: 1  time/run: 141.331497 ms
- average threads used: 1.800000
+blur_y
+ total time: 130.785645 ms  samples: 125  runs: 1  time/run: 130.785645 ms
+ average threads used: 1.960000
  heap allocations: 0  peak heap usage: 0 bytes
-  blur_y:                141.331ms (100%)  threads: 1.800 
-[1;34m[pthread wrapper] 
-[0m[1;34m[pthread wrapper] MAIN -> 2
-[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
-[pthread wrapper] SKIP MASK: 0x0
-[0m[1;34m	threadid 22703483660032 -> hwthread 0 - OK[0m[1;34m
-[0m[1;34m	threadid 22703481558784 -> hwthread 1 - OK[0m[1;34m
-[0mblur_y
- total time: 140.299606 ms  samples: 134  runs: 1  time/run: 140.299606 ms
- average threads used: 1.813433
+  blur_y:                130.785ms (100%)  threads: 1.960 
+blur_y
+ total time: 128.707916 ms  samples: 123  runs: 1  time/run: 128.707916 ms
+ average threads used: 1.967480
  heap allocations: 0  peak heap usage: 0 bytes
-  blur_y:                140.299ms (100%)  threads: 1.813 
-[1;34m[pthread wrapper] 
-[0m[1;34m[pthread wrapper] MAIN -> 2
-[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
-[pthread wrapper] SKIP MASK: 0x0
-[0m[1;34m	threadid 23130751358720 -> hwthread 0 - OK[0m[1;34m
-[0m[1;34m	threadid 23130749257472 -> hwthread 1 - OK[0m[1;34m
-[0mblur_y
- total time: 140.283279 ms  samples: 134  runs: 1  time/run: 140.283279 ms
- average threads used: 1.798507
+  blur_y:                128.707ms (100%)  threads: 1.967 
+blur_y
+ total time: 130.838623 ms  samples: 125  runs: 1  time/run: 130.838623 ms
+ average threads used: 1.992000
  heap allocations: 0  peak heap usage: 0 bytes
-  blur_y:                140.283ms (100%)  threads: 1.798 
+  blur_y:                130.838ms (100%)  threads: 1.992 
