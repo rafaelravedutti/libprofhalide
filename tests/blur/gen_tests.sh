@@ -11,12 +11,12 @@ ARCH="host"
 #ARCH="host-x86-64" # no vectorization
 
 # Number of threads and pinning string on parallel schedules
-NTHREADS=(2 4 8 16)
-PIN_FLAGS=("-C M0:2,0-1" "-C M0:4,0-3" "-C M0:8,0-7" "-C M0:16,0-15")
+NTHREADS=(2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20)
+PIN_FLAGS=("-C M0:2,0-1" "-C M0:3,0-2" "-C M0:4,0-3" "-C M0:5,0-4" "-C M0:6,0-5" "-C M0:7,0-6" "-C M0:8,0-7" "-C M0:9,0-8" "-C M0:10,0-9" "-C M0:11,0-10" "-C M0:12,0-11" "-C M0:13,0-12" "-C M0:14,0-13" "-C M0:15,0-14" "-C M0:16,0-15" "-C M0:17,0-16" "-C M0:18,0-17" "-C M0:19,0-18" "-C M0:20,0-19")
 
 # Performance groups (Likwid)
-#PERF_GROUPS="FLOPS_SP CACHES_MOD MEM"
-PERF_GROUPS="FLOPS_SP CACHE L2 MEM"
+PERF_GROUPS="FLOPS_SP CACHES_MOD MEM"
+#PERF_GROUPS="FLOPS_SP CACHE L2 MEM"
 
 # Image sizes 3840x2160 (4K), 10240x4320 (10K), 10112x10112
 # Channels are usually 1 or 3

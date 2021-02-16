@@ -26,29 +26,29 @@ def func2region(schedule, func_name):
 
     return 'blur_y.s0.c'
 
-#path_prefix="results/casclakesp2/blur/10240x4320x3"
+path_prefix="results/casclakesp2/blur/10240x4320x3"
 # Group, Regex, Column, Reduce and Policy functions
-#events=[
-#    ("TIME",         "TIME",                                     0, sum, min),
-#    ("MEM",          "Memory bandwidth",                         2, avg, first),
-#    ("CACHES_MOD",   "L1 to L2 evict data volume",               2, sum, first),
-#    ("CACHES_MOD",   "L2 to L1 load data volume",                2, sum, first),
-#    ("CACHES_MOD",   "L1D_REPLACEMENT",                          3, sum, min),
-#    ("FLOPS_SP",     "AVX SP",                                   2, sum, first),
-#    ("FLOPS_SP",     "FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE", 3, sum, min)
-#]
-
-path_prefix="results/rome/blur/10240x4320x3"
 events=[
     ("TIME",         "TIME",                                     0, sum, min),
     ("MEM",          "Memory bandwidth",                         2, avg, first),
-    ("CACHE",        "data cache misses",                        2, sum, min),
-    ("CACHE",        "data cache miss rate",                     2, avg, first),
-    ("CACHE",        "data cache miss ratio",                    2, avg, first),
-    ("L2",           "L2D load data volume",                     2, avg, first),
-    ("FLOPS_SP",     "SP \[MFLOP\/s\]",                          2, sum, first),
-    ("FLOPS_SP",     "RETIRED_SSE_AVX_FLOPS_ALL",                3, sum, min)
+    ("CACHES_MOD",   "L1 to L2 evict data volume",               2, sum, first),
+    ("CACHES_MOD",   "L2 to L1 load data volume",                2, sum, first),
+    ("CACHES_MOD",   "L1D_REPLACEMENT",                          3, sum, min),
+    ("FLOPS_SP",     "AVX SP",                                   2, sum, first),
+    ("FLOPS_SP",     "FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE", 3, sum, min)
 ]
+
+#path_prefix="results/rome/blur/10240x4320x3"
+#events=[
+#    ("TIME",         "TIME",                                     0, sum, min),
+#    ("MEM",          "Memory bandwidth",                         2, avg, first),
+#    ("CACHE",        "data cache misses",                        2, sum, min),
+#    ("CACHE",        "data cache miss rate",                     2, avg, first),
+#    ("CACHE",        "data cache miss ratio",                    2, avg, first),
+#    ("L2",           "L2D load data volume",                     2, avg, first),
+#    ("FLOPS_SP",     "SP \[MFLOP\/s\]",                          2, sum, first),
+#    ("FLOPS_SP",     "RETIRED_SSE_AVX_FLOPS_ALL",                3, sum, min)
+#]
 
 region_pattern = re.compile("^Region")
 pin_pattern = re.compile("^Pin flags: ")
@@ -59,7 +59,7 @@ pinning = {}
 event_id = 0
 
 #nthreads = [2, 4, 10, 20]
-nthreads = [2, 4, 8, 16]
+nthreads = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 path_suffixes = ["_serial.txt"] + ["_parallel_" + str(t) + "t.txt" for t in nthreads]
 
 for event in events:
@@ -86,7 +86,13 @@ for event in events:
                     if time_pattern.search(line):
                         splitted_text = re.sub(' +', ' ', line.strip()).split(' ')
                         func = splitted_text[0][:-1]
-                        value = num(splitted_text[1][:-2])
+
+                        if 'ms' in splitted_text[1][:-2]:
+                            temp, _ = splitted_text[1][:-2].split('ms')
+                            value = num(temp)
+                        else:
+                            value = num(splitted_text[1][:-2])
+
                         region = func2region(schedule, func)
 
                         if region not in schedule_results:
