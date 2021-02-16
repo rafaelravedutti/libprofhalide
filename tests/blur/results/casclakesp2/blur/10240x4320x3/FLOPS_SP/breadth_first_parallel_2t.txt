@@ -10,45 +10,45 @@ Region blur_x_prod, Group 1: FLOPS_SP
 +-------------------+------------+------------+
 |    Region Info    | HWThread 0 | HWThread 2 |
 +-------------------+------------+------------+
-| RDTSC Runtime [s] |   0.112092 |   0.106971 |
-|     call count    |       6307 |       6657 |
+| RDTSC Runtime [s] |   0.114179 |   0.106500 |
+|     call count    |       6306 |       6658 |
 +-------------------+------------+------------+
 
 +------------------------------------------+---------+------------+------------+
 |                   Event                  | Counter | HWThread 0 | HWThread 2 |
 +------------------------------------------+---------+------------+------------+
-|             INSTR_RETIRED_ANY            |  FIXC0  |   97273260 |  102651500 |
-|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  144761100 |  149999300 |
-|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  144815600 |  149933300 |
+|             INSTR_RETIRED_ANY            |  FIXC0  |   97257760 |  102667000 |
+|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  148081000 |  151633800 |
+|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  148112200 |  151678000 |
 | FP_ARITH_INST_RETIRED_128B_PACKED_SINGLE |   PMC0  |          0 |          0 |
 |    FP_ARITH_INST_RETIRED_SCALAR_SINGLE   |   PMC1  |          0 |          0 |
-| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE |   PMC2  |   24218880 |   25547520 |
+| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE |   PMC2  |   24215040 |   25551360 |
 | FP_ARITH_INST_RETIRED_512B_PACKED_SINGLE |   PMC3  |          0 |          0 |
 +------------------------------------------+---------+------------+------------+
 
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
 |                     Event                     | Counter |    Sum    |    Min    |    Max    |    Avg    |
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
-|             INSTR_RETIRED_ANY STAT            |  FIXC0  | 199924760 |  97273260 | 102651500 |  99962380 |
-|           CPU_CLK_UNHALTED_CORE STAT          |  FIXC1  | 294760400 | 144761100 | 149999300 | 147380200 |
-|           CPU_CLK_UNHALTED_REF STAT           |  FIXC2  | 294748900 | 144815600 | 149933300 | 147374450 |
+|             INSTR_RETIRED_ANY STAT            |  FIXC0  | 199924760 |  97257760 | 102667000 |  99962380 |
+|           CPU_CLK_UNHALTED_CORE STAT          |  FIXC1  | 299714800 | 148081000 | 151633800 | 149857400 |
+|           CPU_CLK_UNHALTED_REF STAT           |  FIXC2  | 299790200 | 148112200 | 151678000 | 149895100 |
 | FP_ARITH_INST_RETIRED_128B_PACKED_SINGLE STAT |   PMC0  |         0 |         0 |         0 |         0 |
 |    FP_ARITH_INST_RETIRED_SCALAR_SINGLE STAT   |   PMC1  |         0 |         0 |         0 |         0 |
-| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE STAT |   PMC2  |  49766400 |  24218880 |  25547520 |  24883200 |
+| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE STAT |   PMC2  |  49766400 |  24215040 |  25551360 |  24883200 |
 | FP_ARITH_INST_RETIRED_512B_PACKED_SINGLE STAT |   PMC3  |         0 |         0 |         0 |         0 |
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
 
 +----------------------+------------+------------+
 |        Metric        | HWThread 0 | HWThread 2 |
 +----------------------+------------+------------+
-|  Runtime (RDTSC) [s] |     0.1121 |     0.1070 |
-| Runtime unhalted [s] |     0.0580 |     0.0601 |
-|      Clock [MHz]     |  2493.1393 |  2495.1758 |
-|          CPI         |     1.4882 |     1.4612 |
-|     SP [MFLOP/s]     |  1728.5002 |  1910.6128 |
-|   AVX SP [MFLOP/s]   |  1728.5002 |  1910.6128 |
+|  Runtime (RDTSC) [s] |     0.1142 |     0.1065 |
+| Runtime unhalted [s] |     0.0594 |     0.0608 |
+|      Clock [MHz]     |  2493.5411 |  2493.3397 |
+|          CPI         |     1.5226 |     1.4769 |
+|     SP [MFLOP/s]     |  1696.6355 |  1919.3546 |
+|   AVX SP [MFLOP/s]   |  1696.6355 |  1919.3546 |
 |  AVX512 SP [MFLOP/s] |          0 |          0 |
-|   Packed [MUOPS/s]   |   216.0625 |   238.8266 |
+|   Packed [MUOPS/s]   |   212.0794 |   239.9193 |
 |   Scalar [MUOPS/s]   |          0 |          0 |
 |  Vectorization ratio |        100 |        100 |
 +----------------------+------------+------------+
@@ -56,14 +56,14 @@ Region blur_x_prod, Group 1: FLOPS_SP
 +---------------------------+-----------+-----------+-----------+-----------+
 |           Metric          |    Sum    |    Min    |    Max    |    Avg    |
 +---------------------------+-----------+-----------+-----------+-----------+
-|  Runtime (RDTSC) [s] STAT |    0.2191 |    0.1070 |    0.1121 |    0.1096 |
-| Runtime unhalted [s] STAT |    0.1181 |    0.0580 |    0.0601 |    0.0591 |
-|      Clock [MHz] STAT     | 4988.3151 | 2493.1393 | 2495.1758 | 2494.1575 |
-|          CPI STAT         |    2.9494 |    1.4612 |    1.4882 |    1.4747 |
-|     SP [MFLOP/s] STAT     | 3639.1130 | 1728.5002 | 1910.6128 | 1819.5565 |
-|   AVX SP [MFLOP/s] STAT   | 3639.1130 | 1728.5002 | 1910.6128 | 1819.5565 |
+|  Runtime (RDTSC) [s] STAT |    0.2207 |    0.1065 |    0.1142 |    0.1104 |
+| Runtime unhalted [s] STAT |    0.1202 |    0.0594 |    0.0608 |    0.0601 |
+|      Clock [MHz] STAT     | 4986.8808 | 2493.3397 | 2493.5411 | 2493.4404 |
+|          CPI STAT         |    2.9995 |    1.4769 |    1.5226 |    1.4998 |
+|     SP [MFLOP/s] STAT     | 3615.9901 | 1696.6355 | 1919.3546 | 1807.9950 |
+|   AVX SP [MFLOP/s] STAT   | 3615.9901 | 1696.6355 | 1919.3546 | 1807.9950 |
 |  AVX512 SP [MFLOP/s] STAT |         0 |         0 |         0 |         0 |
-|   Packed [MUOPS/s] STAT   |  454.8891 |  216.0625 |  238.8266 |  227.4445 |
+|   Packed [MUOPS/s] STAT   |  451.9987 |  212.0794 |  239.9193 |  225.9993 |
 |   Scalar [MUOPS/s] STAT   |         0 |         0 |         0 |         0 |
 |  Vectorization ratio STAT |       200 |       100 |       100 |       100 |
 +---------------------------+-----------+-----------+-----------+-----------+
@@ -72,45 +72,45 @@ Region blur_x_cons, Group 1: FLOPS_SP
 +-------------------+------------+------------+
 |    Region Info    | HWThread 0 | HWThread 2 |
 +-------------------+------------+------------+
-| RDTSC Runtime [s] |   0.128711 |   0.112843 |
-|     call count    |       6427 |       6531 |
+| RDTSC Runtime [s] |   0.125518 |   0.117702 |
+|     call count    |       6453 |       6505 |
 +-------------------+------------+------------+
 
 +------------------------------------------+---------+------------+------------+
 |                   Event                  | Counter | HWThread 0 | HWThread 2 |
 +------------------------------------------+---------+------------+------------+
-|             INSTR_RETIRED_ANY            |  FIXC0  |  123816700 |  125784600 |
-|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  174023800 |  173900400 |
-|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  174084100 |  173803400 |
+|             INSTR_RETIRED_ANY            |  FIXC0  |  124317600 |  125283700 |
+|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  176647900 |  174569500 |
+|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  176679600 |  174630100 |
 | FP_ARITH_INST_RETIRED_128B_PACKED_SINGLE |   PMC0  |          0 |          0 |
 |    FP_ARITH_INST_RETIRED_SCALAR_SINGLE   |   PMC1  |          0 |          0 |
-| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE |   PMC2  |   24679680 |   25063680 |
+| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE |   PMC2  |   24779520 |   24963840 |
 | FP_ARITH_INST_RETIRED_512B_PACKED_SINGLE |   PMC3  |          0 |          0 |
 +------------------------------------------+---------+------------+------------+
 
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
 |                     Event                     | Counter |    Sum    |    Min    |    Max    |    Avg    |
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
-|             INSTR_RETIRED_ANY STAT            |  FIXC0  | 249601300 | 123816700 | 125784600 | 124800650 |
-|           CPU_CLK_UNHALTED_CORE STAT          |  FIXC1  | 347924200 | 173900400 | 174023800 | 173962100 |
-|           CPU_CLK_UNHALTED_REF STAT           |  FIXC2  | 347887500 | 173803400 | 174084100 | 173943750 |
+|             INSTR_RETIRED_ANY STAT            |  FIXC0  | 249601300 | 124317600 | 125283700 | 124800650 |
+|           CPU_CLK_UNHALTED_CORE STAT          |  FIXC1  | 351217400 | 174569500 | 176647900 | 175608700 |
+|           CPU_CLK_UNHALTED_REF STAT           |  FIXC2  | 351309700 | 174630100 | 176679600 | 175654850 |
 | FP_ARITH_INST_RETIRED_128B_PACKED_SINGLE STAT |   PMC0  |         0 |         0 |         0 |         0 |
 |    FP_ARITH_INST_RETIRED_SCALAR_SINGLE STAT   |   PMC1  |         0 |         0 |         0 |         0 |
-| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE STAT |   PMC2  |  49743360 |  24679680 |  25063680 |  24871680 |
+| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE STAT |   PMC2  |  49743360 |  24779520 |  24963840 |  24871680 |
 | FP_ARITH_INST_RETIRED_512B_PACKED_SINGLE STAT |   PMC3  |         0 |         0 |         0 |         0 |
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
 
 +----------------------+------------+------------+
 |        Metric        | HWThread 0 | HWThread 2 |
 +----------------------+------------+------------+
-|  Runtime (RDTSC) [s] |     0.1287 |     0.1128 |
-| Runtime unhalted [s] |     0.0698 |     0.0697 |
-|      Clock [MHz]     |  2493.2140 |  2495.4699 |
-|          CPI         |     1.4055 |     1.3825 |
-|     SP [MFLOP/s]     |  1533.9546 |  1776.8823 |
-|   AVX SP [MFLOP/s]   |  1533.9546 |  1776.8823 |
+|  Runtime (RDTSC) [s] |     0.1255 |     0.1177 |
+| Runtime unhalted [s] |     0.0708 |     0.0700 |
+|      Clock [MHz]     |  2493.6190 |  2493.2010 |
+|          CPI         |     1.4209 |     1.3934 |
+|     SP [MFLOP/s]     |  1579.3407 |  1696.7487 |
+|   AVX SP [MFLOP/s]   |  1579.3407 |  1696.7487 |
 |  AVX512 SP [MFLOP/s] |          0 |          0 |
-|   Packed [MUOPS/s]   |   191.7443 |   222.1103 |
+|   Packed [MUOPS/s]   |   197.4176 |   212.0936 |
 |   Scalar [MUOPS/s]   |          0 |          0 |
 |  Vectorization ratio |        100 |        100 |
 +----------------------+------------+------------+
@@ -118,14 +118,14 @@ Region blur_x_cons, Group 1: FLOPS_SP
 +---------------------------+-----------+-----------+-----------+-----------+
 |           Metric          |    Sum    |    Min    |    Max    |    Avg    |
 +---------------------------+-----------+-----------+-----------+-----------+
-|  Runtime (RDTSC) [s] STAT |    0.2415 |    0.1128 |    0.1287 |    0.1207 |
-| Runtime unhalted [s] STAT |    0.1395 |    0.0697 |    0.0698 |    0.0698 |
-|      Clock [MHz] STAT     | 4988.6839 | 2493.2140 | 2495.4699 | 2494.3419 |
-|          CPI STAT         |    2.7880 |    1.3825 |    1.4055 |    1.3940 |
-|     SP [MFLOP/s] STAT     | 3310.8369 | 1533.9546 | 1776.8823 | 1655.4185 |
-|   AVX SP [MFLOP/s] STAT   | 3310.8369 | 1533.9546 | 1776.8823 | 1655.4185 |
+|  Runtime (RDTSC) [s] STAT |    0.2432 |    0.1177 |    0.1255 |    0.1216 |
+| Runtime unhalted [s] STAT |    0.1408 |    0.0700 |    0.0708 |    0.0704 |
+|      Clock [MHz] STAT     | 4986.8200 | 2493.2010 | 2493.6190 | 2493.4100 |
+|          CPI STAT         |    2.8143 |    1.3934 |    1.4209 |    1.4072 |
+|     SP [MFLOP/s] STAT     | 3276.0894 | 1579.3407 | 1696.7487 | 1638.0447 |
+|   AVX SP [MFLOP/s] STAT   | 3276.0894 | 1579.3407 | 1696.7487 | 1638.0447 |
 |  AVX512 SP [MFLOP/s] STAT |         0 |         0 |         0 |         0 |
-|   Packed [MUOPS/s] STAT   |  413.8546 |  191.7443 |  222.1103 |  206.9273 |
+|   Packed [MUOPS/s] STAT   |  409.5112 |  197.4176 |  212.0936 |  204.7556 |
 |   Scalar [MUOPS/s] STAT   |         0 |         0 |         0 |         0 |
 |  Vectorization ratio STAT |       200 |       100 |       100 |       100 |
 +---------------------------+-----------+-----------+-----------+-----------+
@@ -140,45 +140,45 @@ Region blur_x_prod, Group 1: FLOPS_SP
 +-------------------+------------+------------+
 |    Region Info    | HWThread 0 | HWThread 2 |
 +-------------------+------------+------------+
-| RDTSC Runtime [s] |   0.115807 |   0.103925 |
-|     call count    |       6268 |       6696 |
+| RDTSC Runtime [s] |   0.118802 |   0.102451 |
+|     call count    |       6255 |       6709 |
 +-------------------+------------+------------+
 
 +------------------------------------------+---------+------------+------------+
 |                   Event                  | Counter | HWThread 0 | HWThread 2 |
 +------------------------------------------+---------+------------+------------+
-|             INSTR_RETIRED_ANY            |  FIXC0  |   96671530 |  103253400 |
-|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  147491200 |  150994900 |
-|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  147466400 |  150935100 |
+|             INSTR_RETIRED_ANY            |  FIXC0  |   96471220 |  103453800 |
+|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  148391600 |  152092500 |
+|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  148318600 |  152101500 |
 | FP_ARITH_INST_RETIRED_128B_PACKED_SINGLE |   PMC0  |          0 |          0 |
 |    FP_ARITH_INST_RETIRED_SCALAR_SINGLE   |   PMC1  |          0 |          0 |
-| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE |   PMC2  |   24069120 |   25697280 |
+| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE |   PMC2  |   24019200 |   25747200 |
 | FP_ARITH_INST_RETIRED_512B_PACKED_SINGLE |   PMC3  |          0 |          0 |
 +------------------------------------------+---------+------------+------------+
 
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
 |                     Event                     | Counter |    Sum    |    Min    |    Max    |    Avg    |
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
-|             INSTR_RETIRED_ANY STAT            |  FIXC0  | 199924930 |  96671530 | 103253400 |  99962465 |
-|           CPU_CLK_UNHALTED_CORE STAT          |  FIXC1  | 298486100 | 147491200 | 150994900 | 149243050 |
-|           CPU_CLK_UNHALTED_REF STAT           |  FIXC2  | 298401500 | 147466400 | 150935100 | 149200750 |
+|             INSTR_RETIRED_ANY STAT            |  FIXC0  | 199925020 |  96471220 | 103453800 |  99962510 |
+|           CPU_CLK_UNHALTED_CORE STAT          |  FIXC1  | 300484100 | 148391600 | 152092500 | 150242050 |
+|           CPU_CLK_UNHALTED_REF STAT           |  FIXC2  | 300420100 | 148318600 | 152101500 | 150210050 |
 | FP_ARITH_INST_RETIRED_128B_PACKED_SINGLE STAT |   PMC0  |         0 |         0 |         0 |         0 |
 |    FP_ARITH_INST_RETIRED_SCALAR_SINGLE STAT   |   PMC1  |         0 |         0 |         0 |         0 |
-| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE STAT |   PMC2  |  49766400 |  24069120 |  25697280 |  24883200 |
+| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE STAT |   PMC2  |  49766400 |  24019200 |  25747200 |  24883200 |
 | FP_ARITH_INST_RETIRED_512B_PACKED_SINGLE STAT |   PMC3  |         0 |         0 |         0 |         0 |
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
 
 +----------------------+------------+------------+
 |        Metric        | HWThread 0 | HWThread 2 |
 +----------------------+------------+------------+
-|  Runtime (RDTSC) [s] |     0.1158 |     0.1039 |
-| Runtime unhalted [s] |     0.0591 |     0.0605 |
-|      Clock [MHz]     |  2494.4799 |  2495.0486 |
-|          CPI         |     1.5257 |     1.4624 |
-|     SP [MFLOP/s]     |  1662.7057 |  1978.1499 |
-|   AVX SP [MFLOP/s]   |  1662.7057 |  1978.1499 |
+|  Runtime (RDTSC) [s] |     0.1188 |     0.1025 |
+| Runtime unhalted [s] |     0.0595 |     0.0610 |
+|      Clock [MHz]     |  2495.3085 |  2493.9334 |
+|          CPI         |     1.5382 |     1.4701 |
+|     SP [MFLOP/s]     |  1617.4328 |  2010.4908 |
+|   AVX SP [MFLOP/s]   |  1617.4328 |  2010.4908 |
 |  AVX512 SP [MFLOP/s] |          0 |          0 |
-|   Packed [MUOPS/s]   |   207.8382 |   247.2687 |
+|   Packed [MUOPS/s]   |   202.1791 |   251.3114 |
 |   Scalar [MUOPS/s]   |          0 |          0 |
 |  Vectorization ratio |        100 |        100 |
 +----------------------+------------+------------+
@@ -186,14 +186,14 @@ Region blur_x_prod, Group 1: FLOPS_SP
 +---------------------------+-----------+-----------+-----------+-----------+
 |           Metric          |    Sum    |    Min    |    Max    |    Avg    |
 +---------------------------+-----------+-----------+-----------+-----------+
-|  Runtime (RDTSC) [s] STAT |    0.2197 |    0.1039 |    0.1158 |    0.1099 |
-| Runtime unhalted [s] STAT |    0.1196 |    0.0591 |    0.0605 |    0.0598 |
-|      Clock [MHz] STAT     | 4989.5285 | 2494.4799 | 2495.0486 | 2494.7643 |
-|          CPI STAT         |    2.9881 |    1.4624 |    1.5257 |    1.4941 |
-|     SP [MFLOP/s] STAT     | 3640.8556 | 1662.7057 | 1978.1499 | 1820.4278 |
-|   AVX SP [MFLOP/s] STAT   | 3640.8556 | 1662.7057 | 1978.1499 | 1820.4278 |
+|  Runtime (RDTSC) [s] STAT |    0.2213 |    0.1025 |    0.1188 |    0.1106 |
+| Runtime unhalted [s] STAT |    0.1205 |    0.0595 |    0.0610 |    0.0602 |
+|      Clock [MHz] STAT     | 4989.2419 | 2493.9334 | 2495.3085 | 2494.6209 |
+|          CPI STAT         |    3.0083 |    1.4701 |    1.5382 |    1.5042 |
+|     SP [MFLOP/s] STAT     | 3627.9236 | 1617.4328 | 2010.4908 | 1813.9618 |
+|   AVX SP [MFLOP/s] STAT   | 3627.9236 | 1617.4328 | 2010.4908 | 1813.9618 |
 |  AVX512 SP [MFLOP/s] STAT |         0 |         0 |         0 |         0 |
-|   Packed [MUOPS/s] STAT   |  455.1069 |  207.8382 |  247.2687 |  227.5534 |
+|   Packed [MUOPS/s] STAT   |  453.4905 |  202.1791 |  251.3114 |  226.7452 |
 |   Scalar [MUOPS/s] STAT   |         0 |         0 |         0 |         0 |
 |  Vectorization ratio STAT |       200 |       100 |       100 |       100 |
 +---------------------------+-----------+-----------+-----------+-----------+
@@ -202,45 +202,45 @@ Region blur_x_cons, Group 1: FLOPS_SP
 +-------------------+------------+------------+
 |    Region Info    | HWThread 0 | HWThread 2 |
 +-------------------+------------+------------+
-| RDTSC Runtime [s] |   0.133544 |   0.112869 |
-|     call count    |       6390 |       6568 |
+| RDTSC Runtime [s] |   0.130967 |   0.112220 |
+|     call count    |       6392 |       6566 |
 +-------------------+------------+------------+
 
 +------------------------------------------+---------+------------+------------+
 |                   Event                  | Counter | HWThread 0 | HWThread 2 |
 +------------------------------------------+---------+------------+------------+
-|             INSTR_RETIRED_ANY            |  FIXC0  |  123103900 |  126497600 |
-|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  176945300 |  173790500 |
-|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  176941100 |  173766600 |
+|             INSTR_RETIRED_ANY            |  FIXC0  |  123142400 |  126459100 |
+|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  176728800 |  174524500 |
+|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  176676800 |  174530400 |
 | FP_ARITH_INST_RETIRED_128B_PACKED_SINGLE |   PMC0  |          0 |          0 |
 |    FP_ARITH_INST_RETIRED_SCALAR_SINGLE   |   PMC1  |          0 |          0 |
-| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE |   PMC2  |   24537600 |   25205760 |
+| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE |   PMC2  |   24545280 |   25198080 |
 | FP_ARITH_INST_RETIRED_512B_PACKED_SINGLE |   PMC3  |          0 |          0 |
 +------------------------------------------+---------+------------+------------+
 
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
 |                     Event                     | Counter |    Sum    |    Min    |    Max    |    Avg    |
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
-|             INSTR_RETIRED_ANY STAT            |  FIXC0  | 249601500 | 123103900 | 126497600 | 124800750 |
-|           CPU_CLK_UNHALTED_CORE STAT          |  FIXC1  | 350735800 | 173790500 | 176945300 | 175367900 |
-|           CPU_CLK_UNHALTED_REF STAT           |  FIXC2  | 350707700 | 173766600 | 176941100 | 175353850 |
+|             INSTR_RETIRED_ANY STAT            |  FIXC0  | 249601500 | 123142400 | 126459100 | 124800750 |
+|           CPU_CLK_UNHALTED_CORE STAT          |  FIXC1  | 351253300 | 174524500 | 176728800 | 175626650 |
+|           CPU_CLK_UNHALTED_REF STAT           |  FIXC2  | 351207200 | 174530400 | 176676800 | 175603600 |
 | FP_ARITH_INST_RETIRED_128B_PACKED_SINGLE STAT |   PMC0  |         0 |         0 |         0 |         0 |
 |    FP_ARITH_INST_RETIRED_SCALAR_SINGLE STAT   |   PMC1  |         0 |         0 |         0 |         0 |
-| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE STAT |   PMC2  |  49743360 |  24537600 |  25205760 |  24871680 |
+| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE STAT |   PMC2  |  49743360 |  24545280 |  25198080 |  24871680 |
 | FP_ARITH_INST_RETIRED_512B_PACKED_SINGLE STAT |   PMC3  |         0 |         0 |         0 |         0 |
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
 
 +----------------------+------------+------------+
 |        Metric        | HWThread 0 | HWThread 2 |
 +----------------------+------------+------------+
-|  Runtime (RDTSC) [s] |     0.1335 |     0.1129 |
-| Runtime unhalted [s] |     0.0709 |     0.0697 |
-|      Clock [MHz]     |  2494.1197 |  2494.4035 |
-|          CPI         |     1.4374 |     1.3739 |
-|     SP [MFLOP/s]     |  1469.9302 |  1786.5545 |
-|   AVX SP [MFLOP/s]   |  1469.9302 |  1786.5545 |
+|  Runtime (RDTSC) [s] |     0.1310 |     0.1122 |
+| Runtime unhalted [s] |     0.0709 |     0.0700 |
+|      Clock [MHz]     |  2494.8150 |  2493.9967 |
+|          CPI         |     1.4352 |     1.3801 |
+|     SP [MFLOP/s]     |  1499.3249 |  1796.3327 |
+|   AVX SP [MFLOP/s]   |  1499.3249 |  1796.3327 |
 |  AVX512 SP [MFLOP/s] |          0 |          0 |
-|   Packed [MUOPS/s]   |   183.7413 |   223.3193 |
+|   Packed [MUOPS/s]   |   187.4156 |   224.5416 |
 |   Scalar [MUOPS/s]   |          0 |          0 |
 |  Vectorization ratio |        100 |        100 |
 +----------------------+------------+------------+
@@ -248,14 +248,14 @@ Region blur_x_cons, Group 1: FLOPS_SP
 +---------------------------+-----------+-----------+-----------+-----------+
 |           Metric          |    Sum    |    Min    |    Max    |    Avg    |
 +---------------------------+-----------+-----------+-----------+-----------+
-|  Runtime (RDTSC) [s] STAT |    0.2464 |    0.1129 |    0.1335 |    0.1232 |
-| Runtime unhalted [s] STAT |    0.1406 |    0.0697 |    0.0709 |    0.0703 |
-|      Clock [MHz] STAT     | 4988.5232 | 2494.1197 | 2494.4035 | 2494.2616 |
-|          CPI STAT         |    2.8113 |    1.3739 |    1.4374 |    1.4057 |
-|     SP [MFLOP/s] STAT     | 3256.4847 | 1469.9302 | 1786.5545 | 1628.2423 |
-|   AVX SP [MFLOP/s] STAT   | 3256.4847 | 1469.9302 | 1786.5545 | 1628.2423 |
+|  Runtime (RDTSC) [s] STAT |    0.2432 |    0.1122 |    0.1310 |    0.1216 |
+| Runtime unhalted [s] STAT |    0.1409 |    0.0700 |    0.0709 |    0.0705 |
+|      Clock [MHz] STAT     | 4988.8117 | 2493.9967 | 2494.8150 | 2494.4059 |
+|          CPI STAT         |    2.8153 |    1.3801 |    1.4352 |    1.4077 |
+|     SP [MFLOP/s] STAT     | 3295.6576 | 1499.3249 | 1796.3327 | 1647.8288 |
+|   AVX SP [MFLOP/s] STAT   | 3295.6576 | 1499.3249 | 1796.3327 | 1647.8288 |
 |  AVX512 SP [MFLOP/s] STAT |         0 |         0 |         0 |         0 |
-|   Packed [MUOPS/s] STAT   |  407.0606 |  183.7413 |  223.3193 |  203.5303 |
+|   Packed [MUOPS/s] STAT   |  411.9572 |  187.4156 |  224.5416 |  205.9786 |
 |   Scalar [MUOPS/s] STAT   |         0 |         0 |         0 |         0 |
 |  Vectorization ratio STAT |       200 |       100 |       100 |       100 |
 +---------------------------+-----------+-----------+-----------+-----------+
@@ -270,45 +270,45 @@ Region blur_x_prod, Group 1: FLOPS_SP
 +-------------------+------------+------------+
 |    Region Info    | HWThread 0 | HWThread 2 |
 +-------------------+------------+------------+
-| RDTSC Runtime [s] |   0.116260 |   0.106046 |
-|     call count    |       6304 |       6660 |
+| RDTSC Runtime [s] |   0.114584 |   0.107393 |
+|     call count    |       6297 |       6667 |
 +-------------------+------------+------------+
 
 +------------------------------------------+---------+------------+------------+
 |                   Event                  | Counter | HWThread 0 | HWThread 2 |
 +------------------------------------------+---------+------------+------------+
-|             INSTR_RETIRED_ANY            |  FIXC0  |   97226870 |  102698000 |
-|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  147329100 |  152218900 |
-|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  147314100 |  152183300 |
+|             INSTR_RETIRED_ANY            |  FIXC0  |   97118830 |  102805900 |
+|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  145860100 |  152048300 |
+|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  145872000 |  151974700 |
 | FP_ARITH_INST_RETIRED_128B_PACKED_SINGLE |   PMC0  |          0 |          0 |
 |    FP_ARITH_INST_RETIRED_SCALAR_SINGLE   |   PMC1  |          0 |          0 |
-| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE |   PMC2  |   24207360 |   25559040 |
+| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE |   PMC2  |   24180480 |   25585920 |
 | FP_ARITH_INST_RETIRED_512B_PACKED_SINGLE |   PMC3  |          0 |          0 |
 +------------------------------------------+---------+------------+------------+
 
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
 |                     Event                     | Counter |    Sum    |    Min    |    Max    |    Avg    |
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
-|             INSTR_RETIRED_ANY STAT            |  FIXC0  | 199924870 |  97226870 | 102698000 |  99962435 |
-|           CPU_CLK_UNHALTED_CORE STAT          |  FIXC1  | 299548000 | 147329100 | 152218900 | 149774000 |
-|           CPU_CLK_UNHALTED_REF STAT           |  FIXC2  | 299497400 | 147314100 | 152183300 | 149748700 |
+|             INSTR_RETIRED_ANY STAT            |  FIXC0  | 199924730 |  97118830 | 102805900 |  99962365 |
+|           CPU_CLK_UNHALTED_CORE STAT          |  FIXC1  | 297908400 | 145860100 | 152048300 | 148954200 |
+|           CPU_CLK_UNHALTED_REF STAT           |  FIXC2  | 297846700 | 145872000 | 151974700 | 148923350 |
 | FP_ARITH_INST_RETIRED_128B_PACKED_SINGLE STAT |   PMC0  |         0 |         0 |         0 |         0 |
 |    FP_ARITH_INST_RETIRED_SCALAR_SINGLE STAT   |   PMC1  |         0 |         0 |         0 |         0 |
-| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE STAT |   PMC2  |  49766400 |  24207360 |  25559040 |  24883200 |
+| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE STAT |   PMC2  |  49766400 |  24180480 |  25585920 |  24883200 |
 | FP_ARITH_INST_RETIRED_512B_PACKED_SINGLE STAT |   PMC3  |         0 |         0 |         0 |         0 |
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
 
 +----------------------+------------+------------+
 |        Metric        | HWThread 0 | HWThread 2 |
 +----------------------+------------+------------+
-|  Runtime (RDTSC) [s] |     0.1163 |     0.1060 |
-| Runtime unhalted [s] |     0.0591 |     0.0610 |
-|      Clock [MHz]     |  2494.3367 |  2494.6662 |
-|          CPI         |     1.5153 |     1.4822 |
-|     SP [MFLOP/s]     |  1665.7453 |  1928.1547 |
-|   AVX SP [MFLOP/s]   |  1665.7453 |  1928.1547 |
+|  Runtime (RDTSC) [s] |     0.1146 |     0.1074 |
+| Runtime unhalted [s] |     0.0585 |     0.0610 |
+|      Clock [MHz]     |  2493.8825 |  2495.2938 |
+|          CPI         |     1.5019 |     1.4790 |
+|     SP [MFLOP/s]     |  1688.2259 |  1905.9585 |
+|   AVX SP [MFLOP/s]   |  1688.2259 |  1905.9585 |
 |  AVX512 SP [MFLOP/s] |          0 |          0 |
-|   Packed [MUOPS/s]   |   208.2182 |   241.0193 |
+|   Packed [MUOPS/s]   |   211.0282 |   238.2448 |
 |   Scalar [MUOPS/s]   |          0 |          0 |
 |  Vectorization ratio |        100 |        100 |
 +----------------------+------------+------------+
@@ -316,14 +316,14 @@ Region blur_x_prod, Group 1: FLOPS_SP
 +---------------------------+-----------+-----------+-----------+-----------+
 |           Metric          |    Sum    |    Min    |    Max    |    Avg    |
 +---------------------------+-----------+-----------+-----------+-----------+
-|  Runtime (RDTSC) [s] STAT |    0.2223 |    0.1060 |    0.1163 |    0.1111 |
-| Runtime unhalted [s] STAT |    0.1201 |    0.0591 |    0.0610 |    0.0600 |
-|      Clock [MHz] STAT     | 4989.0029 | 2494.3367 | 2494.6662 | 2494.5014 |
-|          CPI STAT         |    2.9975 |    1.4822 |    1.5153 |    1.4988 |
-|     SP [MFLOP/s] STAT     | 3593.9000 | 1665.7453 | 1928.1547 | 1796.9500 |
-|   AVX SP [MFLOP/s] STAT   | 3593.9000 | 1665.7453 | 1928.1547 | 1796.9500 |
+|  Runtime (RDTSC) [s] STAT |    0.2220 |    0.1074 |    0.1146 |    0.1110 |
+| Runtime unhalted [s] STAT |    0.1195 |    0.0585 |    0.0610 |    0.0597 |
+|      Clock [MHz] STAT     | 4989.1763 | 2493.8825 | 2495.2938 | 2494.5882 |
+|          CPI STAT         |    2.9809 |    1.4790 |    1.5019 |    1.4905 |
+|     SP [MFLOP/s] STAT     | 3594.1844 | 1688.2259 | 1905.9585 | 1797.0922 |
+|   AVX SP [MFLOP/s] STAT   | 3594.1844 | 1688.2259 | 1905.9585 | 1797.0922 |
 |  AVX512 SP [MFLOP/s] STAT |         0 |         0 |         0 |         0 |
-|   Packed [MUOPS/s] STAT   |  449.2375 |  208.2182 |  241.0193 |  224.6187 |
+|   Packed [MUOPS/s] STAT   |  449.2730 |  211.0282 |  238.2448 |  224.6365 |
 |   Scalar [MUOPS/s] STAT   |         0 |         0 |         0 |         0 |
 |  Vectorization ratio STAT |       200 |       100 |       100 |       100 |
 +---------------------------+-----------+-----------+-----------+-----------+
@@ -332,45 +332,45 @@ Region blur_x_cons, Group 1: FLOPS_SP
 +-------------------+------------+------------+
 |    Region Info    | HWThread 0 | HWThread 2 |
 +-------------------+------------+------------+
-| RDTSC Runtime [s] |   0.124484 |   0.119485 |
-|     call count    |       6455 |       6503 |
+| RDTSC Runtime [s] |   0.130258 |   0.114576 |
+|     call count    |       6422 |       6536 |
 +-------------------+------------+------------+
 
 +------------------------------------------+---------+------------+------------+
 |                   Event                  | Counter | HWThread 0 | HWThread 2 |
 +------------------------------------------+---------+------------+------------+
-|             INSTR_RETIRED_ANY            |  FIXC0  |  124356100 |  125245100 |
-|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  176472500 |  174295700 |
-|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  176446900 |  174267600 |
+|             INSTR_RETIRED_ANY            |  FIXC0  |  123720400 |  125881000 |
+|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  176122400 |  173949000 |
+|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  176158700 |  173864300 |
 | FP_ARITH_INST_RETIRED_128B_PACKED_SINGLE |   PMC0  |          0 |          0 |
 |    FP_ARITH_INST_RETIRED_SCALAR_SINGLE   |   PMC1  |          0 |          0 |
-| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE |   PMC2  |   24787200 |   24956160 |
+| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE |   PMC2  |   24660480 |   25082880 |
 | FP_ARITH_INST_RETIRED_512B_PACKED_SINGLE |   PMC3  |          0 |          0 |
 +------------------------------------------+---------+------------+------------+
 
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
 |                     Event                     | Counter |    Sum    |    Min    |    Max    |    Avg    |
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
-|             INSTR_RETIRED_ANY STAT            |  FIXC0  | 249601200 | 124356100 | 125245100 | 124800600 |
-|           CPU_CLK_UNHALTED_CORE STAT          |  FIXC1  | 350768200 | 174295700 | 176472500 | 175384100 |
-|           CPU_CLK_UNHALTED_REF STAT           |  FIXC2  | 350714500 | 174267600 | 176446900 | 175357250 |
+|             INSTR_RETIRED_ANY STAT            |  FIXC0  | 249601400 | 123720400 | 125881000 | 124800700 |
+|           CPU_CLK_UNHALTED_CORE STAT          |  FIXC1  | 350071400 | 173949000 | 176122400 | 175035700 |
+|           CPU_CLK_UNHALTED_REF STAT           |  FIXC2  | 350023000 | 173864300 | 176158700 | 175011500 |
 | FP_ARITH_INST_RETIRED_128B_PACKED_SINGLE STAT |   PMC0  |         0 |         0 |         0 |         0 |
 |    FP_ARITH_INST_RETIRED_SCALAR_SINGLE STAT   |   PMC1  |         0 |         0 |         0 |         0 |
-| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE STAT |   PMC2  |  49743360 |  24787200 |  24956160 |  24871680 |
+| FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE STAT |   PMC2  |  49743360 |  24660480 |  25082880 |  24871680 |
 | FP_ARITH_INST_RETIRED_512B_PACKED_SINGLE STAT |   PMC3  |         0 |         0 |         0 |         0 |
 +-----------------------------------------------+---------+-----------+-----------+-----------+-----------+
 
 +----------------------+------------+------------+
 |        Metric        | HWThread 0 | HWThread 2 |
 +----------------------+------------+------------+
-|  Runtime (RDTSC) [s] |     0.1245 |     0.1195 |
-| Runtime unhalted [s] |     0.0708 |     0.0699 |
-|      Clock [MHz]     |  2494.4446 |  2494.4849 |
-|          CPI         |     1.4191 |     1.3916 |
-|     SP [MFLOP/s]     |  1592.9501 |  1670.9122 |
-|   AVX SP [MFLOP/s]   |  1592.9501 |  1670.9122 |
+|  Runtime (RDTSC) [s] |     0.1303 |     0.1146 |
+| Runtime unhalted [s] |     0.0706 |     0.0697 |
+|      Clock [MHz]     |  2493.5720 |  2495.3010 |
+|          CPI         |     1.4236 |     1.3819 |
+|     SP [MFLOP/s]     |  1514.5668 |  1751.3470 |
+|   AVX SP [MFLOP/s]   |  1514.5668 |  1751.3470 |
 |  AVX512 SP [MFLOP/s] |          0 |          0 |
-|   Packed [MUOPS/s]   |   199.1188 |   208.8640 |
+|   Packed [MUOPS/s]   |   189.3209 |   218.9184 |
 |   Scalar [MUOPS/s]   |          0 |          0 |
 |  Vectorization ratio |        100 |        100 |
 +----------------------+------------+------------+
@@ -378,14 +378,14 @@ Region blur_x_cons, Group 1: FLOPS_SP
 +---------------------------+-----------+-----------+-----------+-----------+
 |           Metric          |    Sum    |    Min    |    Max    |    Avg    |
 +---------------------------+-----------+-----------+-----------+-----------+
-|  Runtime (RDTSC) [s] STAT |    0.2440 |    0.1195 |    0.1245 |    0.1220 |
-| Runtime unhalted [s] STAT |    0.1407 |    0.0699 |    0.0708 |    0.0703 |
-|      Clock [MHz] STAT     | 4988.9295 | 2494.4446 | 2494.4849 | 2494.4648 |
-|          CPI STAT         |    2.8107 |    1.3916 |    1.4191 |    1.4053 |
-|     SP [MFLOP/s] STAT     | 3263.8623 | 1592.9501 | 1670.9122 | 1631.9311 |
-|   AVX SP [MFLOP/s] STAT   | 3263.8623 | 1592.9501 | 1670.9122 | 1631.9311 |
+|  Runtime (RDTSC) [s] STAT |    0.2449 |    0.1146 |    0.1303 |    0.1225 |
+| Runtime unhalted [s] STAT |    0.1403 |    0.0697 |    0.0706 |    0.0701 |
+|      Clock [MHz] STAT     | 4988.8730 | 2493.5720 | 2495.3010 | 2494.4365 |
+|          CPI STAT         |    2.8055 |    1.3819 |    1.4236 |    1.4027 |
+|     SP [MFLOP/s] STAT     | 3265.9138 | 1514.5668 | 1751.3470 | 1632.9569 |
+|   AVX SP [MFLOP/s] STAT   | 3265.9138 | 1514.5668 | 1751.3470 | 1632.9569 |
 |  AVX512 SP [MFLOP/s] STAT |         0 |         0 |         0 |         0 |
-|   Packed [MUOPS/s] STAT   |  407.9828 |  199.1188 |  208.8640 |  203.9914 |
+|   Packed [MUOPS/s] STAT   |  408.2393 |  189.3209 |  218.9184 |  204.1196 |
 |   Scalar [MUOPS/s] STAT   |         0 |         0 |         0 |         0 |
 |  Vectorization ratio STAT |       200 |       100 |       100 |       100 |
 +---------------------------+-----------+-----------+-----------+-----------+

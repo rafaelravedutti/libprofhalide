@@ -1,0 +1,41 @@
+Num threads: 3
+Pin string: -C M0:3,0-2
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 3
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 23408427292416 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 23408425191168 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 23408423089920 -> hwthread 2 - OK[0m[1;34m
+[0mblur_y
+ total time: 149.830017 ms  samples: 143  runs: 1  time/run: 149.830017 ms
+ average threads used: 2.447552
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                88.634ms  (59%)   threads: 2.070 
+  blur_x:                61.195ms  (40%)   threads: 3.000  stack: 4352
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 3
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 23325040105216 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 23325038003968 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 23325035902720 -> hwthread 2 - OK[0m[1;34m
+[0mblur_y
+ total time: 149.808197 ms  samples: 143  runs: 1  time/run: 149.808197 ms
+ average threads used: 2.454545
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                91.794ms  (61%)   threads: 2.147 
+  blur_x:                58.014ms  (38%)   threads: 2.945  stack: 4352
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 3
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 23445311006464 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 23445308905216 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 23445306803968 -> hwthread 2 - OK[0m[1;34m
+[0mblur_y
+ total time: 149.849060 ms  samples: 143  runs: 1  time/run: 149.849060 ms
+ average threads used: 2.468531
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                79.162ms  (52%)   threads: 2.000 
+  blur_x:                70.686ms  (47%)   threads: 3.000  stack: 4352

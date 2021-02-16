@@ -8,7 +8,7 @@ Region blur_y_prod, Group 1: FLOPS_SP
 +-------------------+------------+
 |    Region Info    | HWThread 0 |
 +-------------------+------------+
-| RDTSC Runtime [s] |   0.194460 |
+| RDTSC Runtime [s] |   0.194354 |
 |     call count    |          1 |
 +-------------------+------------+
 
@@ -16,8 +16,8 @@ Region blur_y_prod, Group 1: FLOPS_SP
 |                   Event                  | Counter | HWThread 0 |
 +------------------------------------------+---------+------------+
 |             INSTR_RETIRED_ANY            |  FIXC0  |  298750400 |
-|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  240868300 |
-|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  240870800 |
+|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  242324400 |
+|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  242325800 |
 | FP_ARITH_INST_RETIRED_128B_PACKED_SINGLE |   PMC0  |          0 |
 |    FP_ARITH_INST_RETIRED_SCALAR_SINGLE   |   PMC1  |          0 |
 | FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE |   PMC2  |  149230100 |
@@ -27,14 +27,14 @@ Region blur_y_prod, Group 1: FLOPS_SP
 +----------------------+------------+
 |        Metric        | HWThread 0 |
 +----------------------+------------+
-|  Runtime (RDTSC) [s] |     0.1945 |
-| Runtime unhalted [s] |     0.0966 |
-|      Clock [MHz]     |  2494.0606 |
-|          CPI         |     0.8063 |
-|     SP [MFLOP/s]     |  6139.2489 |
-|   AVX SP [MFLOP/s]   |  6139.2489 |
+|  Runtime (RDTSC) [s] |     0.1944 |
+| Runtime unhalted [s] |     0.0972 |
+|      Clock [MHz]     |  2494.0640 |
+|          CPI         |     0.8111 |
+|     SP [MFLOP/s]     |  6142.6004 |
+|   AVX SP [MFLOP/s]   |  6142.6004 |
 |  AVX512 SP [MFLOP/s] |          0 |
-|   Packed [MUOPS/s]   |   767.4061 |
+|   Packed [MUOPS/s]   |   767.8250 |
 |   Scalar [MUOPS/s]   |          0 |
 |  Vectorization ratio |        100 |
 +----------------------+------------+
@@ -49,7 +49,7 @@ Region blur_y_prod, Group 1: FLOPS_SP
 +-------------------+------------+
 |    Region Info    | HWThread 0 |
 +-------------------+------------+
-| RDTSC Runtime [s] |   0.192725 |
+| RDTSC Runtime [s] |   0.193165 |
 |     call count    |          1 |
 +-------------------+------------+
 
@@ -57,8 +57,8 @@ Region blur_y_prod, Group 1: FLOPS_SP
 |                   Event                  | Counter | HWThread 0 |
 +------------------------------------------+---------+------------+
 |             INSTR_RETIRED_ANY            |  FIXC0  |  298750400 |
-|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  238074700 |
-|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  238073000 |
+|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  238581300 |
+|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  238581000 |
 | FP_ARITH_INST_RETIRED_128B_PACKED_SINGLE |   PMC0  |          0 |
 |    FP_ARITH_INST_RETIRED_SCALAR_SINGLE   |   PMC1  |          0 |
 | FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE |   PMC2  |  149230100 |
@@ -68,14 +68,14 @@ Region blur_y_prod, Group 1: FLOPS_SP
 +----------------------+------------+
 |        Metric        | HWThread 0 |
 +----------------------+------------+
-|  Runtime (RDTSC) [s] |     0.1927 |
-| Runtime unhalted [s] |     0.0955 |
-|      Clock [MHz]     |  2494.0963 |
-|          CPI         |     0.7969 |
-|     SP [MFLOP/s]     |  6194.5365 |
-|   AVX SP [MFLOP/s]   |  6194.5365 |
+|  Runtime (RDTSC) [s] |     0.1932 |
+| Runtime unhalted [s] |     0.0957 |
+|      Clock [MHz]     |  2494.0672 |
+|          CPI         |     0.7986 |
+|     SP [MFLOP/s]     |  6180.4262 |
+|   AVX SP [MFLOP/s]   |  6180.4262 |
 |  AVX512 SP [MFLOP/s] |          0 |
-|   Packed [MUOPS/s]   |   774.3171 |
+|   Packed [MUOPS/s]   |   772.5533 |
 |   Scalar [MUOPS/s]   |          0 |
 |  Vectorization ratio |        100 |
 +----------------------+------------+
@@ -90,7 +90,7 @@ Region blur_y_prod, Group 1: FLOPS_SP
 +-------------------+------------+
 |    Region Info    | HWThread 0 |
 +-------------------+------------+
-| RDTSC Runtime [s] |   0.195662 |
+| RDTSC Runtime [s] |   0.194917 |
 |     call count    |          1 |
 +-------------------+------------+
 
@@ -98,8 +98,8 @@ Region blur_y_prod, Group 1: FLOPS_SP
 |                   Event                  | Counter | HWThread 0 |
 +------------------------------------------+---------+------------+
 |             INSTR_RETIRED_ANY            |  FIXC0  |  298750400 |
-|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  245230400 |
-|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  245229300 |
+|           CPU_CLK_UNHALTED_CORE          |  FIXC1  |  242889700 |
+|           CPU_CLK_UNHALTED_REF           |  FIXC2  |  242893000 |
 | FP_ARITH_INST_RETIRED_128B_PACKED_SINGLE |   PMC0  |          0 |
 |    FP_ARITH_INST_RETIRED_SCALAR_SINGLE   |   PMC1  |          0 |
 | FP_ARITH_INST_RETIRED_256B_PACKED_SINGLE |   PMC2  |  149230100 |
@@ -109,14 +109,14 @@ Region blur_y_prod, Group 1: FLOPS_SP
 +----------------------+------------+
 |        Metric        | HWThread 0 |
 +----------------------+------------+
-|  Runtime (RDTSC) [s] |     0.1957 |
-| Runtime unhalted [s] |     0.0983 |
-|      Clock [MHz]     |  2494.0924 |
-|          CPI         |     0.8209 |
-|     SP [MFLOP/s]     |  6101.5590 |
-|   AVX SP [MFLOP/s]   |  6101.5590 |
+|  Runtime (RDTSC) [s] |     0.1949 |
+| Runtime unhalted [s] |     0.0974 |
+|      Clock [MHz]     |  2494.0513 |
+|          CPI         |     0.8130 |
+|     SP [MFLOP/s]     |  6124.8707 |
+|   AVX SP [MFLOP/s]   |  6124.8707 |
 |  AVX512 SP [MFLOP/s] |          0 |
-|   Packed [MUOPS/s]   |   762.6949 |
+|   Packed [MUOPS/s]   |   765.6088 |
 |   Scalar [MUOPS/s]   |          0 |
 |  Vectorization ratio |        100 |
 +----------------------+------------+
