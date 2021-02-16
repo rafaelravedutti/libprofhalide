@@ -8,17 +8,17 @@ Region blur_y.s0.c, Group 1: FLOPS_SP
 +-------------------+------------+
 |    Region Info    | HWThread 0 |
 +-------------------+------------+
-| RDTSC Runtime [s] |   0.201726 |
+| RDTSC Runtime [s] |   0.196302 |
 |     call count    |          1 |
 +-------------------+------------+
 
 +---------------------------+---------+------------+
 |           Event           | Counter | HWThread 0 |
 +---------------------------+---------+------------+
-|      ACTUAL_CPU_CLOCK     |  FIXC1  |  664134400 |
-|       MAX_CPU_CLOCK       |  FIXC2  |  403776000 |
+|      ACTUAL_CPU_CLOCK     |  FIXC1  |  647954300 |
+|       MAX_CPU_CLOCK       |  FIXC2  |  392934700 |
 |    RETIRED_INSTRUCTIONS   |   PMC0  |  747227500 |
-|    CPU_CLOCKS_UNHALTED    |   PMC1  |  378468700 |
+|    CPU_CLOCKS_UNHALTED    |   PMC1  |  370998000 |
 | RETIRED_SSE_AVX_FLOPS_ALL |   PMC2  |  796078100 |
 |           MERGE           |   PMC3  |          0 |
 +---------------------------+---------+------------+
@@ -26,11 +26,11 @@ Region blur_y.s0.c, Group 1: FLOPS_SP
 +----------------------+------------+
 |        Metric        | HWThread 0 |
 +----------------------+------------+
-|  Runtime (RDTSC) [s] |     0.2017 |
-| Runtime unhalted [s] |     0.3321 |
-|      Clock [MHz]     |  3289.6710 |
-|          CPI         |     0.5065 |
-|     SP [MFLOP/s]     |  3946.3395 |
+|  Runtime (RDTSC) [s] |     0.1963 |
+| Runtime unhalted [s] |     0.3240 |
+|      Clock [MHz]     |  3298.0442 |
+|          CPI         |     0.4965 |
+|     SP [MFLOP/s]     |  4055.3661 |
 +----------------------+------------+
 
 --------------------------------------------------------------------------------
@@ -43,17 +43,17 @@ Region blur_y.s0.c, Group 1: FLOPS_SP
 +-------------------+------------+
 |    Region Info    | HWThread 0 |
 +-------------------+------------+
-| RDTSC Runtime [s] |   0.199701 |
+| RDTSC Runtime [s] |   0.196552 |
 |     call count    |          1 |
 +-------------------+------------+
 
 +---------------------------+---------+------------+
 |           Event           | Counter | HWThread 0 |
 +---------------------------+---------+------------+
-|      ACTUAL_CPU_CLOCK     |  FIXC1  |  657833700 |
-|       MAX_CPU_CLOCK       |  FIXC2  |  399720100 |
+|      ACTUAL_CPU_CLOCK     |  FIXC1  |  648613000 |
+|       MAX_CPU_CLOCK       |  FIXC2  |  393452300 |
 |    RETIRED_INSTRUCTIONS   |   PMC0  |  747227500 |
-|    CPU_CLOCKS_UNHALTED    |   PMC1  |  372676200 |
+|    CPU_CLOCKS_UNHALTED    |   PMC1  |  371410500 |
 | RETIRED_SSE_AVX_FLOPS_ALL |   PMC2  |  796078100 |
 |           MERGE           |   PMC3  |          0 |
 +---------------------------+---------+------------+
@@ -61,11 +61,11 @@ Region blur_y.s0.c, Group 1: FLOPS_SP
 +----------------------+------------+
 |        Metric        | HWThread 0 |
 +----------------------+------------+
-|  Runtime (RDTSC) [s] |     0.1997 |
-| Runtime unhalted [s] |     0.3289 |
-|      Clock [MHz]     |  3291.5286 |
-|          CPI         |     0.4987 |
-|     SP [MFLOP/s]     |  3986.3561 |
+|  Runtime (RDTSC) [s] |     0.1966 |
+| Runtime unhalted [s] |     0.3243 |
+|      Clock [MHz]     |  3297.0290 |
+|          CPI         |     0.4971 |
+|     SP [MFLOP/s]     |  4050.2080 |
 +----------------------+------------+
 
 --------------------------------------------------------------------------------
@@ -78,17 +78,17 @@ Region blur_y.s0.c, Group 1: FLOPS_SP
 +-------------------+------------+
 |    Region Info    | HWThread 0 |
 +-------------------+------------+
-| RDTSC Runtime [s] |   0.201401 |
+| RDTSC Runtime [s] |   0.196801 |
 |     call count    |          1 |
 +-------------------+------------+
 
 +---------------------------+---------+------------+
 |           Event           | Counter | HWThread 0 |
 +---------------------------+---------+------------+
-|      ACTUAL_CPU_CLOCK     |  FIXC1  |  664678000 |
-|       MAX_CPU_CLOCK       |  FIXC2  |  403112100 |
+|      ACTUAL_CPU_CLOCK     |  FIXC1  |  648888300 |
+|       MAX_CPU_CLOCK       |  FIXC2  |  393981400 |
 |    RETIRED_INSTRUCTIONS   |   PMC0  |  747227500 |
-|    CPU_CLOCKS_UNHALTED    |   PMC1  |  378549000 |
+|    CPU_CLOCKS_UNHALTED    |   PMC1  |  372294500 |
 | RETIRED_SSE_AVX_FLOPS_ALL |   PMC2  |  796078100 |
 |           MERGE           |   PMC3  |          0 |
 +---------------------------+---------+------------+
@@ -96,10 +96,10 @@ Region blur_y.s0.c, Group 1: FLOPS_SP
 +----------------------+------------+
 |        Metric        | HWThread 0 |
 +----------------------+------------+
-|  Runtime (RDTSC) [s] |     0.2014 |
-| Runtime unhalted [s] |     0.3323 |
-|      Clock [MHz]     |  3297.7873 |
-|          CPI         |     0.5066 |
-|     SP [MFLOP/s]     |  3952.6940 |
+|  Runtime (RDTSC) [s] |     0.1968 |
+| Runtime unhalted [s] |     0.3244 |
+|      Clock [MHz]     |  3294.0021 |
+|          CPI         |     0.4982 |
+|     SP [MFLOP/s]     |  4045.0856 |
 +----------------------+------------+
 

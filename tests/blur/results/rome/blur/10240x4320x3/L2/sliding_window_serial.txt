@@ -8,31 +8,31 @@ Region blur_y.s0.c, Group 1: L2
 +-------------------+------------+
 |    Region Info    | HWThread 0 |
 +-------------------+------------+
-| RDTSC Runtime [s] |   0.202067 |
+| RDTSC Runtime [s] |   0.200551 |
 |     call count    |          1 |
 +-------------------+------------+
 
 +-------------------------------+---------+------------+
 |             Event             | Counter | HWThread 0 |
 +-------------------------------+---------+------------+
-|        ACTUAL_CPU_CLOCK       |  FIXC1  |  666360900 |
-|         MAX_CPU_CLOCK         |  FIXC2  |  404432300 |
+|        ACTUAL_CPU_CLOCK       |  FIXC1  |  661208500 |
+|         MAX_CPU_CLOCK         |  FIXC2  |  401448700 |
 |      RETIRED_INSTRUCTIONS     |   PMC0  |  747226900 |
-|      CPU_CLOCKS_UNHALTED      |   PMC1  |  379827900 |
-| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   39395350 |
+|      CPU_CLOCKS_UNHALTED      |   PMC1  |  379826900 |
+| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   39573260 |
 +-------------------------------+---------+------------+
 
 +-------------------------------+------------+
 |             Metric            | HWThread 0 |
 +-------------------------------+------------+
-|      Runtime (RDTSC) [s]      |     0.2021 |
-|      Runtime unhalted [s]     |     0.3332 |
-|          Clock [MHz]          |  3295.3440 |
+|      Runtime (RDTSC) [s]      |     0.2006 |
+|      Runtime unhalted [s]     |     0.3306 |
+|          Clock [MHz]          |  3294.1068 |
 |              CPI              |     0.5083 |
-| L2D load bandwidth [MBytes/s] | 12477.5750 |
-| L2D load data volume [GBytes] |     2.5213 |
-|    L2 bandwidth [MBytes/s]    | 12477.5750 |
-|    L2 data volume [GBytes]    |     2.5213 |
+| L2D load bandwidth [MBytes/s] | 12628.6639 |
+| L2D load data volume [GBytes] |     2.5327 |
+|    L2 bandwidth [MBytes/s]    | 12628.6639 |
+|    L2 data volume [GBytes]    |     2.5327 |
 +-------------------------------+------------+
 
 --------------------------------------------------------------------------------
@@ -45,31 +45,31 @@ Region blur_y.s0.c, Group 1: L2
 +-------------------+------------+
 |    Region Info    | HWThread 0 |
 +-------------------+------------+
-| RDTSC Runtime [s] |   0.202143 |
+| RDTSC Runtime [s] |   0.198632 |
 |     call count    |          1 |
 +-------------------+------------+
 
 +-------------------------------+---------+------------+
 |             Event             | Counter | HWThread 0 |
 +-------------------------------+---------+------------+
-|        ACTUAL_CPU_CLOCK       |  FIXC1  |  665796800 |
-|         MAX_CPU_CLOCK         |  FIXC2  |  404495400 |
+|        ACTUAL_CPU_CLOCK       |  FIXC1  |  654952900 |
+|         MAX_CPU_CLOCK         |  FIXC2  |  397586100 |
 |      RETIRED_INSTRUCTIONS     |   PMC0  |  747226900 |
-|      CPU_CLOCKS_UNHALTED      |   PMC1  |  380698600 |
-| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   39322670 |
+|      CPU_CLOCKS_UNHALTED      |   PMC1  |  375017700 |
+| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   39511560 |
 +-------------------------------+---------+------------+
 
 +-------------------------------+------------+
 |             Metric            | HWThread 0 |
 +-------------------------------+------------+
-|      Runtime (RDTSC) [s]      |     0.2021 |
-|      Runtime unhalted [s]     |     0.3329 |
-|          Clock [MHz]          |  3292.0440 |
-|              CPI              |     0.5095 |
-| L2D load bandwidth [MBytes/s] | 12449.8296 |
-| L2D load data volume [GBytes] |     2.5167 |
-|    L2 bandwidth [MBytes/s]    | 12449.8296 |
-|    L2 data volume [GBytes]    |     2.5167 |
+|      Runtime (RDTSC) [s]      |     0.1986 |
+|      Runtime unhalted [s]     |     0.3275 |
+|          Clock [MHz]          |  3294.6290 |
+|              CPI              |     0.5019 |
+| L2D load bandwidth [MBytes/s] | 12730.7905 |
+| L2D load data volume [GBytes] |     2.5287 |
+|    L2 bandwidth [MBytes/s]    | 12730.7905 |
+|    L2 data volume [GBytes]    |     2.5287 |
 +-------------------------------+------------+
 
 --------------------------------------------------------------------------------
@@ -82,30 +82,30 @@ Region blur_y.s0.c, Group 1: L2
 +-------------------+------------+
 |    Region Info    | HWThread 0 |
 +-------------------+------------+
-| RDTSC Runtime [s] |   0.200962 |
+| RDTSC Runtime [s] |   0.198366 |
 |     call count    |          1 |
 +-------------------+------------+
 
 +-------------------------------+---------+------------+
 |             Event             | Counter | HWThread 0 |
 +-------------------------------+---------+------------+
-|        ACTUAL_CPU_CLOCK       |  FIXC1  |  660375500 |
-|         MAX_CPU_CLOCK         |  FIXC2  |  402227200 |
+|        ACTUAL_CPU_CLOCK       |  FIXC1  |  654697400 |
+|         MAX_CPU_CLOCK         |  FIXC2  |  397054500 |
 |      RETIRED_INSTRUCTIONS     |   PMC0  |  747226900 |
-|      CPU_CLOCKS_UNHALTED      |   PMC1  |  374340700 |
-| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   39333460 |
+|      CPU_CLOCKS_UNHALTED      |   PMC1  |  375195400 |
+| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   39557260 |
 +-------------------------------+---------+------------+
 
 +-------------------------------+------------+
 |             Metric            | HWThread 0 |
 +-------------------------------+------------+
-|      Runtime (RDTSC) [s]      |     0.2010 |
-|      Runtime unhalted [s]     |     0.3302 |
-|          Clock [MHz]          |  3283.6449 |
-|              CPI              |     0.5010 |
-| L2D load bandwidth [MBytes/s] | 12526.4425 |
-| L2D load data volume [GBytes] |     2.5173 |
-|    L2 bandwidth [MBytes/s]    | 12526.4425 |
-|    L2 data volume [GBytes]    |     2.5173 |
+|      Runtime (RDTSC) [s]      |     0.1984 |
+|      Runtime unhalted [s]     |     0.3273 |
+|          Clock [MHz]          |  3297.8039 |
+|              CPI              |     0.5021 |
+| L2D load bandwidth [MBytes/s] | 12762.5679 |
+| L2D load data volume [GBytes] |     2.5317 |
+|    L2 bandwidth [MBytes/s]    | 12762.5679 |
+|    L2 data volume [GBytes]    |     2.5317 |
 +-------------------------------+------------+
 

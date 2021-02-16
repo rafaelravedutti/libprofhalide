@@ -1,0 +1,73 @@
+Num threads: 14
+Pin string: -C M0:14,0-13
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 14
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m3->3  [0m[1;34m4->4  [0m[1;34m5->5  [0m[1;34m6->6  [0m[1;34m7->7  [0m[1;34m8->8  [0m[1;34m9->9  [0m[1;34m10->10  [0m[1;34m11->11  [0m[1;34m12->12  [0m[1;34m13->13  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 140423303309056 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 140423294916352 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 140423286523648 -> hwthread 2 - OK[0m[1;34m
+[0m[1;34m	threadid 140423278130944 -> hwthread 3 - OK[0m[1;34m
+[0m[1;34m	threadid 140423269738240 -> hwthread 4 - OK[0m[1;34m
+[0m[1;34m	threadid 140423261345536 -> hwthread 5 - OK[0m[1;34m
+[0m[1;34m	threadid 140423252952832 -> hwthread 6 - OK[0m[1;34m
+[0m[1;34m	threadid 140423244560128 -> hwthread 7 - OK[0m[1;34m
+[0m[1;34m	threadid 140423236167424 -> hwthread 8 - OK[0m[1;34m
+[0m[1;34m	threadid 140423227774720 -> hwthread 9 - OK[0m[1;34m
+[0m[1;34m	threadid 140423219382016 -> hwthread 10 - OK[0m[1;34m
+[0m[1;34m	threadid 140423210989312 -> hwthread 11 - OK[0m[1;34m
+[0m[1;34m	threadid 140423202596608 -> hwthread 12 - OK[0m[1;34m
+[0m[1;34m	threadid 140423194203904 -> hwthread 13 - OK[0m[1;34m
+[0mblur_y
+ total time: 161.757721 ms  samples: 154  runs: 1  time/run: 161.757721 ms
+ average threads used: 5.123377
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                161.757ms (100%)  threads: 5.123 
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 14
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m3->3  [0m[1;34m4->4  [0m[1;34m5->5  [0m[1;34m6->6  [0m[1;34m7->7  [0m[1;34m8->8  [0m[1;34m9->9  [0m[1;34m10->10  [0m[1;34m11->11  [0m[1;34m12->12  [0m[1;34m13->13  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 140239682815744 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 140239674423040 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 140239666030336 -> hwthread 2 - OK[0m[1;34m
+[0m[1;34m	threadid 140239657637632 -> hwthread 3 - OK[0m[1;34m
+[0m[1;34m	threadid 140239649244928 -> hwthread 4 - OK[0m[1;34m
+[0m[1;34m	threadid 140239640852224 -> hwthread 5 - OK[0m[1;34m
+[0m[1;34m	threadid 140239632459520 -> hwthread 6 - OK[0m[1;34m
+[0m[1;34m	threadid 140239624066816 -> hwthread 7 - OK[0m[1;34m
+[0m[1;34m	threadid 140239615674112 -> hwthread 8 - OK[0m[1;34m
+[0m[1;34m	threadid 140239607281408 -> hwthread 9 - OK[0m[1;34m
+[0m[1;34m	threadid 140239598888704 -> hwthread 10 - OK[0m[1;34m
+[0m[1;34m	threadid 140239590496000 -> hwthread 11 - OK[0m[1;34m
+[0m[1;34m	threadid 140239582103296 -> hwthread 12 - OK[0m[1;34m
+[0m[1;34m	threadid 140239573710592 -> hwthread 13 - OK[0m[1;34m
+[0mblur_y
+ total time: 164.692490 ms  samples: 157  runs: 1  time/run: 164.692490 ms
+ average threads used: 5.050955
+ heap allocations: 0  peak heap usage: 0 bytes
+  overhead:              0.000ms   (0%)    threads: 1.000 
+  blur_y:                164.692ms (99%)   threads: 5.076 
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 14
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m3->3  [0m[1;34m4->4  [0m[1;34m5->5  [0m[1;34m6->6  [0m[1;34m7->7  [0m[1;34m8->8  [0m[1;34m9->9  [0m[1;34m10->10  [0m[1;34m11->11  [0m[1;34m12->12  [0m[1;34m13->13  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 139741748430592 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 139741740037888 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 139741731645184 -> hwthread 2 - OK[0m[1;34m
+[0m[1;34m	threadid 139741723252480 -> hwthread 3 - OK[0m[1;34m
+[0m[1;34m	threadid 139741714859776 -> hwthread 4 - OK[0m[1;34m
+[0m[1;34m	threadid 139741706467072 -> hwthread 5 - OK[0m[1;34m
+[0m[1;34m	threadid 139741698074368 -> hwthread 6 - OK[0m[1;34m
+[0m[1;34m	threadid 139741689681664 -> hwthread 7 - OK[0m[1;34m
+[0m[1;34m	threadid 139741681288960 -> hwthread 8 - OK[0m[1;34m
+[0m[1;34m	threadid 139741672896256 -> hwthread 9 - OK[0m[1;34m
+[0m[1;34m	threadid 139741664503552 -> hwthread 10 - OK[0m[1;34m
+[0m[1;34m	threadid 139741656110848 -> hwthread 11 - OK[0m[1;34m
+[0m[1;34m	threadid 139741647718144 -> hwthread 12 - OK[0m[1;34m
+[0m[1;34m	threadid 139741639325440 -> hwthread 13 - OK[0m[1;34m
+[0mblur_y
+ total time: 165.681427 ms  samples: 158  runs: 1  time/run: 165.681427 ms
+ average threads used: 5.132911
+ heap allocations: 0  peak heap usage: 0 bytes
+  overhead:              0.000ms   (0%)    threads: 1.000 
+  blur_y:                165.681ms (99%)   threads: 5.159 

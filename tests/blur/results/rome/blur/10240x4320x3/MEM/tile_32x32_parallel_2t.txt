@@ -10,60 +10,60 @@ Region blur_y.s0.c, Group 1: MEM
 +-------------------+------------+------------+
 |    Region Info    | HWThread 0 | HWThread 2 |
 +-------------------+------------+------------+
-| RDTSC Runtime [s] |   0.081989 |   0.121832 |
-|     call count    |        171 |        238 |
+| RDTSC Runtime [s] |   0.084541 |   0.112632 |
+|     call count    |        176 |        233 |
 +-------------------+------------+------------+
 
 +------------------------------+---------+------------+------------+
 |             Event            | Counter | HWThread 0 | HWThread 2 |
 +------------------------------+---------+------------+------------+
-|       ACTUAL_CPU_CLOCK       |  FIXC1  |  295237200 |  427299300 |
-|         MAX_CPU_CLOCK        |  FIXC2  |  179336900 |  261824100 |
-|     RETIRED_INSTRUCTIONS     |   PMC0  |  125941000 |  172616400 |
-|      CPU_CLOCKS_UNHALTED     |   PMC1  |  144504200 |  198503900 |
-| DATA_FROM_LOCAL_DRAM_CHANNEL |   DFC0  |          0 |   12576970 |
-|  DATA_TO_LOCAL_DRAM_CHANNEL  |   DFC1  |          0 |   12576770 |
+|       ACTUAL_CPU_CLOCK       |  FIXC1  |  304560700 |  419598600 |
+|         MAX_CPU_CLOCK        |  FIXC2  |  184880200 |  255401800 |
+|     RETIRED_INSTRUCTIONS     |   PMC0  |  129623400 |  168928800 |
+|      CPU_CLOCKS_UNHALTED     |   PMC1  |  148741700 |  195130900 |
+| DATA_FROM_LOCAL_DRAM_CHANNEL |   DFC0  |          0 |   12454860 |
+|  DATA_TO_LOCAL_DRAM_CHANNEL  |   DFC1  |          0 |   12443460 |
 +------------------------------+---------+------------+------------+
 
 +-----------------------------------+---------+-----------+-----------+-----------+-----------+
 |               Event               | Counter |    Sum    |    Min    |    Max    |    Avg    |
 +-----------------------------------+---------+-----------+-----------+-----------+-----------+
-|       ACTUAL_CPU_CLOCK STAT       |  FIXC1  | 722536500 | 295237200 | 427299300 | 361268250 |
-|         MAX_CPU_CLOCK STAT        |  FIXC2  | 441161000 | 179336900 | 261824100 | 220580500 |
-|     RETIRED_INSTRUCTIONS STAT     |   PMC0  | 298557400 | 125941000 | 172616400 | 149278700 |
-|      CPU_CLOCKS_UNHALTED STAT     |   PMC1  | 343008100 | 144504200 | 198503900 | 171504050 |
-| DATA_FROM_LOCAL_DRAM_CHANNEL STAT |   DFC0  |  12576970 |         0 |  12576970 |   6288485 |
-|  DATA_TO_LOCAL_DRAM_CHANNEL STAT  |   DFC1  |  12576770 |         0 |  12576770 |   6288385 |
+|       ACTUAL_CPU_CLOCK STAT       |  FIXC1  | 724159300 | 304560700 | 419598600 | 362079650 |
+|         MAX_CPU_CLOCK STAT        |  FIXC2  | 440282000 | 184880200 | 255401800 | 220141000 |
+|     RETIRED_INSTRUCTIONS STAT     |   PMC0  | 298552200 | 129623400 | 168928800 | 149276100 |
+|      CPU_CLOCKS_UNHALTED STAT     |   PMC1  | 343872600 | 148741700 | 195130900 | 171936300 |
+| DATA_FROM_LOCAL_DRAM_CHANNEL STAT |   DFC0  |  12454860 |         0 |  12454860 |   6227430 |
+|  DATA_TO_LOCAL_DRAM_CHANNEL STAT  |   DFC1  |  12443460 |         0 |  12443460 |   6221730 |
 +-----------------------------------+---------+-----------+-----------+-----------+-----------+
 
 +-----------------------------------+------------+------------+
 |               Metric              | HWThread 0 | HWThread 2 |
 +-----------------------------------+------------+------------+
-|        Runtime (RDTSC) [s]        |     0.0820 |     0.1218 |
-|        Runtime unhalted [s]       |     0.1476 |     0.2136 |
-|            Clock [MHz]            |  3292.5986 |  3264.0736 |
-|                CPI                |     1.1474 |     1.1500 |
-|  Memory read bandwidth [MBytes/s] |          0 |  6606.8310 |
-|  Memory read data volume [GBytes] |          0 |     0.8049 |
-| Memory write bandwidth [MBytes/s] |          0 |  6606.7260 |
-| Memory write data volume [GBytes] |          0 |     0.8049 |
-|    Memory bandwidth [MBytes/s]    |          0 | 13213.5570 |
-|    Memory data volume [GBytes]    |          0 |     1.6098 |
+|        Runtime (RDTSC) [s]        |     0.0845 |     0.1126 |
+|        Runtime unhalted [s]       |     0.1523 |     0.2098 |
+|            Clock [MHz]            |  3294.7167 |  3285.8270 |
+|                CPI                |     1.1475 |     1.1551 |
+|  Memory read bandwidth [MBytes/s] |          0 |  7077.1402 |
+|  Memory read data volume [GBytes] |          0 |     0.7971 |
+| Memory write bandwidth [MBytes/s] |          0 |  7070.6625 |
+| Memory write data volume [GBytes] |          0 |     0.7964 |
+|    Memory bandwidth [MBytes/s]    |          0 | 14147.8027 |
+|    Memory data volume [GBytes]    |          0 |     1.5935 |
 +-----------------------------------+------------+------------+
 
 +----------------------------------------+------------+-----------+------------+-----------+
 |                 Metric                 |     Sum    |    Min    |     Max    |    Avg    |
 +----------------------------------------+------------+-----------+------------+-----------+
-|        Runtime (RDTSC) [s] STAT        |     0.2038 |    0.0820 |     0.1218 |    0.1019 |
-|        Runtime unhalted [s] STAT       |     0.3612 |    0.1476 |     0.2136 |    0.1806 |
-|            Clock [MHz] STAT            |  6556.6722 | 3264.0736 |  3292.5986 | 3278.3361 |
-|                CPI STAT                |     2.2974 |    1.1474 |     1.1500 |    1.1487 |
-|  Memory read bandwidth [MBytes/s] STAT |  6606.8310 |         0 |  6606.8310 | 3303.4155 |
-|  Memory read data volume [GBytes] STAT |     0.8049 |         0 |     0.8049 |    0.4024 |
-| Memory write bandwidth [MBytes/s] STAT |  6606.7260 |         0 |  6606.7260 | 3303.3630 |
-| Memory write data volume [GBytes] STAT |     0.8049 |         0 |     0.8049 |    0.4024 |
-|    Memory bandwidth [MBytes/s] STAT    | 13213.5570 |         0 | 13213.5570 | 6606.7785 |
-|    Memory data volume [GBytes] STAT    |     1.6098 |         0 |     1.6098 |    0.8049 |
+|        Runtime (RDTSC) [s] STAT        |     0.1971 |    0.0845 |     0.1126 |    0.0985 |
+|        Runtime unhalted [s] STAT       |     0.3621 |    0.1523 |     0.2098 |    0.1810 |
+|            Clock [MHz] STAT            |  6580.5437 | 3285.8270 |  3294.7167 | 3290.2719 |
+|                CPI STAT                |     2.3026 |    1.1475 |     1.1551 |    1.1513 |
+|  Memory read bandwidth [MBytes/s] STAT |  7077.1402 |         0 |  7077.1402 | 3538.5701 |
+|  Memory read data volume [GBytes] STAT |     0.7971 |         0 |     0.7971 |    0.3986 |
+| Memory write bandwidth [MBytes/s] STAT |  7070.6625 |         0 |  7070.6625 | 3535.3313 |
+| Memory write data volume [GBytes] STAT |     0.7964 |         0 |     0.7964 |    0.3982 |
+|    Memory bandwidth [MBytes/s] STAT    | 14147.8027 |         0 | 14147.8027 | 7073.9014 |
+|    Memory data volume [GBytes] STAT    |     1.5935 |         0 |     1.5935 |    0.7967 |
 +----------------------------------------+------------+-----------+------------+-----------+
 
 --------------------------------------------------------------------------------
@@ -76,60 +76,60 @@ Region blur_y.s0.c, Group 1: MEM
 +-------------------+------------+------------+
 |    Region Info    | HWThread 0 | HWThread 2 |
 +-------------------+------------+------------+
-| RDTSC Runtime [s] |   0.082235 |   0.121273 |
-|     call count    |        171 |        238 |
+| RDTSC Runtime [s] |   0.084380 |   0.112155 |
+|     call count    |        176 |        233 |
 +-------------------+------------+------------+
 
 +------------------------------+---------+------------+------------+
 |             Event            | Counter | HWThread 0 | HWThread 2 |
 +------------------------------+---------+------------+------------+
-|       ACTUAL_CPU_CLOCK       |  FIXC1  |  295816400 |  447478100 |
-|         MAX_CPU_CLOCK        |  FIXC2  |  179711400 |  274316800 |
-|     RETIRED_INSTRUCTIONS     |   PMC0  |  125941000 |  172616500 |
-|      CPU_CLOCKS_UNHALTED     |   PMC1  |  144246200 |  197905000 |
-| DATA_FROM_LOCAL_DRAM_CHANNEL |   DFC0  |          0 |   12581740 |
-|  DATA_TO_LOCAL_DRAM_CHANNEL  |   DFC1  |          0 |   12582750 |
+|       ACTUAL_CPU_CLOCK       |  FIXC1  |  304181200 |  417728900 |
+|         MAX_CPU_CLOCK        |  FIXC2  |  184737500 |  254061600 |
+|     RETIRED_INSTRUCTIONS     |   PMC0  |  129623400 |  168928800 |
+|      CPU_CLOCKS_UNHALTED     |   PMC1  |  149089800 |  194125900 |
+| DATA_FROM_LOCAL_DRAM_CHANNEL |   DFC0  |          0 |   12405610 |
+|  DATA_TO_LOCAL_DRAM_CHANNEL  |   DFC1  |          0 |   12398210 |
 +------------------------------+---------+------------+------------+
 
 +-----------------------------------+---------+-----------+-----------+-----------+-----------+
 |               Event               | Counter |    Sum    |    Min    |    Max    |    Avg    |
 +-----------------------------------+---------+-----------+-----------+-----------+-----------+
-|       ACTUAL_CPU_CLOCK STAT       |  FIXC1  | 743294500 | 295816400 | 447478100 | 371647250 |
-|         MAX_CPU_CLOCK STAT        |  FIXC2  | 454028200 | 179711400 | 274316800 | 227014100 |
-|     RETIRED_INSTRUCTIONS STAT     |   PMC0  | 298557500 | 125941000 | 172616500 | 149278750 |
-|      CPU_CLOCKS_UNHALTED STAT     |   PMC1  | 342151200 | 144246200 | 197905000 | 171075600 |
-| DATA_FROM_LOCAL_DRAM_CHANNEL STAT |   DFC0  |  12581740 |         0 |  12581740 |   6290870 |
-|  DATA_TO_LOCAL_DRAM_CHANNEL STAT  |   DFC1  |  12582750 |         0 |  12582750 |   6291375 |
+|       ACTUAL_CPU_CLOCK STAT       |  FIXC1  | 721910100 | 304181200 | 417728900 | 360955050 |
+|         MAX_CPU_CLOCK STAT        |  FIXC2  | 438799100 | 184737500 | 254061600 | 219399550 |
+|     RETIRED_INSTRUCTIONS STAT     |   PMC0  | 298552200 | 129623400 | 168928800 | 149276100 |
+|      CPU_CLOCKS_UNHALTED STAT     |   PMC1  | 343215700 | 149089800 | 194125900 | 171607850 |
+| DATA_FROM_LOCAL_DRAM_CHANNEL STAT |   DFC0  |  12405610 |         0 |  12405610 |   6202805 |
+|  DATA_TO_LOCAL_DRAM_CHANNEL STAT  |   DFC1  |  12398210 |         0 |  12398210 |   6199105 |
 +-----------------------------------+---------+-----------+-----------+-----------+-----------+
 
 +-----------------------------------+------------+------------+
 |               Metric              | HWThread 0 | HWThread 2 |
 +-----------------------------------+------------+------------+
-|        Runtime (RDTSC) [s]        |     0.0822 |     0.1213 |
-|        Runtime unhalted [s]       |     0.1479 |     0.2237 |
-|            Clock [MHz]            |  3292.1812 |  3262.5448 |
-|                CPI                |     1.1453 |     1.1465 |
-|  Memory read bandwidth [MBytes/s] |          0 |  6639.8020 |
-|  Memory read data volume [GBytes] |          0 |     0.8052 |
-| Memory write bandwidth [MBytes/s] |          0 |  6640.3350 |
-| Memory write data volume [GBytes] |          0 |     0.8053 |
-|    Memory bandwidth [MBytes/s]    |          0 | 13280.1369 |
-|    Memory data volume [GBytes]    |          0 |     1.6105 |
+|        Runtime (RDTSC) [s]        |     0.0844 |     0.1122 |
+|        Runtime unhalted [s]       |     0.1521 |     0.2089 |
+|            Clock [MHz]            |  3293.0877 |  3288.3761 |
+|                CPI                |     1.1502 |     1.1492 |
+|  Memory read bandwidth [MBytes/s] |          0 |  7079.1419 |
+|  Memory read data volume [GBytes] |          0 |     0.7940 |
+| Memory write bandwidth [MBytes/s] |          0 |  7074.9192 |
+| Memory write data volume [GBytes] |          0 |     0.7935 |
+|    Memory bandwidth [MBytes/s]    |          0 | 14154.0611 |
+|    Memory data volume [GBytes]    |          0 |     1.5874 |
 +-----------------------------------+------------+------------+
 
 +----------------------------------------+------------+-----------+------------+-----------+
 |                 Metric                 |     Sum    |    Min    |     Max    |    Avg    |
 +----------------------------------------+------------+-----------+------------+-----------+
-|        Runtime (RDTSC) [s] STAT        |     0.2035 |    0.0822 |     0.1213 |    0.1018 |
-|        Runtime unhalted [s] STAT       |     0.3716 |    0.1479 |     0.2237 |    0.1858 |
-|            Clock [MHz] STAT            |  6554.7260 | 3262.5448 |  3292.1812 | 3277.3630 |
-|                CPI STAT                |     2.2918 |    1.1453 |     1.1465 |    1.1459 |
-|  Memory read bandwidth [MBytes/s] STAT |  6639.8020 |         0 |  6639.8020 | 3319.9010 |
-|  Memory read data volume [GBytes] STAT |     0.8052 |         0 |     0.8052 |    0.4026 |
-| Memory write bandwidth [MBytes/s] STAT |  6640.3350 |         0 |  6640.3350 | 3320.1675 |
-| Memory write data volume [GBytes] STAT |     0.8053 |         0 |     0.8053 |    0.4027 |
-|    Memory bandwidth [MBytes/s] STAT    | 13280.1369 |         0 | 13280.1369 | 6640.0684 |
-|    Memory data volume [GBytes] STAT    |     1.6105 |         0 |     1.6105 |    0.8053 |
+|        Runtime (RDTSC) [s] STAT        |     0.1966 |    0.0844 |     0.1122 |    0.0983 |
+|        Runtime unhalted [s] STAT       |     0.3610 |    0.1521 |     0.2089 |    0.1805 |
+|            Clock [MHz] STAT            |  6581.4638 | 3288.3761 |  3293.0877 | 3290.7319 |
+|                CPI STAT                |     2.2994 |    1.1492 |     1.1502 |    1.1497 |
+|  Memory read bandwidth [MBytes/s] STAT |  7079.1419 |         0 |  7079.1419 | 3539.5709 |
+|  Memory read data volume [GBytes] STAT |     0.7940 |         0 |     0.7940 |    0.3970 |
+| Memory write bandwidth [MBytes/s] STAT |  7074.9192 |         0 |  7074.9192 | 3537.4596 |
+| Memory write data volume [GBytes] STAT |     0.7935 |         0 |     0.7935 |    0.3967 |
+|    Memory bandwidth [MBytes/s] STAT    | 14154.0611 |         0 | 14154.0611 | 7077.0306 |
+|    Memory data volume [GBytes] STAT    |     1.5874 |         0 |     1.5874 |    0.7937 |
 +----------------------------------------+------------+-----------+------------+-----------+
 
 --------------------------------------------------------------------------------
@@ -142,59 +142,59 @@ Region blur_y.s0.c, Group 1: MEM
 +-------------------+------------+------------+
 |    Region Info    | HWThread 0 | HWThread 2 |
 +-------------------+------------+------------+
-| RDTSC Runtime [s] |   0.082122 |   0.121561 |
-|     call count    |        171 |        238 |
+| RDTSC Runtime [s] |   0.084383 |   0.112542 |
+|     call count    |        176 |        233 |
 +-------------------+------------+------------+
 
 +------------------------------+---------+------------+------------+
 |             Event            | Counter | HWThread 0 | HWThread 2 |
 +------------------------------+---------+------------+------------+
-|       ACTUAL_CPU_CLOCK       |  FIXC1  |  295920100 |  448685900 |
-|         MAX_CPU_CLOCK        |  FIXC2  |  179538700 |  274586500 |
-|     RETIRED_INSTRUCTIONS     |   PMC0  |  125940900 |  172616400 |
-|      CPU_CLOCKS_UNHALTED     |   PMC1  |  145435400 |  199455500 |
-| DATA_FROM_LOCAL_DRAM_CHANNEL |   DFC0  |          0 |   12574770 |
-|  DATA_TO_LOCAL_DRAM_CHANNEL  |   DFC1  |          0 |   12578230 |
+|       ACTUAL_CPU_CLOCK       |  FIXC1  |  303594100 |  419720800 |
+|         MAX_CPU_CLOCK        |  FIXC2  |  184265400 |  255408800 |
+|     RETIRED_INSTRUCTIONS     |   PMC0  |  129623400 |  168928800 |
+|      CPU_CLOCKS_UNHALTED     |   PMC1  |  150098000 |  194955900 |
+| DATA_FROM_LOCAL_DRAM_CHANNEL |   DFC0  |          0 |   12483250 |
+|  DATA_TO_LOCAL_DRAM_CHANNEL  |   DFC1  |          0 |   12478910 |
 +------------------------------+---------+------------+------------+
 
 +-----------------------------------+---------+-----------+-----------+-----------+-----------+
 |               Event               | Counter |    Sum    |    Min    |    Max    |    Avg    |
 +-----------------------------------+---------+-----------+-----------+-----------+-----------+
-|       ACTUAL_CPU_CLOCK STAT       |  FIXC1  | 744606000 | 295920100 | 448685900 | 372303000 |
-|         MAX_CPU_CLOCK STAT        |  FIXC2  | 454125200 | 179538700 | 274586500 | 227062600 |
-|     RETIRED_INSTRUCTIONS STAT     |   PMC0  | 298557300 | 125940900 | 172616400 | 149278650 |
-|      CPU_CLOCKS_UNHALTED STAT     |   PMC1  | 344890900 | 145435400 | 199455500 | 172445450 |
-| DATA_FROM_LOCAL_DRAM_CHANNEL STAT |   DFC0  |  12574770 |         0 |  12574770 |   6287385 |
-|  DATA_TO_LOCAL_DRAM_CHANNEL STAT  |   DFC1  |  12578230 |         0 |  12578230 |   6289115 |
+|       ACTUAL_CPU_CLOCK STAT       |  FIXC1  | 723314900 | 303594100 | 419720800 | 361657450 |
+|         MAX_CPU_CLOCK STAT        |  FIXC2  | 439674200 | 184265400 | 255408800 | 219837100 |
+|     RETIRED_INSTRUCTIONS STAT     |   PMC0  | 298552200 | 129623400 | 168928800 | 149276100 |
+|      CPU_CLOCKS_UNHALTED STAT     |   PMC1  | 345053900 | 150098000 | 194955900 | 172526950 |
+| DATA_FROM_LOCAL_DRAM_CHANNEL STAT |   DFC0  |  12483250 |         0 |  12483250 |   6241625 |
+|  DATA_TO_LOCAL_DRAM_CHANNEL STAT  |   DFC1  |  12478910 |         0 |  12478910 |   6239455 |
 +-----------------------------------+---------+-----------+-----------+-----------+-----------+
 
 +-----------------------------------+------------+------------+
 |               Metric              | HWThread 0 | HWThread 2 |
 +-----------------------------------+------------+------------+
-|        Runtime (RDTSC) [s]        |     0.0821 |     0.1216 |
-|        Runtime unhalted [s]       |     0.1480 |     0.2243 |
-|            Clock [MHz]            |  3296.5010 |  3268.1356 |
-|                CPI                |     1.1548 |     1.1555 |
-|  Memory read bandwidth [MBytes/s] |          0 |  6620.4124 |
-|  Memory read data volume [GBytes] |          0 |     0.8048 |
-| Memory write bandwidth [MBytes/s] |          0 |  6622.2341 |
-| Memory write data volume [GBytes] |          0 |     0.8050 |
-|    Memory bandwidth [MBytes/s]    |          0 | 13242.6465 |
-|    Memory data volume [GBytes]    |          0 |     1.6098 |
+|        Runtime (RDTSC) [s]        |     0.0844 |     0.1125 |
+|        Runtime unhalted [s]       |     0.1518 |     0.2099 |
+|            Clock [MHz]            |  3295.1998 |  3286.6757 |
+|                CPI                |     1.1580 |     1.1541 |
+|  Memory read bandwidth [MBytes/s] |          0 |  7098.9383 |
+|  Memory read data volume [GBytes] |          0 |     0.7989 |
+| Memory write bandwidth [MBytes/s] |          0 |  7096.4702 |
+| Memory write data volume [GBytes] |          0 |     0.7987 |
+|    Memory bandwidth [MBytes/s]    |          0 | 14195.4085 |
+|    Memory data volume [GBytes]    |          0 |     1.5976 |
 +-----------------------------------+------------+------------+
 
 +----------------------------------------+------------+-----------+------------+-----------+
 |                 Metric                 |     Sum    |    Min    |     Max    |    Avg    |
 +----------------------------------------+------------+-----------+------------+-----------+
-|        Runtime (RDTSC) [s] STAT        |     0.2037 |    0.0821 |     0.1216 |    0.1018 |
-|        Runtime unhalted [s] STAT       |     0.3723 |    0.1480 |     0.2243 |    0.1861 |
-|            Clock [MHz] STAT            |  6564.6366 | 3268.1356 |  3296.5010 | 3282.3183 |
-|                CPI STAT                |     2.3103 |    1.1548 |     1.1555 |    1.1551 |
-|  Memory read bandwidth [MBytes/s] STAT |  6620.4124 |         0 |  6620.4124 | 3310.2062 |
-|  Memory read data volume [GBytes] STAT |     0.8048 |         0 |     0.8048 |    0.4024 |
-| Memory write bandwidth [MBytes/s] STAT |  6622.2341 |         0 |  6622.2341 | 3311.1170 |
-| Memory write data volume [GBytes] STAT |     0.8050 |         0 |     0.8050 |    0.4025 |
-|    Memory bandwidth [MBytes/s] STAT    | 13242.6465 |         0 | 13242.6465 | 6621.3233 |
-|    Memory data volume [GBytes] STAT    |     1.6098 |         0 |     1.6098 |    0.8049 |
+|        Runtime (RDTSC) [s] STAT        |     0.1969 |    0.0844 |     0.1125 |    0.0985 |
+|        Runtime unhalted [s] STAT       |     0.3617 |    0.1518 |     0.2099 |    0.1809 |
+|            Clock [MHz] STAT            |  6581.8755 | 3286.6757 |  3295.1998 | 3290.9378 |
+|                CPI STAT                |     2.3121 |    1.1541 |     1.1580 |    1.1561 |
+|  Memory read bandwidth [MBytes/s] STAT |  7098.9383 |         0 |  7098.9383 | 3549.4691 |
+|  Memory read data volume [GBytes] STAT |     0.7989 |         0 |     0.7989 |    0.3995 |
+| Memory write bandwidth [MBytes/s] STAT |  7096.4702 |         0 |  7096.4702 | 3548.2351 |
+| Memory write data volume [GBytes] STAT |     0.7987 |         0 |     0.7987 |    0.3993 |
+|    Memory bandwidth [MBytes/s] STAT    | 14195.4085 |         0 | 14195.4085 | 7097.7042 |
+|    Memory data volume [GBytes] STAT    |     1.5976 |         0 |     1.5976 |    0.7988 |
 +----------------------------------------+------------+-----------+------------+-----------+
 

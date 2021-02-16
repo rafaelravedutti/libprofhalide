@@ -8,31 +8,31 @@ Region blur_y_prod, Group 1: L2
 +-------------------+------------+
 |    Region Info    | HWThread 0 |
 +-------------------+------------+
-| RDTSC Runtime [s] |   0.147836 |
+| RDTSC Runtime [s] |   0.145817 |
 |     call count    |          1 |
 +-------------------+------------+
 
 +-------------------------------+---------+------------+
 |             Event             | Counter | HWThread 0 |
 +-------------------------------+---------+------------+
-|        ACTUAL_CPU_CLOCK       |  FIXC1  |  487543600 |
-|         MAX_CPU_CLOCK         |  FIXC2  |  295957000 |
+|        ACTUAL_CPU_CLOCK       |  FIXC1  |  480610400 |
+|         MAX_CPU_CLOCK         |  FIXC2  |  291898600 |
 |      RETIRED_INSTRUCTIONS     |   PMC0  |  298880800 |
-|      CPU_CLOCKS_UNHALTED      |   PMC1  |  202437700 |
-| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   26468980 |
+|      CPU_CLOCKS_UNHALTED      |   PMC1  |  201769800 |
+| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   26484700 |
 +-------------------------------+---------+------------+
 
 +-------------------------------+------------+
 |             Metric            | HWThread 0 |
 +-------------------------------+------------+
-|      Runtime (RDTSC) [s]      |     0.1478 |
-|      Runtime unhalted [s]     |     0.2438 |
-|          Clock [MHz]          |  3294.6830 |
-|              CPI              |     0.6773 |
-| L2D load bandwidth [MBytes/s] | 11458.7739 |
-| L2D load data volume [GBytes] |     1.6940 |
-|    L2 bandwidth [MBytes/s]    | 11458.7739 |
-|    L2 data volume [GBytes]    |     1.6940 |
+|      Runtime (RDTSC) [s]      |     0.1458 |
+|      Runtime unhalted [s]     |     0.2403 |
+|          Clock [MHz]          |  3292.9835 |
+|              CPI              |     0.6751 |
+| L2D load bandwidth [MBytes/s] | 11624.3256 |
+| L2D load data volume [GBytes] |     1.6950 |
+|    L2 bandwidth [MBytes/s]    | 11624.3256 |
+|    L2 data volume [GBytes]    |     1.6950 |
 +-------------------------------+------------+
 
 --------------------------------------------------------------------------------
@@ -45,31 +45,31 @@ Region blur_y_prod, Group 1: L2
 +-------------------+------------+
 |    Region Info    | HWThread 0 |
 +-------------------+------------+
-| RDTSC Runtime [s] |   0.148202 |
+| RDTSC Runtime [s] |   0.145435 |
 |     call count    |          1 |
 +-------------------+------------+
 
 +-------------------------------+---------+------------+
 |             Event             | Counter | HWThread 0 |
 +-------------------------------+---------+------------+
-|        ACTUAL_CPU_CLOCK       |  FIXC1  |  487993800 |
-|         MAX_CPU_CLOCK         |  FIXC2  |  296695400 |
+|        ACTUAL_CPU_CLOCK       |  FIXC1  |  479863300 |
+|         MAX_CPU_CLOCK         |  FIXC2  |  291185200 |
 |      RETIRED_INSTRUCTIONS     |   PMC0  |  298880800 |
-|      CPU_CLOCKS_UNHALTED      |   PMC1  |  203152600 |
-| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   26359720 |
+|      CPU_CLOCKS_UNHALTED      |   PMC1  |  201870500 |
+| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   26473070 |
 +-------------------------------+---------+------------+
 
 +-------------------------------+------------+
 |             Metric            | HWThread 0 |
 +-------------------------------+------------+
-|      Runtime (RDTSC) [s]      |     0.1482 |
-|      Runtime unhalted [s]     |     0.2440 |
-|          Clock [MHz]          |  3289.5818 |
-|              CPI              |     0.6797 |
-| L2D load bandwidth [MBytes/s] | 11383.2766 |
-| L2D load data volume [GBytes] |     1.6870 |
-|    L2 bandwidth [MBytes/s]    | 11383.2766 |
-|    L2 data volume [GBytes]    |     1.6870 |
+|      Runtime (RDTSC) [s]      |     0.1454 |
+|      Runtime unhalted [s]     |     0.2399 |
+|          Clock [MHz]          |  3295.9216 |
+|              CPI              |     0.6754 |
+| L2D load bandwidth [MBytes/s] | 11649.7323 |
+| L2D load data volume [GBytes] |     1.6943 |
+|    L2 bandwidth [MBytes/s]    | 11649.7323 |
+|    L2 data volume [GBytes]    |     1.6943 |
 +-------------------------------+------------+
 
 --------------------------------------------------------------------------------
@@ -82,30 +82,30 @@ Region blur_y_prod, Group 1: L2
 +-------------------+------------+
 |    Region Info    | HWThread 0 |
 +-------------------+------------+
-| RDTSC Runtime [s] |   0.147920 |
+| RDTSC Runtime [s] |   0.145815 |
 |     call count    |          1 |
 +-------------------+------------+
 
 +-------------------------------+---------+------------+
 |             Event             | Counter | HWThread 0 |
 +-------------------------------+---------+------------+
-|        ACTUAL_CPU_CLOCK       |  FIXC1  |  487394400 |
-|         MAX_CPU_CLOCK         |  FIXC2  |  296159500 |
+|        ACTUAL_CPU_CLOCK       |  FIXC1  |  481502700 |
+|         MAX_CPU_CLOCK         |  FIXC2  |  291950700 |
 |      RETIRED_INSTRUCTIONS     |   PMC0  |  298880800 |
-|      CPU_CLOCKS_UNHALTED      |   PMC1  |  202118000 |
-| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   26570180 |
+|      CPU_CLOCKS_UNHALTED      |   PMC1  |  202274000 |
+| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   26361500 |
 +-------------------------------+---------+------------+
 
 +-------------------------------+------------+
 |             Metric            | HWThread 0 |
 +-------------------------------+------------+
-|      Runtime (RDTSC) [s]      |     0.1479 |
-|      Runtime unhalted [s]     |     0.2437 |
-|          Clock [MHz]          |  3291.4893 |
-|              CPI              |     0.6762 |
-| L2D load bandwidth [MBytes/s] | 11496.0527 |
-| L2D load data volume [GBytes] |     1.7005 |
-|    L2 bandwidth [MBytes/s]    | 11496.0527 |
-|    L2 data volume [GBytes]    |     1.7005 |
+|      Runtime (RDTSC) [s]      |     0.1458 |
+|      Runtime unhalted [s]     |     0.2408 |
+|          Clock [MHz]          |  3298.5345 |
+|              CPI              |     0.6768 |
+| L2D load bandwidth [MBytes/s] | 11570.4109 |
+| L2D load data volume [GBytes] |     1.6871 |
+|    L2 bandwidth [MBytes/s]    | 11570.4109 |
+|    L2 data volume [GBytes]    |     1.6871 |
 +-------------------------------+------------+
 
