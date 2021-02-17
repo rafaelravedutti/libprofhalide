@@ -1,6 +1,6 @@
 #!/bin/bash
 
-while getopts "a:A:s:g:t:C:r:w:h:c:S" flag; do
+while getopts "a:A:s:g:t:C:r:w:h:c:Sm" flag; do
     case "${flag}" in
         a) algorithm=${OPTARG};;
         A) arch=${OPTARG};;
@@ -13,6 +13,7 @@ while getopts "a:A:s:g:t:C:r:w:h:c:S" flag; do
         h) img_height=${OPTARG};;
         c) img_channels=${OPTARG};;
         S) save_output=1;;
+        m) markers=1;;
     esac
 done
 
@@ -27,10 +28,12 @@ ARCH="${arch:-host}"
 NTHREADS="${nthreads:-1}"
 
 # Pin flags
-PIN_FLAGS="${pin_flags:-}"
+if [ -n "$pin_flags" ]; then
+    PIN_FLAGS="-C ${pin_flags}"
+fi
 
 # Number of runs
-NRUNS="${nruns:-3}"
+NRUNS="${nruns:-1}"
 
 # Image sizes 3840x2160 (4K), 10240x4320 (10K), 10112x10112
 # Channels are usually 1 or 3
@@ -61,6 +64,9 @@ GROUP=$group
 
 # Save output to file?
 SAVE_OUTPUT="${save_output:-0}"
+
+# Use markers or profile globally?
+MARKERS="${markers:-0}"
 
 # Define directory structure and filename for results
 OUTPUT_PATH="results/${TREATED_HOST}/${ALGORITHM}/${IMAGE_SIZE}/${GROUP%%:*}"
@@ -113,27 +119,32 @@ else
     EXTRA_FLAGS=""
 fi
 
-
 if [ "${GROUP}" == "TIME" ]; then
     export HL_TARGET="host-profile"
     export HL_JIT_TARGET="host-profile"
     make SCHEDULE=${SCHEDULE_ID} ${IMAGE_SIZE_PARAMS} ${EXTRA_FLAGS}
-    for i in $(seq 1 ${NRUNS}); do
-        if [ "${SAVE_OUTPUT}" -ne "0" ]; then
-            likwid-pin -C ${PIN_FLAGS} ./blur_aot | tee -a ${OUTPUT_FILE} ;
-        else
-            likwid-pin -C ${PIN_FLAGS} ./blur_aot ;
-        fi
-    done
+    if [ -z "${PIN_FLAGS}" ]; then
+        COMMAND="./blur_aot"
+    else
+        COMMAND="likwid-pin ${PIN_FLAGS} ./blur_aot"
+    fi
 else
-    export HL_TARGET="${ARCH}-perfctr"
-    export HL_JIT_TARGET="${ARCH}-perfctr"
+    if [ "${MARKERS}" -eq "1" ]; then
+        export HL_TARGET="${ARCH}-perfctr"
+        export HL_JIT_TARGET="${ARCH}-perfctr"
+        MARKER_FLAG="-m"
+    else
+        MARKER_FLAG=""
+    fi
+
     make SCHEDULE=${SCHEDULE_ID} PROFILE=y ${IMAGE_SIZE_PARAMS} ${EXTRA_FLAGS}
-    for i in $(seq 1 ${NRUNS}); do
-        if [ "${SAVE_OUTPUT}" -ne "0" ]; then
-            likwid-perfctr -C ${PIN_FLAGS} -g ${GROUP} -m ./blur_aot | tee -a ${OUTPUT_FILE} ;
-        else
-            likwid-perfctr -C ${PIN_FLAGS} -g ${GROUP} -m ./blur_aot ;
-        fi
-    done
+    COMMAND="likwid-perfctr ${PIN_FLAGS} -g ${GROUP} ${MARKER_FLAG} ./blur_aot"
 fi
+
+for i in $(seq 1 ${NRUNS}); do
+    if [ "${SAVE_OUTPUT}" -ne "0" ]; then
+        ${COMMAND} | tee -a ${OUTPUT_FILE}
+    else
+        ${COMMAND}
+    fi
+done

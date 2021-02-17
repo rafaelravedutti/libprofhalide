@@ -21,7 +21,7 @@ for perf_group in ${PERF_GROUPS}; do
         for sched in ${SCHEDULES}; do
             if [ "${nthreads}" -eq "1" -o "$sched" != "sliding_window" ]; then
                 echo "Running for sched=${sched}..."
-                bash run_test.sh -s "${sched}" -g "${perf_group}" -t "${nthreads}" -C "${pin_flags}" -S
+                bash run_test.sh -s "${sched}" -g "${perf_group}" -t "${nthreads}" -C "${pin_flags}" -r 3 -S -m
             fi
         done
     done
