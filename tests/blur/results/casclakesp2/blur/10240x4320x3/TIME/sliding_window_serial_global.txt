@@ -1,0 +1,20 @@
+Output submitted to: results/casclakesp2/blur/10240x4320x3/TIME/sliding_window_serial_global.txt
+Algorithm: blur, Arch: host, Host: casclakesp2, Group: TIME
+Number of runs: 3, Schedule: sliding_window, Image dimensions: 10240x4320x3
+Number of threads: 1, Pinning flags:
+Command: numactl --cpunodebind=0 ./blur_aot
+blur_y
+ total time: 231.902603 ms  samples: 221  runs: 1  time/run: 231.902603 ms
+ heap allocations: 3  peak heap usage: 163808 bytes
+  blur_y:                181.305ms (78%)   
+  blur_x:                50.597ms  (21%)    peak: 163808   num: 3         avg: 163808
+blur_y
+ total time: 235.076782 ms  samples: 224  runs: 1  time/run: 235.076782 ms
+ heap allocations: 3  peak heap usage: 163808 bytes
+  blur_y:                182.369ms (77%)   
+  blur_x:                52.707ms  (22%)    peak: 163808   num: 3         avg: 163808
+blur_y
+ total time: 234.021591 ms  samples: 223  runs: 1  time/run: 234.021591 ms
+ heap allocations: 3  peak heap usage: 163808 bytes
+  blur_y:                179.193ms (76%)   
+  blur_x:                54.827ms  (23%)    peak: 163808   num: 3         avg: 163808

@@ -80,7 +80,7 @@ for event in events:
 
         schedule_results = results[schedule]
         with open(filename, 'r') as fp:
-            region = None
+            region = "global"
             for line in fp.readlines():
                 if event_id == 0:
                     if time_pattern.search(line):

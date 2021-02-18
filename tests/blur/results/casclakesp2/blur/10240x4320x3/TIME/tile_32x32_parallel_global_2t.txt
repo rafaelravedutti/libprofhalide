@@ -1,0 +1,23 @@
+Output submitted to: results/casclakesp2/blur/10240x4320x3/TIME/tile_32x32_parallel_global_2t.txt
+Algorithm: blur, Arch: host, Host: casclakesp2, Group: TIME
+Number of runs: 3, Schedule: tile_32x32, Image dimensions: 10240x4320x3
+Number of threads: 2, Pinning flags:
+Command: numactl --cpunodebind=0 ./blur_aot
+blur_y
+ total time: 177.205383 ms  samples: 169  runs: 1  time/run: 177.205383 ms
+ average threads used: 1.988166
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                94.933ms  (53%)   threads: 1.978 
+  blur_x:                82.271ms  (46%)   threads: 2.000  stack: 4352
+blur_y
+ total time: 179.225281 ms  samples: 171  runs: 1  time/run: 179.225281 ms
+ average threads used: 1.988304
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                101.212ms (56%)   threads: 1.979 
+  blur_x:                78.012ms  (43%)   threads: 2.000  stack: 4352
+blur_y
+ total time: 178.201675 ms  samples: 170  runs: 1  time/run: 178.201675 ms
+ average threads used: 1.994118
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                104.395ms (58%)   threads: 1.990 
+  blur_x:                73.806ms  (41%)   threads: 2.000  stack: 4352

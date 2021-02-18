@@ -1,0 +1,23 @@
+Output submitted to: results/casclakesp2/blur/10240x4320x3/TIME/breadth_first_parallel_global_20t.txt
+Algorithm: blur, Arch: host, Host: casclakesp2, Group: TIME
+Number of runs: 3, Schedule: breadth_first, Image dimensions: 10240x4320x3
+Number of threads: 20, Pinning flags:
+Command: numactl --cpunodebind=0 ./blur_aot
+blur_y
+ total time: 279.279480 ms  samples: 264  runs: 1  time/run: 279.279480 ms
+ average threads used: 19.674242
+ heap allocations: 1  peak heap usage: 530737920 bytes
+  blur_x:                126.956ms (45%)   threads: 19.495 peak: 530737920 num: 1        avg: 530737920
+  blur_y:                152.322ms (54%)   threads: 19.825
+blur_y
+ total time: 288.808289 ms  samples: 273  runs: 1  time/run: 288.808289 ms
+ average threads used: 19.750916
+ heap allocations: 1  peak heap usage: 530737920 bytes
+  blur_x:                136.527ms (47%)   threads: 19.738 peak: 530737920 num: 1        avg: 530737920
+  blur_y:                152.280ms (52%)   threads: 19.762
+blur_y
+ total time: 287.524933 ms  samples: 272  runs: 1  time/run: 287.524933 ms
+ average threads used: 19.746323
+ heap allocations: 1  peak heap usage: 530737920 bytes
+  blur_x:                135.452ms (47%)   threads: 19.674 peak: 530737920 num: 1        avg: 530737920
+  blur_y:                152.072ms (52%)   threads: 19.811

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-while getopts "a:A:s:g:t:C:r:w:h:c:Sm" flag; do
+while getopts "a:A:s:g:t:C:r:w:h:c:Smn" flag; do
     case "${flag}" in
         a) algorithm=${OPTARG};;
         A) arch=${OPTARG};;
@@ -14,6 +14,7 @@ while getopts "a:A:s:g:t:C:r:w:h:c:Sm" flag; do
         c) img_channels=${OPTARG};;
         S) save_output=1;;
         m) markers=1;;
+        n) numactl=1;;
     esac
 done
 
@@ -27,7 +28,7 @@ ARCH="${arch:-host}"
 # Number of threads (default is serial version)
 NTHREADS="${nthreads:-1}"
 
-# Pin flags
+# Pinning flags
 if [ -n "$pin_flags" ]; then
     PIN_FLAGS="-C ${pin_flags}"
 fi
@@ -68,12 +69,32 @@ SAVE_OUTPUT="${save_output:-0}"
 # Use markers or profile globally?
 MARKERS="${markers:-0}"
 
+if [ "${MARKERS}" -ne "0" ]; then
+    MARKER_REF="marker"
+else
+    MARKER_REF="global"
+fi
+
+# Use numactl?
+NUMACTL="${numactl:-0}"
+NUMACTL_WRAPPER=""
+
+# Check if both numactl and pin flags are set
+if [ "${NUMACTL}" -ne "0" ]; then
+    if [ -n "$pin_flags" ]; then
+        echo "Pinning flags and numactl option are mutually exclusive!"
+        exit
+    fi
+
+    NUMACTL_WRAPPER="numactl --cpunodebind=0"
+fi
+
 # Define directory structure and filename for results
 OUTPUT_PATH="results/${TREATED_HOST}/${ALGORITHM}/${IMAGE_SIZE}/${GROUP%%:*}"
 if [ "${NTHREADS}" -eq "1" ]; then
-    OUTPUT_FILE="${OUTPUT_PATH}/${SCHEDULE}_serial.txt"
+    OUTPUT_FILE="${OUTPUT_PATH}/${SCHEDULE}_serial_${MARKER_REF}.txt"
 else
-    OUTPUT_FILE="${OUTPUT_PATH}/${SCHEDULE}_parallel_${NTHREADS}t.txt"
+    OUTPUT_FILE="${OUTPUT_PATH}/${SCHEDULE}_parallel_${MARKER_REF}_${NTHREADS}t.txt"
 fi
 
 # Retrieve library paths
@@ -110,7 +131,7 @@ fi
 
 print_and_save "Algorithm: ${ALGORITHM}, Arch: ${ARCH}, Host: ${TREATED_HOST}, Group: ${GROUP}"
 print_and_save "Number of runs: ${NRUNS}, Schedule: ${SCHEDULE}, Image dimensions: ${IMAGE_SIZE}"
-print_and_save "Number of threads: ${NTHREADS}, Pin flags: ${PIN_FLAGS}"
+print_and_save "Number of threads: ${NTHREADS}, Pinning flags: ${PIN_FLAGS}"
 
 if [ "${NTHREADS}" -ne "1" ]; then
     export HL_NUM_THREADS=${NTHREADS}
@@ -124,7 +145,11 @@ if [ "${GROUP}" == "TIME" ]; then
     export HL_JIT_TARGET="host-profile"
     make SCHEDULE=${SCHEDULE_ID} ${IMAGE_SIZE_PARAMS} ${EXTRA_FLAGS}
     if [ -z "${PIN_FLAGS}" ]; then
-        COMMAND="./blur_aot"
+        if [ "${NUMACTL}" -ne "0" ]; then
+            COMMAND="${NUMACTL_WRAPPER} ./blur_aot"
+        else
+            COMMAND="./blur_aot"
+        fi
     else
         COMMAND="likwid-pin ${PIN_FLAGS} ./blur_aot"
     fi
@@ -138,9 +163,14 @@ else
     fi
 
     make SCHEDULE=${SCHEDULE_ID} PROFILE=y ${IMAGE_SIZE_PARAMS} ${EXTRA_FLAGS}
-    COMMAND="likwid-perfctr ${PIN_FLAGS} -g ${GROUP} ${MARKER_FLAG} ./blur_aot"
+    if [ "${NUMACTL}" -ne "0" ]; then
+        COMMAND="${NUMACTL_WRAPPER} likwid-perfctr -g ${GROUP} ${MARKER_FLAG} ./blur_aot"
+    else
+        COMMAND="likwid-perfctr ${PIN_FLAGS} -g ${GROUP} ${MARKER_FLAG} ./blur_aot"
+    fi
 fi
 
+print_and_save "Command: ${COMMAND}"
 for i in $(seq 1 ${NRUNS}); do
     if [ "${SAVE_OUTPUT}" -ne "0" ]; then
         ${COMMAND} | tee -a ${OUTPUT_FILE}

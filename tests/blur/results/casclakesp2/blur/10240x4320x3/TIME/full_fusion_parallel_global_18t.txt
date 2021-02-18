@@ -1,0 +1,20 @@
+Output submitted to: results/casclakesp2/blur/10240x4320x3/TIME/full_fusion_parallel_global_18t.txt
+Algorithm: blur, Arch: host, Host: casclakesp2, Group: TIME
+Number of runs: 3, Schedule: full_fusion, Image dimensions: 10240x4320x3
+Number of threads: 18, Pinning flags:
+Command: numactl --cpunodebind=0 ./blur_aot
+blur_y
+ total time: 138.471436 ms  samples: 132  runs: 1  time/run: 138.471436 ms
+ average threads used: 17.681818
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                138.471ms (100%)  threads: 17.681
+blur_y
+ total time: 129.994186 ms  samples: 124  runs: 1  time/run: 129.994186 ms
+ average threads used: 17.830645
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                129.994ms (100%)  threads: 17.830
+blur_y
+ total time: 137.369125 ms  samples: 131  runs: 1  time/run: 137.369125 ms
+ average threads used: 17.641222
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                137.369ms (100%)  threads: 17.641
