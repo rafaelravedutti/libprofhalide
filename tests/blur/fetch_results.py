@@ -60,7 +60,9 @@ event_id = 0
 
 #nthreads = [2, 4, 10, 20]
 nthreads = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-path_suffixes = ["_serial.txt"] + ["_parallel_" + str(t) + "t.txt" for t in nthreads]
+fetch_marker_results = False
+marker_ref = "_global" if not fetch_marker_results else ""
+path_suffixes = ["_serial" + marker_ref + ".txt"] + ["_parallel" + marker_ref + "_" + str(t) + "t.txt" for t in nthreads]
 
 for event in events:
     group = event[0]
@@ -93,7 +95,7 @@ for event in events:
                         else:
                             value = num(splitted_text[1][:-2])
 
-                        region = func2region(schedule, func)
+                        region = func2region(schedule, func) if fetch_marker_results else "global"
 
                         if region not in schedule_results:
                             schedule_results[region] = {}
