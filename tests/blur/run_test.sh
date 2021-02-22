@@ -158,11 +158,12 @@ else
         export HL_TARGET="${ARCH}-perfctr"
         export HL_JIT_TARGET="${ARCH}-perfctr"
         MARKER_FLAG="-m"
+        EXTRA_FLAGS="PROFILE=y ${EXTRA_FLAGS}"
     else
         MARKER_FLAG=""
     fi
 
-    make SCHEDULE=${SCHEDULE_ID} PROFILE=y ${IMAGE_SIZE_PARAMS} ${EXTRA_FLAGS}
+    make SCHEDULE=${SCHEDULE_ID} ${IMAGE_SIZE_PARAMS} ${EXTRA_FLAGS}
     if [ "${NUMACTL}" -ne "0" ]; then
         COMMAND="${NUMACTL_WRAPPER} likwid-perfctr -g ${GROUP} ${MARKER_FLAG} ./blur_aot"
     else
