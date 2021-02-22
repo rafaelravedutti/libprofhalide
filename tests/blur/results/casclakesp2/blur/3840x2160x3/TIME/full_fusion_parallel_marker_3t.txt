@@ -1,0 +1,41 @@
+Output submitted to: results/casclakesp2/blur/3840x2160x3/TIME/full_fusion_parallel_marker_3t.txt
+Algorithm: blur, Arch: host, Host: casclakesp2, Group: TIME
+Number of runs: 3, Schedule: full_fusion, Image dimensions: 3840x2160x3
+Number of threads: 3, Pinning flags: -C M0:3,0-2
+Command: likwid-pin -C M0:3,0-2 ./blur_aot
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 3
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 22459755796224 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 22459753694976 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 22459751593728 -> hwthread 2 - OK[0m[1;34m
+[0mblur_y
+ total time: 45.486832 ms  samples: 44  runs: 1  time/run: 45.486832 ms
+ average threads used: 1.340909
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                45.486ms  (100%)  threads: 1.340 
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 3
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 22427556992768 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 22427554891520 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 22427552790272 -> hwthread 2 - OK[0m[1;34m
+[0mblur_y
+ total time: 44.341030 ms  samples: 43  runs: 1  time/run: 44.341030 ms
+ average threads used: 1.325581
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                44.341ms  (100%)  threads: 1.325 
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 3
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 22939617470208 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 22939615368960 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 22939613267712 -> hwthread 2 - OK[0m[1;34m
+[0mblur_y
+ total time: 45.407700 ms  samples: 44  runs: 1  time/run: 45.407700 ms
+ average threads used: 1.318182
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                45.407ms  (100%)  threads: 1.318 

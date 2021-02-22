@@ -1,0 +1,122 @@
+Output submitted to: results/rome/blur/10240x4320x3/L3/tile_32x32_serial_marker.txt
+Algorithm: blur, Arch: host, Host: rome, Group: L3
+Number of runs: 3, Schedule: tile_32x32, Image dimensions: 10240x4320x3
+Number of threads: 1, Pinning flags: -C 0
+Command: likwid-perfctr -C 0 -g L3 -m ./blur_aot
+--------------------------------------------------------------------------------
+CPU name:	AMD EPYC 7662 64-Core Processor                
+CPU type:	AMD K17 (Zen2) architecture
+CPU clock:	2.00 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y.s0.c, Group 1: L3
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.185394 |
+|     call count    |          1 |
++-------------------+------------+
+
++----------------------+---------+------------+
+|         Event        | Counter | HWThread 0 |
++----------------------+---------+------------+
+|   ACTUAL_CPU_CLOCK   |  FIXC1  |  611631200 |
+|     MAX_CPU_CLOCK    |  FIXC2  |  371101700 |
+| RETIRED_INSTRUCTIONS |   PMC0  |  299656000 |
+|  CPU_CLOCKS_UNHALTED |   PMC1  |  326819300 |
+|       L3_ACCESS      |  CPMC0  |   21783430 |
+|        L3_MISS       |  CPMC1  |   16885710 |
++----------------------+---------+------------+
+
++--------------------------------+------------+
+|             Metric             | HWThread 0 |
++--------------------------------+------------+
+|       Runtime (RDTSC) [s]      |     0.1854 |
+|      Runtime unhalted [s]      |     0.3058 |
+|           Clock [MHz]          |  3296.3310 |
+|               CPI              |     1.0906 |
+| L3 access bandwidth [MBytes/s] |  7519.8862 |
+| L3 access data volume [GBytes] |     1.3941 |
+|       L3 access rate [%]       |     7.2695 |
+|        L3 miss rate [%]        |     5.6350 |
+|        L3 miss ratio [%]       |    77.5163 |
++--------------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	AMD EPYC 7662 64-Core Processor                
+CPU type:	AMD K17 (Zen2) architecture
+CPU clock:	2.00 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y.s0.c, Group 1: L3
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.186010 |
+|     call count    |          1 |
++-------------------+------------+
+
++----------------------+---------+------------+
+|         Event        | Counter | HWThread 0 |
++----------------------+---------+------------+
+|   ACTUAL_CPU_CLOCK   |  FIXC1  |  613557000 |
+|     MAX_CPU_CLOCK    |  FIXC2  |  372232900 |
+| RETIRED_INSTRUCTIONS |   PMC0  |  299656000 |
+|  CPU_CLOCKS_UNHALTED |   PMC1  |  327443600 |
+|       L3_ACCESS      |  CPMC0  |   21751250 |
+|        L3_MISS       |  CPMC1  |   16889320 |
++----------------------+---------+------------+
+
++--------------------------------+------------+
+|             Metric             | HWThread 0 |
++--------------------------------+------------+
+|       Runtime (RDTSC) [s]      |     0.1860 |
+|      Runtime unhalted [s]      |     0.3068 |
+|           Clock [MHz]          |  3296.6796 |
+|               CPI              |     1.0927 |
+| L3 access bandwidth [MBytes/s] |  7483.8786 |
+| L3 access data volume [GBytes] |     1.3921 |
+|       L3 access rate [%]       |     7.2587 |
+|        L3 miss rate [%]        |     5.6362 |
+|        L3 miss ratio [%]       |    77.6476 |
++--------------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	AMD EPYC 7662 64-Core Processor                
+CPU type:	AMD K17 (Zen2) architecture
+CPU clock:	2.00 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y.s0.c, Group 1: L3
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.185181 |
+|     call count    |          1 |
++-------------------+------------+
+
++----------------------+---------+------------+
+|         Event        | Counter | HWThread 0 |
++----------------------+---------+------------+
+|   ACTUAL_CPU_CLOCK   |  FIXC1  |  610852200 |
+|     MAX_CPU_CLOCK    |  FIXC2  |  370669200 |
+| RETIRED_INSTRUCTIONS |   PMC0  |  299656000 |
+|  CPU_CLOCKS_UNHALTED |   PMC1  |  326632300 |
+|       L3_ACCESS      |  CPMC0  |   21741500 |
+|        L3_MISS       |  CPMC1  |   16882960 |
++----------------------+---------+------------+
+
++--------------------------------+------------+
+|             Metric             | HWThread 0 |
++--------------------------------+------------+
+|       Runtime (RDTSC) [s]      |     0.1852 |
+|      Runtime unhalted [s]      |     0.3054 |
+|           Clock [MHz]          |  3295.9827 |
+|               CPI              |     1.0900 |
+| L3 access bandwidth [MBytes/s] |  7514.0444 |
+| L3 access data volume [GBytes] |     1.3915 |
+|       L3 access rate [%]       |     7.2555 |
+|        L3 miss rate [%]        |     5.6341 |
+|        L3 miss ratio [%]       |    77.6532 |
++--------------------------------+------------+
+

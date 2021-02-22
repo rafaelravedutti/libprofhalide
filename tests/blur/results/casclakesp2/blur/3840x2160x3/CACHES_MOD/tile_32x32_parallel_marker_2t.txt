@@ -1,0 +1,245 @@
+Output submitted to: results/casclakesp2/blur/3840x2160x3/CACHES_MOD/tile_32x32_parallel_marker_2t.txt
+Algorithm: blur, Arch: host, Host: casclakesp2, Group: CACHES_MOD
+Number of runs: 3, Schedule: tile_32x32, Image dimensions: 3840x2160x3
+Number of threads: 2, Pinning flags: -C M0:2,0-1
+Command: likwid-perfctr -C M0:2,0-1 -g CACHES_MOD -m ./blur_aot
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz
+CPU type:	Intel Cascadelake SP processor
+CPU clock:	2.49 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y.s0.c, Group 1: CACHES_MOD
++-------------------+------------+------------+
+|    Region Info    | HWThread 0 | HWThread 2 |
++-------------------+------------+------------+
+| RDTSC Runtime [s] |   0.019696 |   0.037060 |
+|     call count    |         71 |        137 |
++-------------------+------------+------------+
+
++-----------------------+---------+------------+------------+
+|         Event         | Counter | HWThread 0 | HWThread 2 |
++-----------------------+---------+------------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |   19735650 |   36986240 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |   29707980 |   53398270 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |   30945600 |   55624600 |
+|    L1D_REPLACEMENT    |   PMC0  |    1508131 |    2782470 |
+|      L1D_M_EVICT      |   PMC1  |     647613 |    1187989 |
+|    L2_LINES_IN_ALL    |   PMC2  |    1136357 |    2114869 |
+|     L2_TRANS_L2_WB    |   PMC3  |    1008173 |    1935813 |
++-----------------------+---------+------------+------------+
+
++----------------------------+---------+----------+----------+----------+--------------+
+|            Event           | Counter |    Sum   |    Min   |    Max   |      Avg     |
++----------------------------+---------+----------+----------+----------+--------------+
+|   INSTR_RETIRED_ANY STAT   |  FIXC0  | 56721890 | 19735650 | 36986240 |     28360945 |
+| CPU_CLK_UNHALTED_CORE STAT |  FIXC1  | 83106250 | 29707980 | 53398270 |     41553125 |
+|  CPU_CLK_UNHALTED_REF STAT |  FIXC2  | 86570200 | 30945600 | 55624600 |     43285100 |
+|    L1D_REPLACEMENT STAT    |   PMC0  |  4290601 |  1508131 |  2782470 | 2.145300e+06 |
+|      L1D_M_EVICT STAT      |   PMC1  |  1835602 |   647613 |  1187989 |       917801 |
+|    L2_LINES_IN_ALL STAT    |   PMC2  |  3251226 |  1136357 |  2114869 |      1625613 |
+|     L2_TRANS_L2_WB STAT    |   PMC3  |  2943986 |  1008173 |  1935813 |      1471993 |
++----------------------------+---------+----------+----------+----------+--------------+
+
++-------------------------------------+------------+------------+
+|                Metric               | HWThread 0 | HWThread 2 |
++-------------------------------------+------------+------------+
+|         Runtime (RDTSC) [s]         |     0.0197 |     0.0371 |
+|         Runtime unhalted [s]        |     0.0119 |     0.0214 |
+|             Clock [MHz]             |  2394.3264 |  2394.2496 |
+|                 CPI                 |     1.5053 |     1.4437 |
+|  L2 to L1 load bandwidth [MBytes/s] |  4900.5766 |  4805.1238 |
+|  L2 to L1 load data volume [GBytes] |     0.0965 |     0.1781 |
+| L1 to L2 evict bandwidth [MBytes/s] |  2104.3776 |  2051.5708 |
+| L1 to L2 evict data volume [GBytes] |     0.0414 |     0.0760 |
+|  L1 to/from L2 bandwidth [MBytes/s] |  7004.9542 |  6856.6946 |
+|  L1 to/from L2 data volume [GBytes] |     0.1380 |     0.2541 |
+|  L3 to L2 load bandwidth [MBytes/s] |  3692.5204 |  3652.2253 |
+|  L3 to L2 load data volume [GBytes] |     0.0727 |     0.1354 |
+| L2 to L3 evict bandwidth [MBytes/s] |  3275.9946 |  3343.0086 |
+| L2 to L3 evict data volume [GBytes] |     0.0645 |     0.1239 |
+|  L2 to/from L3 bandwidth [MBytes/s] |  6968.5150 |  6995.2339 |
+|  L2 to/from L3 data volume [GBytes] |     0.1372 |     0.2592 |
++-------------------------------------+------------+------------+
+
++------------------------------------------+------------+-----------+-----------+-----------+
+|                  Metric                  |     Sum    |    Min    |    Max    |    Avg    |
++------------------------------------------+------------+-----------+-----------+-----------+
+|         Runtime (RDTSC) [s] STAT         |     0.0568 |    0.0197 |    0.0371 |    0.0284 |
+|         Runtime unhalted [s] STAT        |     0.0333 |    0.0119 |    0.0214 |    0.0166 |
+|             Clock [MHz] STAT             |  4788.5760 | 2394.2496 | 2394.3264 | 2394.2880 |
+|                 CPI STAT                 |     2.9490 |    1.4437 |    1.5053 |    1.4745 |
+|  L2 to L1 load bandwidth [MBytes/s] STAT |  9705.7004 | 4805.1238 | 4900.5766 | 4852.8502 |
+|  L2 to L1 load data volume [GBytes] STAT |     0.2746 |    0.0965 |    0.1781 |    0.1373 |
+| L1 to L2 evict bandwidth [MBytes/s] STAT |  4155.9484 | 2051.5708 | 2104.3776 | 2077.9742 |
+| L1 to L2 evict data volume [GBytes] STAT |     0.1174 |    0.0414 |    0.0760 |    0.0587 |
+|  L1 to/from L2 bandwidth [MBytes/s] STAT | 13861.6488 | 6856.6946 | 7004.9542 | 6930.8244 |
+|  L1 to/from L2 data volume [GBytes] STAT |     0.3921 |    0.1380 |    0.2541 |    0.1961 |
+|  L3 to L2 load bandwidth [MBytes/s] STAT |  7344.7457 | 3652.2253 | 3692.5204 | 3672.3728 |
+|  L3 to L2 load data volume [GBytes] STAT |     0.2081 |    0.0727 |    0.1354 |    0.1041 |
+| L2 to L3 evict bandwidth [MBytes/s] STAT |  6619.0032 | 3275.9946 | 3343.0086 | 3309.5016 |
+| L2 to L3 evict data volume [GBytes] STAT |     0.1884 |    0.0645 |    0.1239 |    0.0942 |
+|  L2 to/from L3 bandwidth [MBytes/s] STAT | 13963.7489 | 6968.5150 | 6995.2339 | 6981.8745 |
+|  L2 to/from L3 data volume [GBytes] STAT |     0.3964 |    0.1372 |    0.2592 |    0.1982 |
++------------------------------------------+------------+-----------+-----------+-----------+
+
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz
+CPU type:	Intel Cascadelake SP processor
+CPU clock:	2.49 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y.s0.c, Group 1: CACHES_MOD
++-------------------+------------+------------+
+|    Region Info    | HWThread 0 | HWThread 2 |
++-------------------+------------+------------+
+| RDTSC Runtime [s] |   0.020160 |   0.036221 |
+|     call count    |         69 |        139 |
++-------------------+------------+------------+
+
++-----------------------+---------+------------+------------+
+|         Event         | Counter | HWThread 0 | HWThread 2 |
++-----------------------+---------+------------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |   19179910 |   37542520 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |   29292960 |   53810300 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |   30513500 |   56053100 |
+|    L1D_REPLACEMENT    |   PMC0  |    1440072 |    2849028 |
+|      L1D_M_EVICT      |   PMC1  |     609404 |    1232605 |
+|    L2_LINES_IN_ALL    |   PMC2  |    1104646 |    2145879 |
+|     L2_TRANS_L2_WB    |   PMC3  |     978007 |    1957515 |
++-----------------------+---------+------------+------------+
+
++----------------------------+---------+----------+----------+----------+--------------+
+|            Event           | Counter |    Sum   |    Min   |    Max   |      Avg     |
++----------------------------+---------+----------+----------+----------+--------------+
+|   INSTR_RETIRED_ANY STAT   |  FIXC0  | 56722430 | 19179910 | 37542520 |     28361215 |
+| CPU_CLK_UNHALTED_CORE STAT |  FIXC1  | 83103260 | 29292960 | 53810300 |     41551630 |
+|  CPU_CLK_UNHALTED_REF STAT |  FIXC2  | 86566600 | 30513500 | 56053100 |     43283300 |
+|    L1D_REPLACEMENT STAT    |   PMC0  |  4289100 |  1440072 |  2849028 |      2144550 |
+|      L1D_M_EVICT STAT      |   PMC1  |  1842009 |   609404 |  1232605 |  921004.5000 |
+|    L2_LINES_IN_ALL STAT    |   PMC2  |  3250525 |  1104646 |  2145879 | 1.625262e+06 |
+|     L2_TRANS_L2_WB STAT    |   PMC3  |  2935522 |   978007 |  1957515 |      1467761 |
++----------------------------+---------+----------+----------+----------+--------------+
+
++-------------------------------------+------------+------------+
+|                Metric               | HWThread 0 | HWThread 2 |
++-------------------------------------+------------+------------+
+|         Runtime (RDTSC) [s]         |     0.0202 |     0.0362 |
+|         Runtime unhalted [s]        |     0.0117 |     0.0216 |
+|             Clock [MHz]             |  2394.2990 |  2394.2689 |
+|                 CPI                 |     1.5273 |     1.4333 |
+|  L2 to L1 load bandwidth [MBytes/s] |  4571.7138 |  5033.9936 |
+|  L2 to L1 load data volume [GBytes] |     0.0922 |     0.1823 |
+| L1 to L2 evict bandwidth [MBytes/s] |  1934.6399 |  2177.9097 |
+| L1 to L2 evict data volume [GBytes] |     0.0390 |     0.0789 |
+|  L1 to/from L2 bandwidth [MBytes/s] |  6506.3537 |  7211.9033 |
+|  L1 to/from L2 data volume [GBytes] |     0.1312 |     0.2612 |
+|  L3 to L2 load bandwidth [MBytes/s] |  3506.8562 |  3791.5883 |
+|  L3 to L2 load data volume [GBytes] |     0.0707 |     0.1373 |
+| L2 to L3 evict bandwidth [MBytes/s] |  3104.8226 |  3458.7649 |
+| L2 to L3 evict data volume [GBytes] |     0.0626 |     0.1253 |
+|  L2 to/from L3 bandwidth [MBytes/s] |  6611.6788 |  7250.3531 |
+|  L2 to/from L3 data volume [GBytes] |     0.1333 |     0.2626 |
++-------------------------------------+------------+------------+
+
++------------------------------------------+------------+-----------+-----------+-----------+
+|                  Metric                  |     Sum    |    Min    |    Max    |    Avg    |
++------------------------------------------+------------+-----------+-----------+-----------+
+|         Runtime (RDTSC) [s] STAT         |     0.0564 |    0.0202 |    0.0362 |    0.0282 |
+|         Runtime unhalted [s] STAT        |     0.0333 |    0.0117 |    0.0216 |    0.0167 |
+|             Clock [MHz] STAT             |  4788.5679 | 2394.2689 | 2394.2990 | 2394.2840 |
+|                 CPI STAT                 |     2.9606 |    1.4333 |    1.5273 |    1.4803 |
+|  L2 to L1 load bandwidth [MBytes/s] STAT |  9605.7074 | 4571.7138 | 5033.9936 | 4802.8537 |
+|  L2 to L1 load data volume [GBytes] STAT |     0.2745 |    0.0922 |    0.1823 |    0.1372 |
+| L1 to L2 evict bandwidth [MBytes/s] STAT |  4112.5496 | 1934.6399 | 2177.9097 | 2056.2748 |
+| L1 to L2 evict data volume [GBytes] STAT |     0.1179 |    0.0390 |    0.0789 |    0.0590 |
+|  L1 to/from L2 bandwidth [MBytes/s] STAT | 13718.2570 | 6506.3537 | 7211.9033 | 6859.1285 |
+|  L1 to/from L2 data volume [GBytes] STAT |     0.3924 |    0.1312 |    0.2612 |    0.1962 |
+|  L3 to L2 load bandwidth [MBytes/s] STAT |  7298.4445 | 3506.8562 | 3791.5883 | 3649.2222 |
+|  L3 to L2 load data volume [GBytes] STAT |     0.2080 |    0.0707 |    0.1373 |    0.1040 |
+| L2 to L3 evict bandwidth [MBytes/s] STAT |  6563.5875 | 3104.8226 | 3458.7649 | 3281.7937 |
+| L2 to L3 evict data volume [GBytes] STAT |     0.1879 |    0.0626 |    0.1253 |    0.0940 |
+|  L2 to/from L3 bandwidth [MBytes/s] STAT | 13862.0319 | 6611.6788 | 7250.3531 | 6931.0159 |
+|  L2 to/from L3 data volume [GBytes] STAT |     0.3959 |    0.1333 |    0.2626 |    0.1980 |
++------------------------------------------+------------+-----------+-----------+-----------+
+
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz
+CPU type:	Intel Cascadelake SP processor
+CPU clock:	2.49 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y.s0.c, Group 1: CACHES_MOD
++-------------------+------------+------------+
+|    Region Info    | HWThread 0 | HWThread 2 |
++-------------------+------------+------------+
+| RDTSC Runtime [s] |   0.020114 |   0.035745 |
+|     call count    |         69 |        139 |
++-------------------+------------+------------+
+
++-----------------------+---------+------------+------------+
+|         Event         | Counter | HWThread 0 | HWThread 2 |
++-----------------------+---------+------------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |   19179930 |   37542430 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |   29942960 |   52886330 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |   31190300 |   55086200 |
+|    L1D_REPLACEMENT    |   PMC0  |    1426357 |    2865871 |
+|      L1D_M_EVICT      |   PMC1  |     600188 |    1243531 |
+|    L2_LINES_IN_ALL    |   PMC2  |    1106635 |    2145307 |
+|     L2_TRANS_L2_WB    |   PMC3  |     978348 |    1956564 |
++-----------------------+---------+------------+------------+
+
++----------------------------+---------+----------+----------+----------+-------------+
+|            Event           | Counter |    Sum   |    Min   |    Max   |     Avg     |
++----------------------------+---------+----------+----------+----------+-------------+
+|   INSTR_RETIRED_ANY STAT   |  FIXC0  | 56722360 | 19179930 | 37542430 |    28361180 |
+| CPU_CLK_UNHALTED_CORE STAT |  FIXC1  | 82829290 | 29942960 | 52886330 |    41414645 |
+|  CPU_CLK_UNHALTED_REF STAT |  FIXC2  | 86276500 | 31190300 | 55086200 |    43138250 |
+|    L1D_REPLACEMENT STAT    |   PMC0  |  4292228 |  1426357 |  2865871 |     2146114 |
+|      L1D_M_EVICT STAT      |   PMC1  |  1843719 |   600188 |  1243531 | 921859.5000 |
+|    L2_LINES_IN_ALL STAT    |   PMC2  |  3251942 |  1106635 |  2145307 |     1625971 |
+|     L2_TRANS_L2_WB STAT    |   PMC3  |  2934912 |   978348 |  1956564 |     1467456 |
++----------------------------+---------+----------+----------+----------+-------------+
+
++-------------------------------------+------------+------------+
+|                Metric               | HWThread 0 | HWThread 2 |
++-------------------------------------+------------+------------+
+|         Runtime (RDTSC) [s]         |     0.0201 |     0.0357 |
+|         Runtime unhalted [s]        |     0.0120 |     0.0212 |
+|             Clock [MHz]             |  2394.3480 |  2394.4883 |
+|                 CPI                 |     1.5612 |     1.4087 |
+|  L2 to L1 load bandwidth [MBytes/s] |  4538.3716 |  5131.2983 |
+|  L2 to L1 load data volume [GBytes] |     0.0913 |     0.1834 |
+| L1 to L2 evict bandwidth [MBytes/s] |  1909.6735 |  2226.5233 |
+| L1 to L2 evict data volume [GBytes] |     0.0384 |     0.0796 |
+|  L1 to/from L2 bandwidth [MBytes/s] |  6448.0451 |  7357.8216 |
+|  L1 to/from L2 data volume [GBytes] |     0.1297 |     0.2630 |
+|  L3 to L2 load bandwidth [MBytes/s] |  3521.0826 |  3841.1395 |
+|  L3 to L2 load data volume [GBytes] |     0.0708 |     0.1373 |
+| L2 to L3 evict bandwidth [MBytes/s] |  3112.9000 |  3503.1980 |
+| L2 to L3 evict data volume [GBytes] |     0.0626 |     0.1252 |
+|  L2 to/from L3 bandwidth [MBytes/s] |  6633.9826 |  7344.3375 |
+|  L2 to/from L3 data volume [GBytes] |     0.1334 |     0.2625 |
++-------------------------------------+------------+------------+
+
++------------------------------------------+------------+-----------+-----------+-----------+
+|                  Metric                  |     Sum    |    Min    |    Max    |    Avg    |
++------------------------------------------+------------+-----------+-----------+-----------+
+|         Runtime (RDTSC) [s] STAT         |     0.0558 |    0.0201 |    0.0357 |    0.0279 |
+|         Runtime unhalted [s] STAT        |     0.0332 |    0.0120 |    0.0212 |    0.0166 |
+|             Clock [MHz] STAT             |  4788.8363 | 2394.3480 | 2394.4883 | 2394.4181 |
+|                 CPI STAT                 |     2.9699 |    1.4087 |    1.5612 |    1.4849 |
+|  L2 to L1 load bandwidth [MBytes/s] STAT |  9669.6699 | 4538.3716 | 5131.2983 | 4834.8350 |
+|  L2 to L1 load data volume [GBytes] STAT |     0.2747 |    0.0913 |    0.1834 |    0.1373 |
+| L1 to L2 evict bandwidth [MBytes/s] STAT |  4136.1968 | 1909.6735 | 2226.5233 | 2068.0984 |
+| L1 to L2 evict data volume [GBytes] STAT |     0.1180 |    0.0384 |    0.0796 |    0.0590 |
+|  L1 to/from L2 bandwidth [MBytes/s] STAT | 13805.8667 | 6448.0451 | 7357.8216 | 6902.9334 |
+|  L1 to/from L2 data volume [GBytes] STAT |     0.3927 |    0.1297 |    0.2630 |    0.1964 |
+|  L3 to L2 load bandwidth [MBytes/s] STAT |  7362.2221 | 3521.0826 | 3841.1395 | 3681.1111 |
+|  L3 to L2 load data volume [GBytes] STAT |     0.2081 |    0.0708 |    0.1373 |    0.1041 |
+| L2 to L3 evict bandwidth [MBytes/s] STAT |  6616.0980 | 3112.9000 | 3503.1980 | 3308.0490 |
+| L2 to L3 evict data volume [GBytes] STAT |     0.1878 |    0.0626 |    0.1252 |    0.0939 |
+|  L2 to/from L3 bandwidth [MBytes/s] STAT | 13978.3201 | 6633.9826 | 7344.3375 | 6989.1601 |
+|  L2 to/from L3 data volume [GBytes] STAT |     0.3959 |    0.1334 |    0.2625 |    0.1980 |
++------------------------------------------+------------+-----------+-----------+-----------+
+

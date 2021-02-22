@@ -1,0 +1,257 @@
+Output submitted to: results/casclakesp2/blur/3840x2160x3/MEM/full_fusion_parallel_marker_2t.txt
+Algorithm: blur, Arch: host, Host: casclakesp2, Group: MEM
+Number of runs: 3, Schedule: full_fusion, Image dimensions: 3840x2160x3
+Number of threads: 2, Pinning flags: -C M0:2,0-1
+Command: likwid-perfctr -C M0:2,0-1 -g MEM -m ./blur_aot
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz
+CPU type:	Intel Cascadelake SP processor
+CPU clock:	2.49 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y_prod, Group 1: MEM
++-------------------+------------+------------+
+|    Region Info    | HWThread 0 | HWThread 2 |
++-------------------+------------+------------+
+| RDTSC Runtime [s] |   0.030457 |   0.015203 |
+|     call count    |       4870 |       1608 |
++-------------------+------------+------------+
+
++-----------------------+---------+------------+------------+
+|         Event         | Counter | HWThread 0 | HWThread 2 |
++-----------------------+---------+------------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |   64712800 |   21339820 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |   71966480 |   28602900 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |   74961100 |   29797500 |
+|      CAS_COUNT_RD     | MBOX0C0 |          0 |     470493 |
+|      CAS_COUNT_WR     | MBOX0C1 |          0 |     236308 |
+|      CAS_COUNT_RD     | MBOX1C0 |          0 |     476512 |
+|      CAS_COUNT_WR     | MBOX1C1 |          0 |     235242 |
+|      CAS_COUNT_RD     | MBOX2C0 |          0 |     493876 |
+|      CAS_COUNT_WR     | MBOX2C1 |          0 |     233483 |
+|      CAS_COUNT_RD     | MBOX3C0 |          0 |     622823 |
+|      CAS_COUNT_WR     | MBOX3C1 |          0 |     214790 |
+|      CAS_COUNT_RD     | MBOX4C0 |          0 |     399592 |
+|      CAS_COUNT_WR     | MBOX4C1 |          0 |     213599 |
+|      CAS_COUNT_RD     | MBOX5C0 |          0 |     569221 |
+|      CAS_COUNT_WR     | MBOX5C1 |          0 |     211290 |
++-----------------------+---------+------------+------------+
+
++----------------------------+---------+-----------+----------+----------+-------------+
+|            Event           | Counter |    Sum    |    Min   |    Max   |     Avg     |
++----------------------------+---------+-----------+----------+----------+-------------+
+|   INSTR_RETIRED_ANY STAT   |  FIXC0  |  86052620 | 21339820 | 64712800 |    43026310 |
+| CPU_CLK_UNHALTED_CORE STAT |  FIXC1  | 100569380 | 28602900 | 71966480 |    50284690 |
+|  CPU_CLK_UNHALTED_REF STAT |  FIXC2  | 104758600 | 29797500 | 74961100 |    52379300 |
+|      CAS_COUNT_RD STAT     | MBOX0C0 |    470493 |        0 |   470493 | 235246.5000 |
+|      CAS_COUNT_WR STAT     | MBOX0C1 |    236308 |        0 |   236308 |      118154 |
+|      CAS_COUNT_RD STAT     | MBOX1C0 |    476512 |        0 |   476512 |      238256 |
+|      CAS_COUNT_WR STAT     | MBOX1C1 |    235242 |        0 |   235242 |      117621 |
+|      CAS_COUNT_RD STAT     | MBOX2C0 |    493876 |        0 |   493876 |      246938 |
+|      CAS_COUNT_WR STAT     | MBOX2C1 |    233483 |        0 |   233483 | 116741.5000 |
+|      CAS_COUNT_RD STAT     | MBOX3C0 |    622823 |        0 |   622823 | 311411.5000 |
+|      CAS_COUNT_WR STAT     | MBOX3C1 |    214790 |        0 |   214790 |      107395 |
+|      CAS_COUNT_RD STAT     | MBOX4C0 |    399592 |        0 |   399592 |      199796 |
+|      CAS_COUNT_WR STAT     | MBOX4C1 |    213599 |        0 |   213599 | 106799.5000 |
+|      CAS_COUNT_RD STAT     | MBOX5C0 |    569221 |        0 |   569221 | 284610.5000 |
+|      CAS_COUNT_WR STAT     | MBOX5C1 |    211290 |        0 |   211290 |      105645 |
++----------------------------+---------+-----------+----------+----------+-------------+
+
++-----------------------------------+------------+------------+
+|               Metric              | HWThread 0 | HWThread 2 |
++-----------------------------------+------------+------------+
+|        Runtime (RDTSC) [s]        |     0.0305 |     0.0152 |
+|        Runtime unhalted [s]       |     0.0289 |     0.0115 |
+|            Clock [MHz]            |  2394.4287 |  2394.0755 |
+|                CPI                |     1.1121 |     1.3404 |
+|  Memory read bandwidth [MBytes/s] |          0 | 12765.8303 |
+|  Memory read data volume [GBytes] |          0 |     0.1941 |
+| Memory write bandwidth [MBytes/s] |          0 |  5660.7647 |
+| Memory write data volume [GBytes] |          0 |     0.0861 |
+|    Memory bandwidth [MBytes/s]    |          0 | 18426.5950 |
+|    Memory data volume [GBytes]    |          0 |     0.2801 |
++-----------------------------------+------------+------------+
+
++----------------------------------------+------------+-----------+------------+-----------+
+|                 Metric                 |     Sum    |    Min    |     Max    |    Avg    |
++----------------------------------------+------------+-----------+------------+-----------+
+|        Runtime (RDTSC) [s] STAT        |     0.0457 |    0.0152 |     0.0305 |    0.0228 |
+|        Runtime unhalted [s] STAT       |     0.0404 |    0.0115 |     0.0289 |    0.0202 |
+|            Clock [MHz] STAT            |  4788.5042 | 2394.0755 |  2394.4287 | 2394.2521 |
+|                CPI STAT                |     2.4525 |    1.1121 |     1.3404 |    1.2263 |
+|  Memory read bandwidth [MBytes/s] STAT | 12765.8303 |         0 | 12765.8303 | 6382.9151 |
+|  Memory read data volume [GBytes] STAT |     0.1941 |         0 |     0.1941 |    0.0970 |
+| Memory write bandwidth [MBytes/s] STAT |  5660.7647 |         0 |  5660.7647 | 2830.3823 |
+| Memory write data volume [GBytes] STAT |     0.0861 |         0 |     0.0861 |    0.0430 |
+|    Memory bandwidth [MBytes/s] STAT    | 18426.5950 |         0 | 18426.5950 | 9213.2975 |
+|    Memory data volume [GBytes] STAT    |     0.2801 |         0 |     0.2801 |    0.1401 |
++----------------------------------------+------------+-----------+------------+-----------+
+
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz
+CPU type:	Intel Cascadelake SP processor
+CPU clock:	2.49 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y_prod, Group 1: MEM
++-------------------+------------+------------+
+|    Region Info    | HWThread 0 | HWThread 2 |
++-------------------+------------+------------+
+| RDTSC Runtime [s] |   0.029359 |   0.017122 |
+|     call count    |       4880 |       1598 |
++-------------------+------------+------------+
+
++-----------------------+---------+------------+------------+
+|         Event         | Counter | HWThread 0 | HWThread 2 |
++-----------------------+---------+------------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |   64845660 |   21206950 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |   71247870 |   28331990 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |   74186800 |   29526100 |
+|      CAS_COUNT_RD     | MBOX0C0 |          0 |     694180 |
+|      CAS_COUNT_WR     | MBOX0C1 |          0 |     248668 |
+|      CAS_COUNT_RD     | MBOX1C0 |          0 |     489390 |
+|      CAS_COUNT_WR     | MBOX1C1 |          0 |     246123 |
+|      CAS_COUNT_RD     | MBOX2C0 |          0 |     478815 |
+|      CAS_COUNT_WR     | MBOX2C1 |          0 |     243515 |
+|      CAS_COUNT_RD     | MBOX3C0 |          0 |     428857 |
+|      CAS_COUNT_WR     | MBOX3C1 |          0 |     219347 |
+|      CAS_COUNT_RD     | MBOX4C0 |          0 |     390920 |
+|      CAS_COUNT_WR     | MBOX4C1 |          0 |     216417 |
+|      CAS_COUNT_RD     | MBOX5C0 |          0 |     598394 |
+|      CAS_COUNT_WR     | MBOX5C1 |          0 |     212176 |
++-----------------------+---------+------------+------------+
+
++----------------------------+---------+-----------+----------+----------+-------------+
+|            Event           | Counter |    Sum    |    Min   |    Max   |     Avg     |
++----------------------------+---------+-----------+----------+----------+-------------+
+|   INSTR_RETIRED_ANY STAT   |  FIXC0  |  86052610 | 21206950 | 64845660 |    43026305 |
+| CPU_CLK_UNHALTED_CORE STAT |  FIXC1  |  99579860 | 28331990 | 71247870 |    49789930 |
+|  CPU_CLK_UNHALTED_REF STAT |  FIXC2  | 103712900 | 29526100 | 74186800 |    51856450 |
+|      CAS_COUNT_RD STAT     | MBOX0C0 |    694180 |        0 |   694180 |      347090 |
+|      CAS_COUNT_WR STAT     | MBOX0C1 |    248668 |        0 |   248668 |      124334 |
+|      CAS_COUNT_RD STAT     | MBOX1C0 |    489390 |        0 |   489390 |      244695 |
+|      CAS_COUNT_WR STAT     | MBOX1C1 |    246123 |        0 |   246123 | 123061.5000 |
+|      CAS_COUNT_RD STAT     | MBOX2C0 |    478815 |        0 |   478815 | 239407.5000 |
+|      CAS_COUNT_WR STAT     | MBOX2C1 |    243515 |        0 |   243515 | 121757.5000 |
+|      CAS_COUNT_RD STAT     | MBOX3C0 |    428857 |        0 |   428857 | 214428.5000 |
+|      CAS_COUNT_WR STAT     | MBOX3C1 |    219347 |        0 |   219347 | 109673.5000 |
+|      CAS_COUNT_RD STAT     | MBOX4C0 |    390920 |        0 |   390920 |      195460 |
+|      CAS_COUNT_WR STAT     | MBOX4C1 |    216417 |        0 |   216417 | 108208.5000 |
+|      CAS_COUNT_RD STAT     | MBOX5C0 |    598394 |        0 |   598394 |      299197 |
+|      CAS_COUNT_WR STAT     | MBOX5C1 |    212176 |        0 |   212176 |      106088 |
++----------------------------+---------+-----------+----------+----------+-------------+
+
++-----------------------------------+------------+------------+
+|               Metric              | HWThread 0 | HWThread 2 |
++-----------------------------------+------------+------------+
+|        Runtime (RDTSC) [s]        |     0.0294 |     0.0171 |
+|        Runtime unhalted [s]       |     0.0286 |     0.0114 |
+|            Clock [MHz]            |  2395.2856 |  2393.2224 |
+|                CPI                |     1.0987 |     1.3360 |
+|  Memory read bandwidth [MBytes/s] |          0 | 11514.9134 |
+|  Memory read data volume [GBytes] |          0 |     0.1972 |
+| Memory write bandwidth [MBytes/s] |          0 |  5181.6953 |
+| Memory write data volume [GBytes] |          0 |     0.0887 |
+|    Memory bandwidth [MBytes/s]    |          0 | 16696.6088 |
+|    Memory data volume [GBytes]    |          0 |     0.2859 |
++-----------------------------------+------------+------------+
+
++----------------------------------------+------------+-----------+------------+-----------+
+|                 Metric                 |     Sum    |    Min    |     Max    |    Avg    |
++----------------------------------------+------------+-----------+------------+-----------+
+|        Runtime (RDTSC) [s] STAT        |     0.0465 |    0.0171 |     0.0294 |    0.0232 |
+|        Runtime unhalted [s] STAT       |     0.0400 |    0.0114 |     0.0286 |    0.0200 |
+|            Clock [MHz] STAT            |  4788.5080 | 2393.2224 |  2395.2856 | 2394.2540 |
+|                CPI STAT                |     2.4347 |    1.0987 |     1.3360 |    1.2174 |
+|  Memory read bandwidth [MBytes/s] STAT | 11514.9134 |         0 | 11514.9134 | 5757.4567 |
+|  Memory read data volume [GBytes] STAT |     0.1972 |         0 |     0.1972 |    0.0986 |
+| Memory write bandwidth [MBytes/s] STAT |  5181.6953 |         0 |  5181.6953 | 2590.8477 |
+| Memory write data volume [GBytes] STAT |     0.0887 |         0 |     0.0887 |    0.0444 |
+|    Memory bandwidth [MBytes/s] STAT    | 16696.6088 |         0 | 16696.6088 | 8348.3044 |
+|    Memory data volume [GBytes] STAT    |     0.2859 |         0 |     0.2859 |    0.1429 |
++----------------------------------------+------------+-----------+------------+-----------+
+
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz
+CPU type:	Intel Cascadelake SP processor
+CPU clock:	2.49 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y_prod, Group 1: MEM
++-------------------+------------+------------+
+|    Region Info    | HWThread 0 | HWThread 2 |
++-------------------+------------+------------+
+| RDTSC Runtime [s] |   0.028601 |   0.017759 |
+|     call count    |       4886 |       1592 |
++-------------------+------------+------------+
+
++-----------------------+---------+------------+------------+
+|         Event         | Counter | HWThread 0 | HWThread 2 |
++-----------------------+---------+------------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |   64925210 |   21126870 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |   72114340 |   27616380 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |   75112900 |   28746800 |
+|      CAS_COUNT_RD     | MBOX0C0 |          0 |     572229 |
+|      CAS_COUNT_WR     | MBOX0C1 |          0 |     256085 |
+|      CAS_COUNT_RD     | MBOX1C0 |          0 |     445613 |
+|      CAS_COUNT_WR     | MBOX1C1 |          0 |     253028 |
+|      CAS_COUNT_RD     | MBOX2C0 |          0 |     478535 |
+|      CAS_COUNT_WR     | MBOX2C1 |          0 |     250027 |
+|      CAS_COUNT_RD     | MBOX3C0 |          0 |     405736 |
+|      CAS_COUNT_WR     | MBOX3C1 |          0 |     224501 |
+|      CAS_COUNT_RD     | MBOX4C0 |          0 |     653262 |
+|      CAS_COUNT_WR     | MBOX4C1 |          0 |     220516 |
+|      CAS_COUNT_RD     | MBOX5C0 |          0 |     547085 |
+|      CAS_COUNT_WR     | MBOX5C1 |          0 |     216166 |
++-----------------------+---------+------------+------------+
+
++----------------------------+---------+-----------+----------+----------+-------------+
+|            Event           | Counter |    Sum    |    Min   |    Max   |     Avg     |
++----------------------------+---------+-----------+----------+----------+-------------+
+|   INSTR_RETIRED_ANY STAT   |  FIXC0  |  86052080 | 21126870 | 64925210 |    43026040 |
+| CPU_CLK_UNHALTED_CORE STAT |  FIXC1  |  99730720 | 27616380 | 72114340 |    49865360 |
+|  CPU_CLK_UNHALTED_REF STAT |  FIXC2  | 103859700 | 28746800 | 75112900 |    51929850 |
+|      CAS_COUNT_RD STAT     | MBOX0C0 |    572229 |        0 |   572229 | 286114.5000 |
+|      CAS_COUNT_WR STAT     | MBOX0C1 |    256085 |        0 |   256085 | 128042.5000 |
+|      CAS_COUNT_RD STAT     | MBOX1C0 |    445613 |        0 |   445613 | 222806.5000 |
+|      CAS_COUNT_WR STAT     | MBOX1C1 |    253028 |        0 |   253028 |      126514 |
+|      CAS_COUNT_RD STAT     | MBOX2C0 |    478535 |        0 |   478535 | 239267.5000 |
+|      CAS_COUNT_WR STAT     | MBOX2C1 |    250027 |        0 |   250027 | 125013.5000 |
+|      CAS_COUNT_RD STAT     | MBOX3C0 |    405736 |        0 |   405736 |      202868 |
+|      CAS_COUNT_WR STAT     | MBOX3C1 |    224501 |        0 |   224501 | 112250.5000 |
+|      CAS_COUNT_RD STAT     | MBOX4C0 |    653262 |        0 |   653262 |      326631 |
+|      CAS_COUNT_WR STAT     | MBOX4C1 |    220516 |        0 |   220516 |      110258 |
+|      CAS_COUNT_RD STAT     | MBOX5C0 |    547085 |        0 |   547085 | 273542.5000 |
+|      CAS_COUNT_WR STAT     | MBOX5C1 |    216166 |        0 |   216166 |      108083 |
++----------------------------+---------+-----------+----------+----------+-------------+
+
++-----------------------------------+------------+------------+
+|               Metric              | HWThread 0 | HWThread 2 |
++-----------------------------------+------------+------------+
+|        Runtime (RDTSC) [s]        |     0.0286 |     0.0178 |
+|        Runtime unhalted [s]       |     0.0289 |     0.0111 |
+|            Clock [MHz]            |  2394.4800 |  2395.9699 |
+|                CPI                |     1.1107 |     1.3072 |
+|  Memory read bandwidth [MBytes/s] |          0 | 11180.9048 |
+|  Memory read data volume [GBytes] |          0 |     0.1986 |
+| Memory write bandwidth [MBytes/s] |          0 |  5118.6788 |
+| Memory write data volume [GBytes] |          0 |     0.0909 |
+|    Memory bandwidth [MBytes/s]    |          0 | 16299.5836 |
+|    Memory data volume [GBytes]    |          0 |     0.2895 |
++-----------------------------------+------------+------------+
+
++----------------------------------------+------------+-----------+------------+-----------+
+|                 Metric                 |     Sum    |    Min    |     Max    |    Avg    |
++----------------------------------------+------------+-----------+------------+-----------+
+|        Runtime (RDTSC) [s] STAT        |     0.0464 |    0.0178 |     0.0286 |    0.0232 |
+|        Runtime unhalted [s] STAT       |     0.0400 |    0.0111 |     0.0289 |    0.0200 |
+|            Clock [MHz] STAT            |  4790.4499 | 2394.4800 |  2395.9699 | 2395.2249 |
+|                CPI STAT                |     2.4179 |    1.1107 |     1.3072 |    1.2089 |
+|  Memory read bandwidth [MBytes/s] STAT | 11180.9048 |         0 | 11180.9048 | 5590.4524 |
+|  Memory read data volume [GBytes] STAT |     0.1986 |         0 |     0.1986 |    0.0993 |
+| Memory write bandwidth [MBytes/s] STAT |  5118.6788 |         0 |  5118.6788 | 2559.3394 |
+| Memory write data volume [GBytes] STAT |     0.0909 |         0 |     0.0909 |    0.0454 |
+|    Memory bandwidth [MBytes/s] STAT    | 16299.5836 |         0 | 16299.5836 | 8149.7918 |
+|    Memory data volume [GBytes] STAT    |     0.2895 |         0 |     0.2895 |    0.1447 |
++----------------------------------------+------------+-----------+------------+-----------+
+

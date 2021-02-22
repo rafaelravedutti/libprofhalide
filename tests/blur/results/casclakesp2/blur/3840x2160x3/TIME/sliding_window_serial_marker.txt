@@ -1,0 +1,23 @@
+Output submitted to: results/casclakesp2/blur/3840x2160x3/TIME/sliding_window_serial_marker.txt
+Algorithm: blur, Arch: host, Host: casclakesp2, Group: TIME
+Number of runs: 3, Schedule: sliding_window, Image dimensions: 3840x2160x3
+Number of threads: 1, Pinning flags: -C 0
+Command: likwid-pin -C 0 ./blur_aot
+blur_y
+ total time: 29.934668 ms  samples: 19  runs: 1  time/run: 29.934668 ms
+ heap allocations: 3  peak heap usage: 61408 bytes
+  blur_y:                14.778ms  (49%)   
+  blur_x:                15.155ms  (50%)    peak: 61408    num: 3         avg: 61408
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m
+blur_y
+ total time: 29.936600 ms  samples: 19  runs: 1  time/run: 29.936600 ms
+ heap allocations: 3  peak heap usage: 61408 bytes
+  blur_y:                27.826ms  (92%)   
+  blur_x:                2.110ms   (7%)     peak: 61408    num: 3         avg: 61408
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m
+blur_y
+ total time: 29.941284 ms  samples: 19  runs: 1  time/run: 29.941284 ms
+ heap allocations: 3  peak heap usage: 61408 bytes
+  blur_y:                22.553ms  (75%)   
+  blur_x:                7.387ms   (24%)    peak: 61408    num: 3         avg: 61408
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m

@@ -1,0 +1,269 @@
+Output submitted to: results/casclakesp2/blur/3840x2160x3/CACHES_MOD/breadth_first_serial_marker.txt
+Algorithm: blur, Arch: host, Host: casclakesp2, Group: CACHES_MOD
+Number of runs: 3, Schedule: breadth_first, Image dimensions: 3840x2160x3
+Number of threads: 1, Pinning flags: -C 0
+Command: likwid-perfctr -C 0 -g CACHES_MOD -m ./blur_aot
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz
+CPU type:	Intel Cascadelake SP processor
+CPU clock:	2.49 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_x_cons, Group 1: CACHES_MOD
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.034087 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------+---------+------------+
+|         Event         | Counter | HWThread 0 |
++-----------------------+---------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |   37527440 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |   37852450 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |   39429600 |
+|    L1D_REPLACEMENT    |   PMC0  |    6232883 |
+|      L1D_M_EVICT      |   PMC1  |    1558177 |
+|    L2_LINES_IN_ALL    |   PMC2  |    3078558 |
+|     L2_TRANS_L2_WB    |   PMC3  |    3062977 |
++-----------------------+---------+------------+
+
++-------------------------------------+------------+
+|                Metric               | HWThread 0 |
++-------------------------------------+------------+
+|         Runtime (RDTSC) [s]         |     0.0341 |
+|         Runtime unhalted [s]        |     0.0152 |
+|             Clock [MHz]             |  2394.3077 |
+|                 CPI                 |     1.0087 |
+|  L2 to L1 load bandwidth [MBytes/s] | 11702.5272 |
+|  L2 to L1 load data volume [GBytes] |     0.3989 |
+| L1 to L2 evict bandwidth [MBytes/s] |  2925.5497 |
+| L1 to L2 evict data volume [GBytes] |     0.0997 |
+|  L1 to/from L2 bandwidth [MBytes/s] | 14628.0768 |
+|  L1 to/from L2 data volume [GBytes] |     0.4986 |
+|  L3 to L2 load bandwidth [MBytes/s] |  5780.1356 |
+|  L3 to L2 load data volume [GBytes] |     0.1970 |
+| L2 to L3 evict bandwidth [MBytes/s] |  5750.8815 |
+| L2 to L3 evict data volume [GBytes] |     0.1960 |
+|  L2 to/from L3 bandwidth [MBytes/s] | 11531.0171 |
+|  L2 to/from L3 data volume [GBytes] |     0.3931 |
++-------------------------------------+------------+
+
+Region blur_x_prod, Group 1: CACHES_MOD
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.033329 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------+---------+------------+
+|         Event         | Counter | HWThread 0 |
++-----------------------+---------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |   28206300 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |   34762420 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |   36210300 |
+|    L1D_REPLACEMENT    |   PMC0  |    3074321 |
+|      L1D_M_EVICT      |   PMC1  |    1516964 |
+|    L2_LINES_IN_ALL    |   PMC2  |    3043103 |
+|     L2_TRANS_L2_WB    |   PMC3  |    3022462 |
++-----------------------+---------+------------+
+
++-------------------------------------+------------+
+|                Metric               | HWThread 0 |
++-------------------------------------+------------+
+|         Runtime (RDTSC) [s]         |     0.0333 |
+|         Runtime unhalted [s]        |     0.0139 |
+|             Clock [MHz]             |  2394.3422 |
+|                 CPI                 |     1.2324 |
+|  L2 to L1 load bandwidth [MBytes/s] |  5903.4903 |
+|  L2 to L1 load data volume [GBytes] |     0.1968 |
+| L1 to L2 evict bandwidth [MBytes/s] |  2912.9627 |
+| L1 to L2 evict data volume [GBytes] |     0.0971 |
+|  L1 to/from L2 bandwidth [MBytes/s] |  8816.4530 |
+|  L1 to/from L2 data volume [GBytes] |     0.2938 |
+|  L3 to L2 load bandwidth [MBytes/s] |  5843.5437 |
+|  L3 to L2 load data volume [GBytes] |     0.1948 |
+| L2 to L3 evict bandwidth [MBytes/s] |  5803.9077 |
+| L2 to L3 evict data volume [GBytes] |     0.1934 |
+|  L2 to/from L3 bandwidth [MBytes/s] | 11647.4514 |
+|  L2 to/from L3 data volume [GBytes] |     0.3882 |
++-------------------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz
+CPU type:	Intel Cascadelake SP processor
+CPU clock:	2.49 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_x_cons, Group 1: CACHES_MOD
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.034595 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------+---------+------------+
+|         Event         | Counter | HWThread 0 |
++-----------------------+---------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |   37527950 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |   38058010 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |   39641500 |
+|    L1D_REPLACEMENT    |   PMC0  |    6201005 |
+|      L1D_M_EVICT      |   PMC1  |    1536767 |
+|    L2_LINES_IN_ALL    |   PMC2  |    3046352 |
+|     L2_TRANS_L2_WB    |   PMC3  |    3031388 |
++-----------------------+---------+------------+
+
++-------------------------------------+------------+
+|                Metric               | HWThread 0 |
++-------------------------------------+------------+
+|         Runtime (RDTSC) [s]         |     0.0346 |
+|         Runtime unhalted [s]        |     0.0153 |
+|             Clock [MHz]             |  2394.4624 |
+|                 CPI                 |     1.0141 |
+|  L2 to L1 load bandwidth [MBytes/s] | 11471.8840 |
+|  L2 to L1 load data volume [GBytes] |     0.3969 |
+| L1 to L2 evict bandwidth [MBytes/s] |  2843.0251 |
+| L1 to L2 evict data volume [GBytes] |     0.0984 |
+|  L1 to/from L2 bandwidth [MBytes/s] | 14314.9091 |
+|  L1 to/from L2 data volume [GBytes] |     0.4952 |
+|  L3 to L2 load bandwidth [MBytes/s] |  5635.7634 |
+|  L3 to L2 load data volume [GBytes] |     0.1950 |
+| L2 to L3 evict bandwidth [MBytes/s] |  5608.0799 |
+| L2 to L3 evict data volume [GBytes] |     0.1940 |
+|  L2 to/from L3 bandwidth [MBytes/s] | 11243.8432 |
+|  L2 to/from L3 data volume [GBytes] |     0.3890 |
++-------------------------------------+------------+
+
+Region blur_x_prod, Group 1: CACHES_MOD
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.033214 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------+---------+------------+
+|         Event         | Counter | HWThread 0 |
++-----------------------+---------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |   28206300 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |   34647880 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |   36105800 |
+|    L1D_REPLACEMENT    |   PMC0  |    3073029 |
+|      L1D_M_EVICT      |   PMC1  |    1516567 |
+|    L2_LINES_IN_ALL    |   PMC2  |    3042726 |
+|     L2_TRANS_L2_WB    |   PMC3  |    3024461 |
++-----------------------+---------+------------+
+
++-------------------------------------+------------+
+|                Metric               | HWThread 0 |
++-------------------------------------+------------+
+|         Runtime (RDTSC) [s]         |     0.0332 |
+|         Runtime unhalted [s]        |     0.0139 |
+|             Clock [MHz]             |  2393.3804 |
+|                 CPI                 |     1.2284 |
+|  L2 to L1 load bandwidth [MBytes/s] |  5921.4714 |
+|  L2 to L1 load data volume [GBytes] |     0.1967 |
+| L1 to L2 evict bandwidth [MBytes/s] |  2922.2985 |
+| L1 to L2 evict data volume [GBytes] |     0.0971 |
+|  L1 to/from L2 bandwidth [MBytes/s] |  8843.7699 |
+|  L1 to/from L2 data volume [GBytes] |     0.2937 |
+|  L3 to L2 load bandwidth [MBytes/s] |  5863.0800 |
+|  L3 to L2 load data volume [GBytes] |     0.1947 |
+| L2 to L3 evict bandwidth [MBytes/s] |  5827.8849 |
+| L2 to L3 evict data volume [GBytes] |     0.1936 |
+|  L2 to/from L3 bandwidth [MBytes/s] | 11690.9649 |
+|  L2 to/from L3 data volume [GBytes] |     0.3883 |
++-------------------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz
+CPU type:	Intel Cascadelake SP processor
+CPU clock:	2.49 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_x_cons, Group 1: CACHES_MOD
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.034048 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------+---------+------------+
+|         Event         | Counter | HWThread 0 |
++-----------------------+---------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |   37527440 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |   37739260 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |   39311400 |
+|    L1D_REPLACEMENT    |   PMC0  |    6233920 |
+|      L1D_M_EVICT      |   PMC1  |    1558749 |
+|    L2_LINES_IN_ALL    |   PMC2  |    3079925 |
+|     L2_TRANS_L2_WB    |   PMC3  |    3064279 |
++-----------------------+---------+------------+
+
++-------------------------------------+------------+
+|                Metric               | HWThread 0 |
++-------------------------------------+------------+
+|         Runtime (RDTSC) [s]         |     0.0340 |
+|         Runtime unhalted [s]        |     0.0151 |
+|             Clock [MHz]             |  2394.3246 |
+|                 CPI                 |     1.0056 |
+|  L2 to L1 load bandwidth [MBytes/s] | 11717.7949 |
+|  L2 to L1 load data volume [GBytes] |     0.3990 |
+| L1 to L2 evict bandwidth [MBytes/s] |  2929.9544 |
+| L1 to L2 evict data volume [GBytes] |     0.0998 |
+|  L1 to/from L2 bandwidth [MBytes/s] | 14647.7493 |
+|  L1 to/from L2 data volume [GBytes] |     0.4987 |
+|  L3 to L2 load bandwidth [MBytes/s] |  5789.2834 |
+|  L3 to L2 load data volume [GBytes] |     0.1971 |
+| L2 to L3 evict bandwidth [MBytes/s] |  5759.8739 |
+| L2 to L3 evict data volume [GBytes] |     0.1961 |
+|  L2 to/from L3 bandwidth [MBytes/s] | 11549.1573 |
+|  L2 to/from L3 data volume [GBytes] |     0.3932 |
++-------------------------------------+------------+
+
+Region blur_x_prod, Group 1: CACHES_MOD
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.033368 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------+---------+------------+
+|         Event         | Counter | HWThread 0 |
++-----------------------+---------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |   28206300 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |   34802730 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |   36253400 |
+|    L1D_REPLACEMENT    |   PMC0  |    3077358 |
+|      L1D_M_EVICT      |   PMC1  |    1518566 |
+|    L2_LINES_IN_ALL    |   PMC2  |    3047241 |
+|     L2_TRANS_L2_WB    |   PMC3  |    3027090 |
++-----------------------+---------+------------+
+
++-------------------------------------+------------+
+|                Metric               | HWThread 0 |
++-------------------------------------+------------+
+|         Runtime (RDTSC) [s]         |     0.0334 |
+|         Runtime unhalted [s]        |     0.0140 |
+|             Clock [MHz]             |  2394.2678 |
+|                 CPI                 |     1.2339 |
+|  L2 to L1 load bandwidth [MBytes/s] |  5902.3765 |
+|  L2 to L1 load data volume [GBytes] |     0.1970 |
+| L1 to L2 evict bandwidth [MBytes/s] |  2912.6115 |
+| L1 to L2 evict data volume [GBytes] |     0.0972 |
+|  L1 to/from L2 bandwidth [MBytes/s] |  8814.9880 |
+|  L1 to/from L2 data volume [GBytes] |     0.2941 |
+|  L3 to L2 load bandwidth [MBytes/s] |  5844.6120 |
+|  L3 to L2 load data volume [GBytes] |     0.1950 |
+| L2 to L3 evict bandwidth [MBytes/s] |  5805.9624 |
+| L2 to L3 evict data volume [GBytes] |     0.1937 |
+|  L2 to/from L3 bandwidth [MBytes/s] | 11650.5745 |
+|  L2 to/from L3 data volume [GBytes] |     0.3888 |
++-------------------------------------+------------+
+

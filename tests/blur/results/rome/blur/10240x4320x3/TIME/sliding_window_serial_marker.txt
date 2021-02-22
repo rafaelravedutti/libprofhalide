@@ -1,0 +1,23 @@
+Output submitted to: results/rome/blur/10240x4320x3/TIME/sliding_window_serial_marker.txt
+Algorithm: blur, Arch: host, Host: rome, Group: TIME
+Number of runs: 3, Schedule: sliding_window, Image dimensions: 10240x4320x3
+Number of threads: 1, Pinning flags: -C 0
+Command: likwid-pin -C 0 ./blur_aot
+blur_y
+ total time: 192.191879 ms  samples: 173  runs: 1  time/run: 192.191879 ms
+ heap allocations: 3  peak heap usage: 163808 bytes
+  blur_y:                171.147ms (89%)   
+  blur_x:                21.044ms  (10%)    peak: 163808   num: 3         avg: 163808
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m
+blur_y
+ total time: 192.188309 ms  samples: 173  runs: 1  time/run: 192.188309 ms
+ heap allocations: 3  peak heap usage: 163808 bytes
+  blur_y:                154.300ms (80%)   
+  blur_x:                37.887ms  (19%)    peak: 163808   num: 3         avg: 163808
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m
+blur_y
+ total time: 190.082550 ms  samples: 171  runs: 1  time/run: 190.082550 ms
+ heap allocations: 3  peak heap usage: 163808 bytes
+  blur_y:                168.007ms (88%)   
+  blur_x:                22.075ms  (11%)    peak: 163808   num: 3         avg: 163808
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m

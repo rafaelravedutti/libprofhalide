@@ -1,0 +1,42 @@
+Output submitted to: results/casclakesp2/blur/3840x2160x3/TIME/tile_32x32_parallel_marker_2t.txt
+Algorithm: blur, Arch: host, Host: casclakesp2, Group: TIME
+Number of runs: 3, Schedule: tile_32x32, Image dimensions: 3840x2160x3
+Number of threads: 2, Pinning flags: -C M0:2,0-1
+Command: likwid-pin -C M0:2,0-1 ./blur_aot
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 22753399191296 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 22753397090048 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 43.276176 ms  samples: 42  runs: 1  time/run: 43.276176 ms
+ average threads used: 1.357143
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                26.394ms  (60%)   threads: 0.961 
+  blur_x:                16.881ms  (39%)   threads: 2.000  stack: 4352
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 23127284770560 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 23127282669312 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 43.256138 ms  samples: 42  runs: 1  time/run: 43.256138 ms
+ average threads used: 1.380952
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                28.490ms  (65%)   threads: 1.071 
+  blur_x:                14.766ms  (34%)   threads: 2.000  stack: 4352
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 22870412691200 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 22870410589952 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 42.200245 ms  samples: 41  runs: 1  time/run: 42.200245 ms
+ average threads used: 1.487805
+ heap allocations: 0  peak heap usage: 0 bytes
+  overhead:              0.000ms   (0%)    threads: 1.000 
+  blur_y:                29.538ms  (69%)   threads: 1.285 
+  blur_x:                12.661ms  (30%)   threads: 2.000  stack: 4352

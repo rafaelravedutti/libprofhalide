@@ -1,0 +1,152 @@
+Output submitted to: results/casclakesp2/blur/3840x2160x3/MEM/full_fusion_serial_marker.txt
+Algorithm: blur, Arch: host, Host: casclakesp2, Group: MEM
+Number of runs: 3, Schedule: full_fusion, Image dimensions: 3840x2160x3
+Number of threads: 1, Pinning flags: -C 0
+Command: likwid-perfctr -C 0 -g MEM -m ./blur_aot
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz
+CPU type:	Intel Cascadelake SP processor
+CPU clock:	2.49 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y_prod, Group 1: MEM
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.036676 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------+---------+------------+
+|         Event         | Counter | HWThread 0 |
++-----------------------+---------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |   56070870 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |   42924750 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |   44713700 |
+|      CAS_COUNT_RD     | MBOX0C0 |     317383 |
+|      CAS_COUNT_WR     | MBOX0C1 |     264861 |
+|      CAS_COUNT_RD     | MBOX1C0 |     317564 |
+|      CAS_COUNT_WR     | MBOX1C1 |     264764 |
+|      CAS_COUNT_RD     | MBOX2C0 |     317398 |
+|      CAS_COUNT_WR     | MBOX2C1 |     264378 |
+|      CAS_COUNT_RD     | MBOX3C0 |     277451 |
+|      CAS_COUNT_WR     | MBOX3C1 |     250369 |
+|      CAS_COUNT_RD     | MBOX4C0 |     277595 |
+|      CAS_COUNT_WR     | MBOX4C1 |     251014 |
+|      CAS_COUNT_RD     | MBOX5C0 |     277566 |
+|      CAS_COUNT_WR     | MBOX5C1 |     250528 |
++-----------------------+---------+------------+
+
++-----------------------------------+------------+
+|               Metric              | HWThread 0 |
++-----------------------------------+------------+
+|        Runtime (RDTSC) [s]        |     0.0367 |
+|        Runtime unhalted [s]       |     0.0172 |
+|            Clock [MHz]            |  2394.3060 |
+|                CPI                |     0.7655 |
+|  Memory read bandwidth [MBytes/s] |  3114.7770 |
+|  Memory read data volume [GBytes] |     0.1142 |
+| Memory write bandwidth [MBytes/s] |  2697.6433 |
+| Memory write data volume [GBytes] |     0.0989 |
+|    Memory bandwidth [MBytes/s]    |  5812.4203 |
+|    Memory data volume [GBytes]    |     0.2132 |
++-----------------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz
+CPU type:	Intel Cascadelake SP processor
+CPU clock:	2.49 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y_prod, Group 1: MEM
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.036696 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------+---------+------------+
+|         Event         | Counter | HWThread 0 |
++-----------------------+---------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |   56070360 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |   43232360 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |   45034300 |
+|      CAS_COUNT_RD     | MBOX0C0 |     319892 |
+|      CAS_COUNT_WR     | MBOX0C1 |     270005 |
+|      CAS_COUNT_RD     | MBOX1C0 |     320344 |
+|      CAS_COUNT_WR     | MBOX1C1 |     270107 |
+|      CAS_COUNT_RD     | MBOX2C0 |     320092 |
+|      CAS_COUNT_WR     | MBOX2C1 |     269743 |
+|      CAS_COUNT_RD     | MBOX3C0 |     280141 |
+|      CAS_COUNT_WR     | MBOX3C1 |     255852 |
+|      CAS_COUNT_RD     | MBOX4C0 |     279879 |
+|      CAS_COUNT_WR     | MBOX4C1 |     256072 |
+|      CAS_COUNT_RD     | MBOX5C0 |     279938 |
+|      CAS_COUNT_WR     | MBOX5C1 |     256030 |
++-----------------------+---------+------------+
+
++-----------------------------------+------------+
+|               Metric              | HWThread 0 |
++-----------------------------------+------------+
+|        Runtime (RDTSC) [s]        |     0.0367 |
+|        Runtime unhalted [s]       |     0.0173 |
+|            Clock [MHz]            |  2394.1874 |
+|                CPI                |     0.7710 |
+|  Memory read bandwidth [MBytes/s] |  3139.7730 |
+|  Memory read data volume [GBytes] |     0.1152 |
+| Memory write bandwidth [MBytes/s] |  2751.7640 |
+| Memory write data volume [GBytes] |     0.1010 |
+|    Memory bandwidth [MBytes/s]    |  5891.5370 |
+|    Memory data volume [GBytes]    |     0.2162 |
++-----------------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz
+CPU type:	Intel Cascadelake SP processor
+CPU clock:	2.49 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_y_prod, Group 1: MEM
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.037129 |
+|     call count    |          1 |
++-------------------+------------+
+
++-----------------------+---------+------------+
+|         Event         | Counter | HWThread 0 |
++-----------------------+---------+------------+
+|   INSTR_RETIRED_ANY   |  FIXC0  |   56070870 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  |   43831010 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  |   45657500 |
+|      CAS_COUNT_RD     | MBOX0C0 |     317503 |
+|      CAS_COUNT_WR     | MBOX0C1 |     265818 |
+|      CAS_COUNT_RD     | MBOX1C0 |     317449 |
+|      CAS_COUNT_WR     | MBOX1C1 |     265627 |
+|      CAS_COUNT_RD     | MBOX2C0 |     317337 |
+|      CAS_COUNT_WR     | MBOX2C1 |     265631 |
+|      CAS_COUNT_RD     | MBOX3C0 |     277433 |
+|      CAS_COUNT_WR     | MBOX3C1 |     251466 |
+|      CAS_COUNT_RD     | MBOX4C0 |     277231 |
+|      CAS_COUNT_WR     | MBOX4C1 |     251925 |
+|      CAS_COUNT_RD     | MBOX5C0 |     277383 |
+|      CAS_COUNT_WR     | MBOX5C1 |     251980 |
++-----------------------+---------+------------+
+
++-----------------------------------+------------+
+|               Metric              | HWThread 0 |
++-----------------------------------+------------+
+|        Runtime (RDTSC) [s]        |     0.0371 |
+|        Runtime unhalted [s]       |     0.0176 |
+|            Clock [MHz]            |  2394.2940 |
+|                CPI                |     0.7817 |
+|  Memory read bandwidth [MBytes/s] |  3075.6551 |
+|  Memory read data volume [GBytes] |     0.1142 |
+| Memory write bandwidth [MBytes/s] |  2675.9486 |
+| Memory write data volume [GBytes] |     0.0994 |
+|    Memory bandwidth [MBytes/s]    |  5751.6037 |
+|    Memory data volume [GBytes]    |     0.2136 |
++-----------------------------------+------------+
+

@@ -1,0 +1,23 @@
+Output submitted to: results/casclakesp2/blur/3840x2160x3/TIME/breadth_first_serial_marker.txt
+Algorithm: blur, Arch: host, Host: casclakesp2, Group: TIME
+Number of runs: 3, Schedule: breadth_first, Image dimensions: 3840x2160x3
+Number of threads: 1, Pinning flags: -C 0
+Command: likwid-pin -C 0 ./blur_aot
+blur_y
+ total time: 55.416023 ms  samples: 43  runs: 1  time/run: 55.416023 ms
+ heap allocations: 1  peak heap usage: 99480960 bytes
+  blur_x:                19.384ms  (34%)    peak: 99480960 num: 1         avg: 99480960
+  blur_y:                36.031ms  (65%)   
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m
+blur_y
+ total time: 54.212185 ms  samples: 42  runs: 1  time/run: 54.212185 ms
+ heap allocations: 1  peak heap usage: 99480960 bytes
+  blur_x:                19.385ms  (35%)    peak: 99480960 num: 1         avg: 99480960
+  blur_y:                34.826ms  (64%)   
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m
+blur_y
+ total time: 51.729179 ms  samples: 50  runs: 1  time/run: 51.729179 ms
+ heap allocations: 1  peak heap usage: 99480960 bytes
+  blur_x:                16.901ms  (32%)    peak: 99480960 num: 1         avg: 99480960
+  blur_y:                34.828ms  (67%)   
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m

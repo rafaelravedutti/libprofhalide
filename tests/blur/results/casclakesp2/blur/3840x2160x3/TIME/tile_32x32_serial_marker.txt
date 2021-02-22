@@ -1,0 +1,23 @@
+Output submitted to: results/casclakesp2/blur/3840x2160x3/TIME/tile_32x32_serial_marker.txt
+Algorithm: blur, Arch: host, Host: casclakesp2, Group: TIME
+Number of runs: 3, Schedule: tile_32x32, Image dimensions: 3840x2160x3
+Number of threads: 1, Pinning flags: -C 0
+Command: likwid-pin -C 0 ./blur_aot
+blur_y
+ total time: 35.228241 ms  samples: 24  runs: 1  time/run: 35.228241 ms
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                34.172ms  (97%)   
+  blur_x:                1.055ms   (2%)     stack: 4352
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m
+blur_y
+ total time: 33.777653 ms  samples: 33  runs: 1  time/run: 33.777653 ms
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                9.496ms   (28%)   
+  blur_x:                24.281ms  (71%)    stack: 4352
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m
+blur_y
+ total time: 35.212269 ms  samples: 24  runs: 1  time/run: 35.212269 ms
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                15.160ms  (43%)   
+  blur_x:                20.051ms  (56%)    stack: 4352
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m

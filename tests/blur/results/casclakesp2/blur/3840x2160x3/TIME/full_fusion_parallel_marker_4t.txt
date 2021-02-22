@@ -1,0 +1,45 @@
+Output submitted to: results/casclakesp2/blur/3840x2160x3/TIME/full_fusion_parallel_marker_4t.txt
+Algorithm: blur, Arch: host, Host: casclakesp2, Group: TIME
+Number of runs: 3, Schedule: full_fusion, Image dimensions: 3840x2160x3
+Number of threads: 4, Pinning flags: -C M0:4,0-3
+Command: likwid-pin -C M0:4,0-3 ./blur_aot
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 4
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m3->3  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 23307993069312 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 23307990968064 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 23307988866816 -> hwthread 2 - OK[0m[1;34m
+[0m[1;34m	threadid 23307986765568 -> hwthread 3 - OK[0m[1;34m
+[0mblur_y
+ total time: 51.722855 ms  samples: 50  runs: 1  time/run: 51.722855 ms
+ average threads used: 1.440000
+ heap allocations: 0  peak heap usage: 0 bytes
+  overhead:              0.000ms   (0%)    threads: 1.000 
+  blur_y:                51.722ms  (99%)   threads: 1.448 
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 4
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m3->3  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 22411087902464 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 22411085801216 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 22411083699968 -> hwthread 2 - OK[0m[1;34m
+[0m[1;34m	threadid 22411081598720 -> hwthread 3 - OK[0m[1;34m
+[0mblur_y
+ total time: 54.938278 ms  samples: 53  runs: 1  time/run: 54.938278 ms
+ average threads used: 1.320755
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                54.938ms  (100%)  threads: 1.320 
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 4
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m3->3  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 22986101835520 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 22986099734272 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 22986097633024 -> hwthread 2 - OK[0m[1;34m
+[0m[1;34m	threadid 22986095531776 -> hwthread 3 - OK[0m[1;34m
+[0mblur_y
+ total time: 54.909187 ms  samples: 53  runs: 1  time/run: 54.909187 ms
+ average threads used: 1.301887
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                54.909ms  (100%)  threads: 1.301 
