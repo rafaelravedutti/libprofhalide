@@ -1,0 +1,209 @@
+Output submitted to: results/rome1/blur/10240x4320x3/L2/breadth_first_serial_marker.txt
+Algorithm: blur, Arch: host, Host: rome1, Group: L2
+Number of runs: 3, Schedule: breadth_first, Image dimensions: 10240x4320x3
+Number of threads: 1, Pinning flags: -C 0
+Command: likwid-perfctr -C 0 -g L2 -m ./blur_aot
+--------------------------------------------------------------------------------
+CPU name:	AMD EPYC 7452 32-Core Processor                
+CPU type:	AMD K17 (Zen2) architecture
+CPU clock:	2.35 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_x_cons, Group 1: L2
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.099630 |
+|     call count    |          1 |
++-------------------+------------+
+
++-------------------------------+---------+------------+
+|             Event             | Counter | HWThread 0 |
++-------------------------------+---------+------------+
+|        ACTUAL_CPU_CLOCK       |  FIXC1  |  234219400 |
+|         MAX_CPU_CLOCK         |  FIXC2  |  234421800 |
+|      RETIRED_INSTRUCTIONS     |   PMC0  |  199445600 |
+|      CPU_CLOCKS_UNHALTED      |   PMC1  |  120438200 |
+| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   33351700 |
++-------------------------------+---------+------------+
+
++-------------------------------+------------+
+|             Metric            | HWThread 0 |
++-------------------------------+------------+
+|      Runtime (RDTSC) [s]      |     0.0996 |
+|      Runtime unhalted [s]     |     0.0997 |
+|          Clock [MHz]          |  2348.0193 |
+|              CPI              |     0.6039 |
+| L2D load bandwidth [MBytes/s] | 21424.3345 |
+| L2D load data volume [GBytes] |     2.1345 |
+|    L2 bandwidth [MBytes/s]    | 21424.3345 |
+|    L2 data volume [GBytes]    |     2.1345 |
++-------------------------------+------------+
+
+Region blur_x_prod, Group 1: L2
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.087930 |
+|     call count    |          1 |
++-------------------+------------+
+
++-------------------------------+---------+------------+
+|             Event             | Counter | HWThread 0 |
++-------------------------------+---------+------------+
+|        ACTUAL_CPU_CLOCK       |  FIXC1  |  206343500 |
+|         MAX_CPU_CLOCK         |  FIXC2  |  206926900 |
+|      RETIRED_INSTRUCTIONS     |   PMC0  |  149746000 |
+|      CPU_CLOCKS_UNHALTED      |   PMC1  |   92327430 |
+| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   16852380 |
++-------------------------------+---------+------------+
+
++-------------------------------+------------+
+|             Metric            | HWThread 0 |
++-------------------------------+------------+
+|      Runtime (RDTSC) [s]      |     0.0879 |
+|      Runtime unhalted [s]     |     0.0878 |
+|          Clock [MHz]          |  2343.4227 |
+|              CPI              |     0.6166 |
+| L2D load bandwidth [MBytes/s] | 12266.0572 |
+| L2D load data volume [GBytes] |     1.0786 |
+|    L2 bandwidth [MBytes/s]    | 12266.0572 |
+|    L2 data volume [GBytes]    |     1.0786 |
++-------------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	AMD EPYC 7452 32-Core Processor                
+CPU type:	AMD K17 (Zen2) architecture
+CPU clock:	2.35 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_x_cons, Group 1: L2
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.099834 |
+|     call count    |          1 |
++-------------------+------------+
+
++-------------------------------+---------+------------+
+|             Event             | Counter | HWThread 0 |
++-------------------------------+---------+------------+
+|        ACTUAL_CPU_CLOCK       |  FIXC1  |  234672700 |
+|         MAX_CPU_CLOCK         |  FIXC2  |  234912900 |
+|      RETIRED_INSTRUCTIONS     |   PMC0  |  199445600 |
+|      CPU_CLOCKS_UNHALTED      |   PMC1  |  120447200 |
+| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   33351120 |
++-------------------------------+---------+------------+
+
++-------------------------------+------------+
+|             Metric            | HWThread 0 |
++-------------------------------+------------+
+|      Runtime (RDTSC) [s]      |     0.0998 |
+|      Runtime unhalted [s]     |     0.0999 |
+|          Clock [MHz]          |  2347.6414 |
+|              CPI              |     0.6039 |
+| L2D load bandwidth [MBytes/s] | 21380.3107 |
+| L2D load data volume [GBytes] |     2.1345 |
+|    L2 bandwidth [MBytes/s]    | 21380.3107 |
+|    L2 data volume [GBytes]    |     2.1345 |
++-------------------------------+------------+
+
+Region blur_x_prod, Group 1: L2
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.087822 |
+|     call count    |          1 |
++-------------------+------------+
+
++-------------------------------+---------+------------+
+|             Event             | Counter | HWThread 0 |
++-------------------------------+---------+------------+
+|        ACTUAL_CPU_CLOCK       |  FIXC1  |  206340700 |
+|         MAX_CPU_CLOCK         |  FIXC2  |  206669000 |
+|      RETIRED_INSTRUCTIONS     |   PMC0  |  149746500 |
+|      CPU_CLOCKS_UNHALTED      |   PMC1  |   92500140 |
+| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   16843300 |
++-------------------------------+---------+------------+
+
++-------------------------------+------------+
+|             Metric            | HWThread 0 |
++-------------------------------+------------+
+|      Runtime (RDTSC) [s]      |     0.0878 |
+|      Runtime unhalted [s]     |     0.0878 |
+|          Clock [MHz]          |  2346.3112 |
+|              CPI              |     0.6177 |
+| L2D load bandwidth [MBytes/s] | 12274.4825 |
+| L2D load data volume [GBytes] |     1.0780 |
+|    L2 bandwidth [MBytes/s]    | 12274.4825 |
+|    L2 data volume [GBytes]    |     1.0780 |
++-------------------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	AMD EPYC 7452 32-Core Processor                
+CPU type:	AMD K17 (Zen2) architecture
+CPU clock:	2.35 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_x_cons, Group 1: L2
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.099837 |
+|     call count    |          1 |
++-------------------+------------+
+
++-------------------------------+---------+------------+
+|             Event             | Counter | HWThread 0 |
++-------------------------------+---------+------------+
+|        ACTUAL_CPU_CLOCK       |  FIXC1  |  234709400 |
+|         MAX_CPU_CLOCK         |  FIXC2  |  234908000 |
+|      RETIRED_INSTRUCTIONS     |   PMC0  |  199445600 |
+|      CPU_CLOCKS_UNHALTED      |   PMC1  |  120482200 |
+| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   33349980 |
++-------------------------------+---------+------------+
+
++-------------------------------+------------+
+|             Metric            | HWThread 0 |
++-------------------------------+------------+
+|      Runtime (RDTSC) [s]      |     0.0998 |
+|      Runtime unhalted [s]     |     0.0999 |
+|          Clock [MHz]          |  2348.0572 |
+|              CPI              |     0.6041 |
+| L2D load bandwidth [MBytes/s] | 21378.8111 |
+| L2D load data volume [GBytes] |     2.1344 |
+|    L2 bandwidth [MBytes/s]    | 21378.8111 |
+|    L2 data volume [GBytes]    |     2.1344 |
++-------------------------------+------------+
+
+Region blur_x_prod, Group 1: L2
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.087937 |
+|     call count    |          1 |
++-------------------+------------+
+
++-------------------------------+---------+------------+
+|             Event             | Counter | HWThread 0 |
++-------------------------------+---------+------------+
+|        ACTUAL_CPU_CLOCK       |  FIXC1  |  206431100 |
+|         MAX_CPU_CLOCK         |  FIXC2  |  206950800 |
+|      RETIRED_INSTRUCTIONS     |   PMC0  |  149746500 |
+|      CPU_CLOCKS_UNHALTED      |   PMC1  |   92455320 |
+| REQUESTS_TO_L2_GRP1_ALL_NO_PF |   PMC3  |   16838890 |
++-------------------------------+---------+------------+
+
++-------------------------------+------------+
+|             Metric            | HWThread 0 |
++-------------------------------+------------+
+|      Runtime (RDTSC) [s]      |     0.0879 |
+|      Runtime unhalted [s]     |     0.0878 |
+|          Clock [MHz]          |  2344.1425 |
+|              CPI              |     0.6174 |
+| L2D load bandwidth [MBytes/s] | 12255.1833 |
+| L2D load data volume [GBytes] |     1.0777 |
+|    L2 bandwidth [MBytes/s]    | 12255.1833 |
+|    L2 data volume [GBytes]    |     1.0777 |
++-------------------------------+------------+
+

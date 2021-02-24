@@ -1,0 +1,41 @@
+Output submitted to: results/rome1/blur/10240x4320x3/TIME/full_fusion_parallel_marker_2t.txt
+Algorithm: blur, Arch: host, Host: rome1, Group: TIME
+Number of runs: 3, Schedule: full_fusion, Image dimensions: 10240x4320x3
+Number of threads: 2, Pinning flags: -C M0:2,0-1
+Command: likwid-pin -C M0:2,0-1 ./blur_aot
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 23302449579776 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 23302447478528 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 77.989120 ms  samples: 75  runs: 1  time/run: 77.989120 ms
+ average threads used: 1.746667
+ heap allocations: 0  peak heap usage: 0 bytes
+  overhead:              0.000ms   (0%)    threads: 1.000 
+  blur_y:                77.988ms  (99%)   threads: 1.756 
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 23378380670720 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 23378378569472 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 79.055962 ms  samples: 76  runs: 1  time/run: 79.055962 ms
+ average threads used: 1.723684
+ heap allocations: 0  peak heap usage: 0 bytes
+  overhead:              0.000ms   (0%)    threads: 1.000 
+  blur_y:                79.055ms  (99%)   threads: 1.733 
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 23218414622464 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 23218412521216 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 79.030655 ms  samples: 76  runs: 1  time/run: 79.030655 ms
+ average threads used: 1.723684
+ heap allocations: 0  peak heap usage: 0 bytes
+  overhead:              0.000ms   (0%)    threads: 0.000 
+  blur_y:                79.030ms  (99%)   threads: 1.746 

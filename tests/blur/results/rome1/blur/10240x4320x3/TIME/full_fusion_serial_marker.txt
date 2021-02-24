@@ -1,0 +1,20 @@
+Output submitted to: results/rome1/blur/10240x4320x3/TIME/full_fusion_serial_marker.txt
+Algorithm: blur, Arch: host, Host: rome1, Group: TIME
+Number of runs: 3, Schedule: full_fusion, Image dimensions: 10240x4320x3
+Number of threads: 1, Pinning flags: -C 0
+Command: likwid-pin -C 0 ./blur_aot
+blur_y
+ total time: 91.387085 ms  samples: 75  runs: 1  time/run: 91.387085 ms
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                91.387ms  (100%)  
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m
+blur_y
+ total time: 90.345154 ms  samples: 72  runs: 1  time/run: 90.345154 ms
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                90.345ms  (100%)  
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m
+blur_y
+ total time: 90.222664 ms  samples: 74  runs: 1  time/run: 90.222664 ms
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                90.222ms  (100%)  
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m

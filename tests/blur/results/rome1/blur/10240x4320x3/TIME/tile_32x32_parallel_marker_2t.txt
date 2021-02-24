@@ -1,0 +1,43 @@
+Output submitted to: results/rome1/blur/10240x4320x3/TIME/tile_32x32_parallel_marker_2t.txt
+Algorithm: blur, Arch: host, Host: rome1, Group: TIME
+Number of runs: 3, Schedule: tile_32x32, Image dimensions: 10240x4320x3
+Number of threads: 2, Pinning flags: -C M0:2,0-1
+Command: likwid-pin -C M0:2,0-1 ./blur_aot
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 23043617322752 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 23043615221504 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 92.984657 ms  samples: 89  runs: 1  time/run: 92.984657 ms
+ average threads used: 1.764045
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                51.878ms  (55%)   threads: 1.600 
+  blur_x:                41.106ms  (44%)   threads: 1.974  stack: 4352
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 23044927375104 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 23044925273856 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 94.860649 ms  samples: 91  runs: 1  time/run: 94.860649 ms
+ average threads used: 1.769231
+ heap allocations: 0  peak heap usage: 0 bytes
+  overhead:              0.000ms   (0%)    threads: 0.000 
+  blur_y:                48.488ms  (51%)   threads: 1.586 
+  blur_x:                46.371ms  (48%)   threads: 2.000  stack: 4352
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 23011175417600 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 23011173316352 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 93.782631 ms  samples: 90  runs: 1  time/run: 93.782631 ms
+ average threads used: 1.755556
+ heap allocations: 0  peak heap usage: 0 bytes
+  overhead:              0.000ms   (0%)    threads: 0.000 
+  blur_y:                49.516ms  (52%)   threads: 1.574 
+  blur_x:                44.265ms  (47%)   threads: 2.000  stack: 4352

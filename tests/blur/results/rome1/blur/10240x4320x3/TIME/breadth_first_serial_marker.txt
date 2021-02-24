@@ -1,0 +1,23 @@
+Output submitted to: results/rome1/blur/10240x4320x3/TIME/breadth_first_serial_marker.txt
+Algorithm: blur, Arch: host, Host: rome1, Group: TIME
+Number of runs: 3, Schedule: breadth_first, Image dimensions: 10240x4320x3
+Number of threads: 1, Pinning flags: -C 0
+Command: likwid-pin -C 0 ./blur_aot
+blur_y
+ total time: 174.469238 ms  samples: 150  runs: 1  time/run: 174.469238 ms
+ heap allocations: 1  peak heap usage: 530737920 bytes
+  blur_x:                72.570ms  (41%)    peak: 530737920 num: 1        avg: 530737920
+  blur_y:                101.899ms (58%)   
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m
+blur_y
+ total time: 177.435135 ms  samples: 153  runs: 1  time/run: 177.435135 ms
+ heap allocations: 1  peak heap usage: 530737920 bytes
+  blur_x:                75.638ms  (42%)    peak: 530737920 num: 1        avg: 530737920
+  blur_y:                101.796ms (57%)   
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m
+blur_y
+ total time: 175.961365 ms  samples: 152  runs: 1  time/run: 175.961365 ms
+ heap allocations: 1  peak heap usage: 530737920 bytes
+  blur_x:                74.733ms  (42%)    peak: 530737920 num: 1        avg: 530737920
+  blur_y:                101.227ms (57%)   
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m

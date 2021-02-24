@@ -1,0 +1,49 @@
+Output submitted to: results/rome1/blur/10240x4320x3/TIME/breadth_first_parallel_marker_4t.txt
+Algorithm: blur, Arch: host, Host: rome1, Group: TIME
+Number of runs: 3, Schedule: breadth_first, Image dimensions: 10240x4320x3
+Number of threads: 4, Pinning flags: -C M0:4,0-3
+Command: likwid-pin -C M0:4,0-3 ./blur_aot
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 4
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m3->3  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 23255763949312 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 23255231108864 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 23255229007616 -> hwthread 2 - OK[0m[1;34m
+[0m[1;34m	threadid 23255226906368 -> hwthread 3 - OK[0m[1;34m
+[0mblur_y
+ total time: 185.068619 ms  samples: 174  runs: 1  time/run: 185.068619 ms
+ average threads used: 3.241379
+ heap allocations: 1  peak heap usage: 530737920 bytes
+  blur_x:                97.981ms  (52%)   threads: 2.655  peak: 530737920 num: 1        avg: 530737920
+  blur_y:                87.087ms  (47%)   threads: 3.913 
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 4
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m3->3  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 22360150005504 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 22359617165056 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 22359615063808 -> hwthread 2 - OK[0m[1;34m
+[0m[1;34m	threadid 22359612962560 -> hwthread 3 - OK[0m[1;34m
+[0mblur_y
+ total time: 185.511703 ms  samples: 177  runs: 1  time/run: 185.511703 ms
+ average threads used: 3.265537
+ heap allocations: 1  peak heap usage: 530737920 bytes
+  overhead:              0.000ms   (0%)    threads: 1.000 
+  blur_x:                97.954ms  (52%)   threads: 2.784  peak: 530737920 num: 1        avg: 530737920
+  blur_y:                87.556ms  (47%)   threads: 3.831 
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 4
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m3->3  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 23393838970624 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 23393306130176 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 23393304028928 -> hwthread 2 - OK[0m[1;34m
+[0m[1;34m	threadid 23393301927680 -> hwthread 3 - OK[0m[1;34m
+[0mblur_y
+ total time: 186.785889 ms  samples: 178  runs: 1  time/run: 186.785889 ms
+ average threads used: 3.280899
+ heap allocations: 1  peak heap usage: 530737920 bytes
+  overhead:              0.000ms   (0%)    threads: 1.000 
+  blur_x:                100.224ms (53%)   threads: 2.747  peak: 530737920 num: 1        avg: 530737920
+  blur_y:                86.561ms  (46%)   threads: 3.926 

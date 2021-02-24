@@ -1,0 +1,65 @@
+Output submitted to: results/rome1/blur/10240x4320x3/TIME/full_fusion_parallel_marker_11t.txt
+Algorithm: blur, Arch: host, Host: rome1, Group: TIME
+Number of runs: 3, Schedule: full_fusion, Image dimensions: 10240x4320x3
+Number of threads: 11, Pinning flags: -C M0:11,0-10
+Command: likwid-pin -C M0:11,0-10 ./blur_aot
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 11
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m3->3  [0m[1;34m4->4  [0m[1;34m5->5  [0m[1;34m6->6  [0m[1;34m7->7  [0m[1;34m8->8  [0m[1;34m9->9  [0m[1;34m10->10  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 23208873764608 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 23208871663360 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 23208869562112 -> hwthread 2 - OK[0m[1;34m
+[0m[1;34m	threadid 23208867460864 -> hwthread 3 - OK[0m[1;34m
+[0m[1;34m	threadid 23208865359616 -> hwthread 4 - OK[0m[1;34m
+[0m[1;34m	threadid 23208863258368 -> hwthread 5 - OK[0m[1;34m
+[0m[1;34m	threadid 23208861157120 -> hwthread 6 - OK[0m[1;34m
+[0m[1;34m	threadid 23208859055872 -> hwthread 7 - OK[0m[1;34m
+[0m[1;34m	threadid 23208856954624 -> hwthread 8 - OK[0m[1;34m
+[0m[1;34m	threadid 23208854853376 -> hwthread 9 - OK[0m[1;34m
+[0m[1;34m	threadid 23208852752128 -> hwthread 10 - OK[0m[1;34m
+[0mblur_y
+ total time: 198.610352 ms  samples: 189  runs: 1  time/run: 198.610352 ms
+ average threads used: 5.306878
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                198.610ms (100%)  threads: 5.306 
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 11
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m3->3  [0m[1;34m4->4  [0m[1;34m5->5  [0m[1;34m6->6  [0m[1;34m7->7  [0m[1;34m8->8  [0m[1;34m9->9  [0m[1;34m10->10  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 23312315782912 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 23312313681664 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 23312311580416 -> hwthread 2 - OK[0m[1;34m
+[0m[1;34m	threadid 23312309479168 -> hwthread 3 - OK[0m[1;34m
+[0m[1;34m	threadid 23312307377920 -> hwthread 4 - OK[0m[1;34m
+[0m[1;34m	threadid 23312305276672 -> hwthread 5 - OK[0m[1;34m
+[0m[1;34m	threadid 23312303175424 -> hwthread 6 - OK[0m[1;34m
+[0m[1;34m	threadid 23312301074176 -> hwthread 7 - OK[0m[1;34m
+[0m[1;34m	threadid 23312298972928 -> hwthread 8 - OK[0m[1;34m
+[0m[1;34m	threadid 23312296871680 -> hwthread 9 - OK[0m[1;34m
+[0m[1;34m	threadid 23312294770432 -> hwthread 10 - OK[0m[1;34m
+[0mblur_y
+ total time: 196.473495 ms  samples: 187  runs: 1  time/run: 196.473495 ms
+ average threads used: 5.320856
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                196.473ms (100%)  threads: 5.320 
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 11
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m2->2  [0m[1;34m3->3  [0m[1;34m4->4  [0m[1;34m5->5  [0m[1;34m6->6  [0m[1;34m7->7  [0m[1;34m8->8  [0m[1;34m9->9  [0m[1;34m10->10  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 22757942576896 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 22757940475648 -> hwthread 1 - OK[0m[1;34m
+[0m[1;34m	threadid 22757938374400 -> hwthread 2 - OK[0m[1;34m
+[0m[1;34m	threadid 22757936273152 -> hwthread 3 - OK[0m[1;34m
+[0m[1;34m	threadid 22757934171904 -> hwthread 4 - OK[0m[1;34m
+[0m[1;34m	threadid 22757932070656 -> hwthread 5 - OK[0m[1;34m
+[0m[1;34m	threadid 22757929969408 -> hwthread 6 - OK[0m[1;34m
+[0m[1;34m	threadid 22757927868160 -> hwthread 7 - OK[0m[1;34m
+[0m[1;34m	threadid 22757925766912 -> hwthread 8 - OK[0m[1;34m
+[0m[1;34m	threadid 22757923665664 -> hwthread 9 - OK[0m[1;34m
+[0m[1;34m	threadid 22757921564416 -> hwthread 10 - OK[0m[1;34m
+[0mblur_y
+ total time: 198.598862 ms  samples: 189  runs: 1  time/run: 198.598862 ms
+ average threads used: 5.444445
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                198.598ms (100%)  threads: 5.444 

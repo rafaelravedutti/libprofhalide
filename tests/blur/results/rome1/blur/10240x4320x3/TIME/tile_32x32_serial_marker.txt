@@ -1,0 +1,23 @@
+Output submitted to: results/rome1/blur/10240x4320x3/TIME/tile_32x32_serial_marker.txt
+Algorithm: blur, Arch: host, Host: rome1, Group: TIME
+Number of runs: 3, Schedule: tile_32x32, Image dimensions: 10240x4320x3
+Number of threads: 1, Pinning flags: -C 0
+Command: likwid-pin -C 0 ./blur_aot
+blur_y
+ total time: 129.803757 ms  samples: 113  runs: 1  time/run: 129.803757 ms
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                77.779ms  (59%)   
+  blur_x:                52.024ms  (40%)    stack: 4352
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m
+blur_y
+ total time: 129.218155 ms  samples: 112  runs: 1  time/run: 129.218155 ms
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                95.491ms  (73%)   
+  blur_x:                33.726ms  (26%)    stack: 4352
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m
+blur_y
+ total time: 129.933990 ms  samples: 113  runs: 1  time/run: 129.933990 ms
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                79.349ms  (61%)   
+  blur_x:                50.584ms  (38%)    stack: 4352
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m

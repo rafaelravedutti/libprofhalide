@@ -1,0 +1,197 @@
+Output submitted to: results/rome1/blur/10240x4320x3/FLOPS_SP/breadth_first_serial_marker.txt
+Algorithm: blur, Arch: host, Host: rome1, Group: FLOPS_SP
+Number of runs: 3, Schedule: breadth_first, Image dimensions: 10240x4320x3
+Number of threads: 1, Pinning flags: -C 0
+Command: likwid-perfctr -C 0 -g FLOPS_SP -m ./blur_aot
+--------------------------------------------------------------------------------
+CPU name:	AMD EPYC 7452 32-Core Processor                
+CPU type:	AMD K17 (Zen2) architecture
+CPU clock:	2.35 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_x_cons, Group 1: FLOPS_SP
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.100474 |
+|     call count    |          1 |
++-------------------+------------+
+
++---------------------------+---------+------------+
+|           Event           | Counter | HWThread 0 |
++---------------------------+---------+------------+
+|      ACTUAL_CPU_CLOCK     |  FIXC1  |  236122000 |
+|       MAX_CPU_CLOCK       |  FIXC2  |  236438700 |
+|    RETIRED_INSTRUCTIONS   |   PMC0  |  199446700 |
+|    CPU_CLOCKS_UNHALTED    |   PMC1  |  120561200 |
+| RETIRED_SSE_AVX_FLOPS_ALL |   PMC2  |  397946900 |
+|           MERGE           |   PMC3  |          0 |
++---------------------------+---------+------------+
+
++----------------------+------------+
+|        Metric        | HWThread 0 |
++----------------------+------------+
+|  Runtime (RDTSC) [s] |     0.1005 |
+| Runtime unhalted [s] |     0.1005 |
+|      Clock [MHz]     |  2346.9006 |
+|          CPI         |     0.6045 |
+|     SP [MFLOP/s]     |  3960.7032 |
++----------------------+------------+
+
+Region blur_x_prod, Group 1: FLOPS_SP
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.088107 |
+|     call count    |          1 |
++-------------------+------------+
+
++---------------------------+---------+------------+
+|           Event           | Counter | HWThread 0 |
++---------------------------+---------+------------+
+|      ACTUAL_CPU_CLOCK     |  FIXC1  |  206862900 |
+|       MAX_CPU_CLOCK       |  FIXC2  |  207368800 |
+|    RETIRED_INSTRUCTIONS   |   PMC0  |  149746500 |
+|    CPU_CLOCKS_UNHALTED    |   PMC1  |   92115220 |
+| RETIRED_SSE_AVX_FLOPS_ALL |   PMC2  |  398131200 |
+|           MERGE           |   PMC3  |          0 |
++---------------------------+---------+------------+
+
++----------------------+------------+
+|        Metric        | HWThread 0 |
++----------------------+------------+
+|  Runtime (RDTSC) [s] |     0.0881 |
+| Runtime unhalted [s] |     0.0880 |
+|      Clock [MHz]     |  2344.3152 |
+|          CPI         |     0.6151 |
+|     SP [MFLOP/s]     |  4518.7264 |
++----------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	AMD EPYC 7452 32-Core Processor                
+CPU type:	AMD K17 (Zen2) architecture
+CPU clock:	2.35 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_x_cons, Group 1: FLOPS_SP
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.099679 |
+|     call count    |          1 |
++-------------------+------------+
+
++---------------------------+---------+------------+
+|           Event           | Counter | HWThread 0 |
++---------------------------+---------+------------+
+|      ACTUAL_CPU_CLOCK     |  FIXC1  |  234328400 |
+|       MAX_CPU_CLOCK       |  FIXC2  |  234565300 |
+|    RETIRED_INSTRUCTIONS   |   PMC0  |  199446200 |
+|    CPU_CLOCKS_UNHALTED    |   PMC1  |  120433300 |
+| RETIRED_SSE_AVX_FLOPS_ALL |   PMC2  |  397946900 |
+|           MERGE           |   PMC3  |          0 |
++---------------------------+---------+------------+
+
++----------------------+------------+
+|        Metric        | HWThread 0 |
++----------------------+------------+
+|  Runtime (RDTSC) [s] |     0.0997 |
+| Runtime unhalted [s] |     0.0997 |
+|      Clock [MHz]     |  2347.6733 |
+|          CPI         |     0.6038 |
+|     SP [MFLOP/s]     |  3992.2838 |
++----------------------+------------+
+
+Region blur_x_prod, Group 1: FLOPS_SP
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.087786 |
+|     call count    |          1 |
++-------------------+------------+
+
++---------------------------+---------+------------+
+|           Event           | Counter | HWThread 0 |
++---------------------------+---------+------------+
+|      ACTUAL_CPU_CLOCK     |  FIXC1  |  206131800 |
+|       MAX_CPU_CLOCK       |  FIXC2  |  206610100 |
+|    RETIRED_INSTRUCTIONS   |   PMC0  |  149747000 |
+|    CPU_CLOCKS_UNHALTED    |   PMC1  |   92520620 |
+| RETIRED_SSE_AVX_FLOPS_ALL |   PMC2  |  398131200 |
+|           MERGE           |   PMC3  |          0 |
++---------------------------+---------+------------+
+
++----------------------+------------+
+|        Metric        | HWThread 0 |
++----------------------+------------+
+|  Runtime (RDTSC) [s] |     0.0878 |
+| Runtime unhalted [s] |     0.0877 |
+|      Clock [MHz]     |  2344.6064 |
+|          CPI         |     0.6178 |
+|     SP [MFLOP/s]     |  4535.2579 |
++----------------------+------------+
+
+--------------------------------------------------------------------------------
+CPU name:	AMD EPYC 7452 32-Core Processor                
+CPU type:	AMD K17 (Zen2) architecture
+CPU clock:	2.35 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region blur_x_cons, Group 1: FLOPS_SP
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.099849 |
+|     call count    |          1 |
++-------------------+------------+
+
++---------------------------+---------+------------+
+|           Event           | Counter | HWThread 0 |
++---------------------------+---------+------------+
+|      ACTUAL_CPU_CLOCK     |  FIXC1  |  234619000 |
+|       MAX_CPU_CLOCK       |  FIXC2  |  234974900 |
+|    RETIRED_INSTRUCTIONS   |   PMC0  |  199446200 |
+|    CPU_CLOCKS_UNHALTED    |   PMC1  |  120438600 |
+| RETIRED_SSE_AVX_FLOPS_ALL |   PMC2  |  397946900 |
+|           MERGE           |   PMC3  |          0 |
++---------------------------+---------+------------+
+
++----------------------+------------+
+|        Metric        | HWThread 0 |
++----------------------+------------+
+|  Runtime (RDTSC) [s] |     0.0998 |
+| Runtime unhalted [s] |     0.0998 |
+|      Clock [MHz]     |  2346.4876 |
+|          CPI         |     0.6039 |
+|     SP [MFLOP/s]     |  3985.4843 |
++----------------------+------------+
+
+Region blur_x_prod, Group 1: FLOPS_SP
++-------------------+------------+
+|    Region Info    | HWThread 0 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.087909 |
+|     call count    |          1 |
++-------------------+------------+
+
++---------------------------+---------+------------+
+|           Event           | Counter | HWThread 0 |
++---------------------------+---------+------------+
+|      ACTUAL_CPU_CLOCK     |  FIXC1  |  206569900 |
+|       MAX_CPU_CLOCK       |  FIXC2  |  206908500 |
+|    RETIRED_INSTRUCTIONS   |   PMC0  |  149747000 |
+|    CPU_CLOCKS_UNHALTED    |   PMC1  |   92638430 |
+| RETIRED_SSE_AVX_FLOPS_ALL |   PMC2  |  398131200 |
+|           MERGE           |   PMC3  |          0 |
++---------------------------+---------+------------+
+
++----------------------+------------+
+|        Metric        | HWThread 0 |
++----------------------+------------+
+|  Runtime (RDTSC) [s] |     0.0879 |
+| Runtime unhalted [s] |     0.0879 |
+|      Clock [MHz]     |  2346.2013 |
+|          CPI         |     0.6186 |
+|     SP [MFLOP/s]     |  4528.8896 |
++----------------------+------------+
+
