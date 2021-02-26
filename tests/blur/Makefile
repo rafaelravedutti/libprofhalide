@@ -30,6 +30,7 @@ PROF_HALIDE_PATH=../..
 #PROF_HALIDE_PATH=/home/hpc/iwia/iwia021h/libprofhalide
 
 # Halide flags
+#HALIDE_FLAGS=-I ${HALIDE_PATH}/include -I ${HALIDE_PATH}/tools -L ${HALIDE_PATH}/bin -L ${PROF_HALIDE_PATH} -ltimehalide -lpthread -lz -ldl -std=c++11
 HALIDE_FLAGS=-I ${HALIDE_PATH}/include -I ${HALIDE_PATH}/tools -L ${HALIDE_PATH}/bin -L ${PROF_HALIDE_PATH} -llikwidhalide -lpthread -lz -ldl -std=c++11
 #HALIDE_FLAGS=-I ${HALIDE_PATH}/include -I ${HALIDE_PATH}/tools -L ${HALIDE_PATH}/bin -L ${PROF_HALIDE_PATH} -lpapihalide -lpthread -lz -ldl -std=c++11
 #HALIDE_FLAGS=-I ${HALIDE_PATH}/include -I ${HALIDE_PATH}/tools -L ${HALIDE_PATH}/bin -L ${PROF_HALIDE_PATH} -lpapihalide -lpthread -ljpeg -lz `libpng-config --cflags --ldflags` -ldl -std=c++11
@@ -51,8 +52,8 @@ PAPI_FLAGS=-L ${PAPI_SRC} -lpapi
 LIBPFM_PATH=${PAPI_SRC}/libpfm4/lib/
 
 # Likwid path
-#LIKWID_PATH=$(dirname $(which likwid-perfctr))
-LIKWID_PATH=/mnt/opt/likwid-5.1.0/bin
+LIKWID_PATH=$(shell dirname $(shell which likwid-perfctr))
+#LIKWID_PATH=/mnt/opt/likwid-5.1.0/bin
 #LIKWID_PATH=/apps/likwid/5.1.0a-msr/bin
 LIKWID_LIB=${LIKWID_PATH}/../lib
 LIKWID_INCLUDE=${LIKWID_PATH}/../include

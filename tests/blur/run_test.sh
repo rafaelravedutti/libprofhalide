@@ -82,8 +82,10 @@ NUMACTL_WRAPPER=""
 # Check if both numactl and pin flags are set
 if [ "${NUMACTL}" -ne "0" ]; then
     if [ -n "$pin_flags" ]; then
-        echo "Pinning flags and numactl option are mutually exclusive!"
-        exit
+        #echo "Pinning flags and numactl option are mutually exclusive!"
+        #exit
+        # Do not pin, just count events on the specified cores
+        PIN_FLAGS="-c ${pin_flags}"
     fi
 
     NUMACTL_WRAPPER="numactl --cpunodebind=0"
@@ -165,7 +167,7 @@ else
 
     make SCHEDULE=${SCHEDULE_ID} ${IMAGE_SIZE_PARAMS} ${EXTRA_FLAGS}
     if [ "${NUMACTL}" -ne "0" ]; then
-        COMMAND="${NUMACTL_WRAPPER} likwid-perfctr -g ${GROUP} ${MARKER_FLAG} ./blur_aot"
+        COMMAND="likwid-perfctr ${PIN_FLAGS} -g ${GROUP} ${MARKER_FLAG} ${NUMACTL_WRAPPER} ./blur_aot"
     else
         COMMAND="likwid-perfctr ${PIN_FLAGS} -g ${GROUP} ${MARKER_FLAG} ./blur_aot"
     fi
