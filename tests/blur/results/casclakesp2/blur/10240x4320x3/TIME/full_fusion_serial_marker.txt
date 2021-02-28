@@ -1,0 +1,20 @@
+Output submitted to: results/casclakesp2/blur/10240x4320x3/TIME/full_fusion_serial_marker.txt
+Algorithm: blur, Arch: host, Host: casclakesp2, Group: TIME
+Number of runs: 3, Schedule: full_fusion, Image dimensions: 10240x4320x3
+Number of threads: 1, Pinning flags: -C 0
+Command: likwid-pin -C 0 ./blur_aot
+blur_y
+ total time: 179.685471 ms  samples: 161  runs: 1  time/run: 179.685471 ms
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                179.685ms (100%)  
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m
+blur_y
+ total time: 179.743530 ms  samples: 161  runs: 1  time/run: 179.743530 ms
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                179.743ms (100%)  
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m
+blur_y
+ total time: 180.752365 ms  samples: 162  runs: 1  time/run: 180.752365 ms
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                180.752ms (100%)  
+[1;34m[likwid-pin] Main PID -> hwthread 0 - OK[0m

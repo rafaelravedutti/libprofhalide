@@ -1,0 +1,42 @@
+Output submitted to: results/casclakesp2/blur/10240x4320x3/TIME/tile_32x32_parallel_marker_2t.txt
+Algorithm: blur, Arch: host, Host: casclakesp2, Group: TIME
+Number of runs: 3, Schedule: tile_32x32, Image dimensions: 10240x4320x3
+Number of threads: 2, Pinning flags: -C M0:2,0-1
+Command: likwid-pin -C M0:2,0-1 ./blur_aot
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 22619903301376 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 22619901200128 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 189.846176 ms  samples: 181  runs: 1  time/run: 189.846176 ms
+ average threads used: 1.850829
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                102.328ms (53%)   threads: 1.734 
+  blur_x:                87.517ms  (46%)   threads: 1.987  stack: 4352
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 22806012159744 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 22806010058496 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 188.761307 ms  samples: 180  runs: 1  time/run: 188.761307 ms
+ average threads used: 1.861111
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                104.412ms (55%)   threads: 1.760 
+  blur_x:                84.348ms  (44%)   threads: 1.987  stack: 4352
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 22797372659456 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 22797370558208 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 189.743439 ms  samples: 181  runs: 1  time/run: 189.743439 ms
+ average threads used: 1.850829
+ heap allocations: 0  peak heap usage: 0 bytes
+  overhead:              0.000ms   (0%)    threads: 0.000 
+  blur_y:                106.451ms (56%)   threads: 1.772 
+  blur_x:                83.291ms  (43%)   threads: 1.974  stack: 4352

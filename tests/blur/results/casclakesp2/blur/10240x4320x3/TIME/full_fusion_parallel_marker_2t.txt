@@ -1,0 +1,38 @@
+Output submitted to: results/casclakesp2/blur/10240x4320x3/TIME/full_fusion_parallel_marker_2t.txt
+Algorithm: blur, Arch: host, Host: casclakesp2, Group: TIME
+Number of runs: 3, Schedule: full_fusion, Image dimensions: 10240x4320x3
+Number of threads: 2, Pinning flags: -C M0:2,0-1
+Command: likwid-pin -C M0:2,0-1 ./blur_aot
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 22929579120384 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 22929577019136 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 140.321762 ms  samples: 134  runs: 1  time/run: 140.321762 ms
+ average threads used: 1.798507
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                140.321ms (100%)  threads: 1.798 
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 22647560390400 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 22647558289152 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 140.338089 ms  samples: 134  runs: 1  time/run: 140.338089 ms
+ average threads used: 1.805970
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                140.338ms (100%)  threads: 1.805 
+[1;34m[pthread wrapper] 
+[0m[1;34m[pthread wrapper] MAIN -> 2
+[0m[1;34m[pthread wrapper] PIN_MASK: [0m[1;34m0->0  [0m[1;34m1->1  [0m[1;34m
+[pthread wrapper] SKIP MASK: 0x0
+[0m[1;34m	threadid 22837302560512 -> hwthread 0 - OK[0m[1;34m
+[0m[1;34m	threadid 22837300459264 -> hwthread 1 - OK[0m[1;34m
+[0mblur_y
+ total time: 142.409485 ms  samples: 136  runs: 1  time/run: 142.409485 ms
+ average threads used: 1.786765
+ heap allocations: 0  peak heap usage: 0 bytes
+  blur_y:                142.409ms (100%)  threads: 1.786 
